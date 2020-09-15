@@ -1,0 +1,75 @@
+Crear carpetaProyecto en C:/xampp/htdocs/ y abrir los archivos desde localhost/carpetaProyecto/archivo.php
+
+Ver captura 1
+<br> va dentro de las comillas del string
+Los diccionarios se hacen con array y flechas =>
+
+Tipo de variable: var_dump($numero), imprime sin echo y aclara algunos datos como cantidad de caracteres o imprime el array entero
+Las funciones se declaran con la palabra function y los parámetros se declaran con $
+function función($parametro) {}
+
+Switches: ver captura 2
+While, do while, for: en captura 3
+
+función = método estático
+
+Comparación código imperativo vs. POO: capturas 4, 5 y 6
+El imperativo no es seguro. Las clases pueden estar en archivos ocultos al usuario.
+
+Las importaciones se hacen con include "subcarpetaEnRoot/archivo.php"
+
+MVC
+template: html
+controlador: clase con función que importa el template.php
+index: require al controlador.php y crea un objeto de la clase controlador y llama a la función de la clase controlador
+
+Root: index.php + 3 subcarpetas: controllers + models + views
+ index.php importa el controlador y el modelo, crea un objeto de la clase controlador y activa la función plantilla() de esa clase para usar el template
+ views/modules/vistas.php tiene las subpáginas del sitio
+ views/modules/nav.php tiene el <nav> con sus ul li
+ views/template.php tiene un php que importa el nav y una sección con php que crea un objeto del controlador y activa la función enlacePaginasController()
+ controllers/controller.php tiene una clase con dos funciones: una para importar el template y otra para enlazar subpáginas
+ models/model.php tiene una clase con una función para recibir el enlace Model y generar y retornar la variable modules: "views/modules/peticion.php"
+
+
+Método GET es inseguro porque muestra todo por url, tiene máximo de 2048 caracteres y no admite archivos adjuntos
+ pero es más veloz y se puede compartir por link/agregar a favoritos, se puede hacer por formularios + vínculos
+Todos los datos en formulario necesitan un name
+
+Método POST
+<form action="save_task.php" method="post"> y en save poner las órdenes a la base de datos
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+DEPLOY:
+Crear archivo info.php junto a index.php para llamar a <?php phpinfo(); ?>   ...  sudo sh -c 'echo "<?php phpinfo(); ?>" > /var/www/html/info.php'
+Verificar con sitio/info.php
+Actualizar y descargar todo: sudo su
+Verificar puertos abiertos sudo netstat -ntlp | grep LISTEN
+
+CON APACHE2
+apt-get install apache2 libapache2-mod-php mysql-server php-mysql php
+service apache2 restart
+
+mysql_secure_installation para configurar MySQL
+mysql -u root -p      (por default son root y root)   o sudo mysql -u root
+CREATE USER 'php_user'@'localhost' IDENTIFY BY 'contraseña';
+GRANT ALL PRIVILEGES ON php_mysql_crud.* TO 'php_user'@'localhost';
+Colocar el sitio en /var/www/
+
+
+CON NGINX y complemento FPM (FastCGI Process Manager)
+apt-get install nginx
+curl localhost                    para ver el index que va a deploytear right now
+apt-get install php-fpm           [se configura desde sudo nano /etc/php7.4/fpm/pool.d/www.conf ]
+vim /etc/php/7.4/fpm/php.ini   descomentar y pasar a 0 el cgi.fix_pathinfo=1 por seguridad
+systemctl restart php7.4-fpm
+vim /etc/nginx/sites-available/default
+    y agregar index.php a la lista [están por orden de prioridad] y descomentar la función location, el include, 
+    el fastcgi_pass (pasando el php7.0 a 7.4) y la llave de cierre y la función location deny all
+nginx -t
+systemctl reload nginx
+
+
+SIN SERVIDOR
+php -S localhost:puerto   estando en la carpeta root del sitio
+

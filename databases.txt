@@ -1,0 +1,808 @@
+
+MySQL
+
+/usr/local/mysql/bin/mysql -u -root -p
+
+----------------------------------------------------------------------------------
+
+instalar community en mac
+
+[en terminal] /usr/local/mysql/bin/mysql -u -root -p
+[o...] [sudo] mysql -u root -p [+optativo nombreDeBase]      [para entrar]
+
+
+show databases;
+use nombreDeBase;
+show tables;
+select database();   [dice cuál es la base de datos seleccionada, como un ls]
+
+Dos principales tipos de tablas:
+	InnoDB [más robusta, más nueva, más recuperable pero más lenta]
+	MyISAM  [sencilla, rápida]
+
+En el ejercicio tablas:
+	de catálogo: InnoDB   [crecerá a orden lento, usuarios de la biblioteca]
+	de operación: MyISAM  [crecerá más rápidamente, mucho acceso a disco duro]
+
+
+----------------------------------------------------------------------------------
+
+CREATE database platzi_operation;
+o... CREATE DATABASE IF NOT EXISTS platzi_operation;
+
+[costumbre: palabras reservadas en mayúsculas, nombre de columnas y tablas en minúsculas]
+
+siempre que diga que hay warnings:
+SHOW warnings;
+
+use platzi_operation;
+
+show tables;
+
+CREATE TABLE IF NOT EXISTS books (
+	book_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,                    [un id entero que se autoincremente, unsigned no negativo]
+	author_id INTEGER UNSIGNED,                                             [no se la completa porque se relacionará con otras columnas]
+	title VARCHAR(100) NOT NULL,                                            [hay que indicarle el máximo de caracteres que puede aceptar]
+	'year' INTEGER UNSIGNED NOT NULL DEFAULT 1900,                          [default si no se le da un valor. ojo year palabra reservada, se agregan tildes hacia la derecha]
+	language VARCHAR(2) NOT NULL DEFAULT 'es' COMMENT 'ISO 639-1 Language', [el comentario solo se va a ver quien pueda ver la estructura de la DB]
+	cover_url VARCHAR(500),
+	price DOUBLE(6,2) NOT NULL DEFAULT 10.0,                                [float 6 decimales, este double admite 4 números más 2 decimales (está descontinuado)]
+	sellable TINYINT(1) DEFAULT 1,                                          [va a tener un 1 sí o un 0 no]
+	copies INTEGER NOT NULL DEFAULT 1,
+	description TEXT
+);
+
+CREATE TABLE IF NOT EXISTS author (
+	author_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(100) NOT NULL,
+	nationality VARCHAR(3)
+);
+
+show tables;
+
+
+-----------------------------------------------------------------------------
+
+drop tables authors;               [BORRAR DE UNA Y PARA SIEMPRE]
+
+describe authors;                  [resume desc authors]
+
+show full columns from authors;    [para ver los comentarios, entre otras cosas; manejar zoom]
+
+
+
+CREATE TABLE clients (
+	client_id INTEGER UNSIGNED PRIMARY KEY,
+	'name' VARCHAR(100) NOT NULL,
+	email VARCHAR(100) NOT NULL UNIQUE,          [unique indica valor único para cada tupla, no se puede repetir]
+	birthdate DATETIME,
+	gender ENUM('M', 'F', 'ND') NOT NULL,        [configuro las opciones que se pueden elegir]
+	active TINYINT(1) NOT NULL DEFAULT 1,        [siempre tener una columna activa]
+	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	 ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+hay 2 clases de datos de tiempo:       siempre 'yyyy-mmm-dd hh:mm:ss'
+ datetime que toma la fecha sin límites, no tan eficiente
+ timestamp que toma los milisegundos desde 1/1/1970 0 horas, más eficiente pero no sirve para más atrás
+
+LAS TUPLAS NO SE BORRAN, EN TODO CASO SE DESACTIVAN desde active 0
+
+
+
+CREATE TABLE IF NOT EXISTS operations (
+	operation_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	book_id INTEGER UNSIGNED,
+	client_id INTEGER UNSIGNED,
+	type prestado, devuelto, vendido,
+	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	finished TINYINT(1) NOT NULL
+);
+
+
+---------------------------------------------------------------------------------------
+
+INSERT INTO authors(authors_id, name, nationality) VALUES('', 'Juan Rulfo', 'MEX');   [este no siempre funciona...]
+INSERT INTO authors(name, nationality) VALUES('Gabriel García Márquez', 'COL');
+INSERT INTO authors VALUES('', 'Juan Gabriel Vasquez', 'COL');                        [este no siempre funciona...]
+
+omitir los primeros paréntesis indica que se pasan la totalidad de los datos
+
+INSERT INTO authors(name, nationality) VALUES
+	('Isabel Allende 1', 'CHI'),
+	('Isabel Allende 2', 'ARG'),
+	('Isabel Allende 3', 'URU'),
+	('Isabel Allende 4', 'BRA');
+
+Consejo, no mandar más de 50 de una
+
+select * from authors;           para ver todos las tuplas
+insert into authors(author_id, name) values(16, 'Pablo Neruda');
+Con el auto_incremental, puedo darle valor al id si es superior al último usado
+
+INSERT INTO clients(client_id, name, email, birthdate, gender, active) VALUES
+	(1, 'Maria Dolores', 'ghp@gmail.com', '1971-06-06', 'F', 1);
+
+
+Problemas con valores duplicados que no son admitidos:
+No usar el ON DUPLICATE IGNORE ALL (problemas con email que no se puede repetir)
+(...) ON DUPLICATE KEY UPDATE active = VALUES(active)
+                                          [que actualice el valor de active si hay una duplicación prohibida
+                                        	  (los otros datos que se están pasando se pierden)]
+
+select * from clients where clients_id = 4/G                 [barra inv G sirve a la visualización en terminal]
+
+select * from authors where name = "Octavio Paz";
+
+INSERT INTO books(title, author_id) VALUES('El laberinto de la Soledad', 6);
+
+select * from books/G;
+
+INSERT INTO books(title, author_id, year)
+VALUES('Vuelta al Laberinto de la Soledad',
+	(SELECT author_id FROM authors
+	WHERE name = 'Octavio Paz'
+	LIMIT 1
+	), 1960
+);
+
+INSERT INTO books(title, author_id, year)
+VALUES('Autobiografía de TuSand',
+	(SELECT author_id FROM authors
+	WHERE name = 'Isabel Allende 3'
+	LIMIT 1
+	), 1960
+);
+
+INSERT INTO books(title, author_id, year)
+VALUES('Vuelta al Laberinto de la Soledad',
+	(SELECT author_id FROM authors
+	WHERE name = 'Isabel Allende 4'
+	LIMIT 1
+	), 1960
+);
+
+INSERT INTO books(title, author_id, year)
+VALUES('Vuelta al Laberinto de la Soledad III',
+	(SELECT author_id FROM authors
+	WHERE name = 'Octavio Paz'
+	LIMIT 1
+	), 1969
+);
+
+Subquery para traer el id de otra tabla (contra: eleva los tiempos al cuadrado)
+
+
+-------------------------------------------------------------------------------------------------
+
+En vez de cargar los comandos de a uno, se puede cargar todo en un archivo de texto plano .sql y
+	mysql -u root -p < archivo.sql                   [el archivo que crea la base de datos]
+	mysql -u root -p -D basededatos < archivo2.sql
+
+
+-------------------------------------------------------------------------------------------------
+
+SELECT
+
+select name from clients;                                     [trae solo una columna, la de los nombres]
+
+select name, email, gender from clients;                      [trae tres columnas]
+
+select name, email, gender from clients limit 10;             [10 datos aleatorios]
+
+select name, email, gender from clients where gender = 'M'    [trae todos los hombres]
+
+select birthdate from clients;                                [trae todas las fechas de nacimiento]
+
+select year(birthdate) from clients;                          [trae solo los años de nacimiento]
+
+select NOW();                                                 [fecha y hora de la computadora]
+
+select year(now());
+
+select name, year(now()) - year(birthdate) from clients;      [trae nombre y le aplica edad (aproxi)]
+
+select * from clients where name like'%Saave%';               [trae todos los clientes que tengan Saave en el nombre]
+
+SELECT name, email, year(now()) - year(birthdate) AS edad, gender          [el AS le pone título a la columna, aunque no se necesita]
+FROM clients
+WHERE gender = 'F'
+	AND name LIKE '%Lop%'
+
+------------------------------------------------------------------------------------------------
+
+select count(*) from books;                                   [cuenta cuántos libros hay en books]
+
+select * from authors where author_id > 0 and author_id <= 5;
+
+select * from books where author_id between 1 and 5;
+
+select book_id, author_id, title from books where author_id between 1 and 5;
+
+-----------------------------------------------------------------------------------------------------
+
+Hacer información cruzando tablas
+
+SELECT b.book_id, a.name, b.title
+FROM books AS b
+JOIN authors AS a                                [join == inner join]
+	on a.author_id = b.author_id
+WHERE a.author_id between 1 and 5;
+
+
+SELECT b.book_id, a.name, a.author_id, b.title
+FROM books AS b
+JOIN authors AS a                                [join == inner join]
+	on a.author_id = b.author_id
+WHERE a.author_id between 1 and 5;
+
+
+SELECT c.name, b.title, t.type
+FROM transactions AS t
+JOIN books AS b
+	ON t.book_id = b.book_id
+JOIN clients AS c
+	ON t.client_id = c.client_id;
+
+
+SELECT c.name, b.title, t.type
+FROM transactions AS t
+JOIN books AS b
+	ON t.book_id = b.book_id
+JOIN clients AS c
+	ON t.client_id = c.client_id;
+WHERE c.gender = 'F'
+	AND t.type = 'sell';                  [todos los libros vendidos a mujeres]
+
+
+SELECT c.name, b.title, a.name, t.type
+FROM transactions AS t
+JOIN books AS b
+	ON t.book_id = b.book_id
+JOIN clients AS c
+	ON t.client_id = c.client_id;
+JOIN authors AS a
+	ON b.author_id = a.author_id
+WHERE c.gender = 'F'
+	AND t.type = 'sell';                  [muestra el escritor]
+
+
+SELECT c.name, b.title, a.name, t.type
+FROM transactions AS t
+JOIN books AS b
+	ON t.book_id = b.book_id
+JOIN clients AS c
+	ON t.client_id = c.client_id;
+JOIN authors AS a
+	ON b.author_id = a.author_id
+WHERE c.gender = 'M'
+	AND t.type IN = ('sell', 'lend');                  [escritor hombre, vendidos y rentados]
+
+
+--------------------------------------------------------------------------------------------------
+
+JOIN
+
+SELECT b.title, a.name
+FROM authors AS a, books AS b
+WHERE a.author_id = b.author_id;
+                                        [son iguales, el primero es viejo]
+SELECT b.title, a.name
+FROM books AS b
+INNER JOIN authors AS a
+	ON a.author_id = b.author_id;
+
+
+SELECT a.author_id, a.name, a.nationality, b.title
+FROM authors AS a
+JOIN books AS b
+	ON b.author_id = a.author_id
+WHERE a.author_id BETWEEN 1 AND 5;
+
+
+SELECT a.author_id, a.name, a.nationality, b.title
+FROM authors AS a
+JOIN books AS b
+	ON b.author_id = a.author_id
+WHERE a.author_id BETWEEN 1 AND 5
+ORDER BY a.author_id;                           [ordena, ascendente]
+
+ORDER BY a.author_id desc;                      [ordena, descendente]
+
+ORDER BY a.name_id;                             [ordena por nombre]
+
+
+SELECT a.author_id, a.name, a.nationality, b.title
+FROM authors AS a
+LEFT JOIN books AS b                            [left join hace traer también los nulls]
+	ON b.author_id = a.author_id
+WHERE a.author_id BETWEEN 1 AND 5
+ORDER BY a.author_id;
+
+
+-----------------------------------------------------------------------------------------
+
+COUNT
+
+SELECT a.author_id, a.name, a.nationality, COUNT(b.book_id)     [columna que cuenta los libros del autor]
+FROM authors AS a
+LEFT JOIN books AS b
+	ON b.author_id = a.author_id
+WHERE a.author_id BETWEEN 1 AND 5
+GROUP BY a.author_id                                            [el dato que al repetirse se va a sumar]
+ORDER BY a.author_id;
+
+
+7 TIPOS DE JOIN
+
+          INNER JOIN: Lo que tienen en común los conjuntos A y B
+           LEFT JOIN: El conjunto A, incluyendo lo que tenga en común con B
+          RIGHT JOIN: El conjunto B, incluyendo lo que tenga en común con A
+          OUTER JOIN: Todo A y B, incluyendo lo que tengan en común
+ LEFT EXCLUDING JOIN: El conjunto A excluyendo lo que tenga en común con B
+RIGHT EXCLUDING JOIN: El conjunto B excluyendo lo que tenga en común con A
+OUTER EXCLUDING JOIN: A y B excluyendo lo que tienen en común
+
+
+SELECT <columna_1> , <columna_2>,  <columna_3> ... <columna_n> 
+FROM Tabla_A A
+INNER JOIN Tabla_B B
+ON A.pk = B.pk
+
+SELECT <columna_1> , <columna_2>,  <columna_3> ... <columna_n> 
+FROM Tabla_A A
+LEFT JOIN Tabla_B B
+ON A.pk = B.pk
+
+SELECT <columna_1> , <columna_2>,  <columna_3> ... <columna_n>
+FROM Tabla_A A
+RIGHT JOIN Tabla_B B
+ON A.pk = B.pk
+
+SELECT <columna_1> , <columna_2>,  <columna_3> ... <columna_n>
+FROM Tabla_A A
+FULL OUTER JOIN Tabla_B B
+ON A.pk = B.pk
+
+SELECT <columna_1> , <columna_2>,  <columna_3> ... <columna_n>
+FROM Tabla_A A
+LEFT JOIN Tabla_B B
+ON A.pk = B.pk
+WHERE B.pk IS NULL
+
+SELECT <columna_1> , <columna_2>,  <columna_3> ... <columna_n>
+FROM Tabla_A A
+RIGHT JOIN Tabla_B B
+ON A.pk = B.pk
+WHERE A.pk IS NULL
+
+SELECT <select_list>
+FROM Table_A A
+FULL OUTER JOIN Table_B B
+ON A.Key = B.Key
+WHERE A.Key IS NULL OR B.Key IS NULL
+
+
+-----------------------------------------------------------------------------------------------------------
+
+SELECT DISTINCT nacionality FROM authors;               [evita repetir]
+
+
+SELECT nationality, COUNT(author_id)
+ FROM authors;                                          [mete todas las nacionalidades en la misma bolsa]
+
+
+SELECT nationality, COUNT(author_id) AS c_authors
+ FROM authors
+ WHERE nationality IS NOT NULL                          [excluye los casos null]
+  AND nationality <> 'RUS'                              [excluye a los rusos]
+ GROUP BY nationality
+ ORDER BY c_authors DESC, nationality ASC;              [recordar el ASC es opcional]
+
+	[versión alternativa: nationality NOT IN('RUS', 'AUS') ]
+
+
+SELECT nationality, COUNT(author_id) AS c_authors
+ FROM authors
+ WHERE nationality IS NOT NULL                          [conviene descartar primero para achicar la población]
+  AND nationality IN('RUS', 'AUT')                      [trae solo a los rusos y austríacos]
+ GROUP BY nationality
+ ORDER BY c_authors DESC, nationality ASC;              [recordar el ASC es opcional]
+
+
+SELECT AVG(price) AS prom, STDDEV(price) AS std         [promedio de precios]
+ FROM books;
+
+
+SELECT nationality, AVG(price) AS prom, STDDEV(price) AS std
+ FROM books AS b
+ JOIN authors AS a
+	ON a.author_id = b.author_id
+ GROUP BY nationality
+ ORDER BY prom DESC;
+
+
+SELECT nationality, COUNT(book_id) AS libros, AVG(price) AS prom, STDDEV(price) AS std
+ FROM books AS b
+ JOIN authors AS a
+	ON a.author_id = b.author_id
+ GROUP BY nationality
+ ORDER BY libros DESC;
+
+
+SELECT MAX(price), MIN(price)
+ FROM books;
+
+
+SELECT nationality, MAX(price), MIN(price)
+ FROM books AS b
+ JOIN authors AS b
+	ON a.author_id = b.author_id
+ GROUP BY nationality;
+
+
+SELECT c.name, t.type, b.title, a.name, a.nationality
+ FROM transactions AS t
+ LEFT JOIN clients AS c
+	ON c.client_id = t.client_id
+ LEFT JOIN books AS b
+	ON b.book_id = t.book_id
+ LEFT JOIN authors AS a
+	ON b.author_id = a.author_id;
+
+
+SELECT c.name, t.type, b.title,
+ CONCAT(a.name, " (", a.nationality, ")") AS autor
+ FROM transactions AS t
+ LEFT JOIN clients AS c
+	ON c.client_id = t.client_id
+ LEFT JOIN books AS b
+	ON b.book_id = t.book_id
+ LEFT JOIN authors AS a
+	ON b.author_id = a.author_id;
+
+
+TO_DAYS(fecha) arroja la cantidad de días desde el comienzo de la era común hasta fecha
+TO_DAYS(NOW()) hasta el día de hoy
+TO_DAYS(fecha1) - TO_DAYS(fecha2)
+
+
+SELECT c.name, t.type, b.title,
+ CONCAT(a.name, " (", a.nationality, ")") AS autor
+ TO_DAYS(NOW()) - TO_DAYS(t.created_at) AS ago
+ FROM transactions AS t
+ LEFT JOIN clients AS c
+	ON c.client_id = t.client_id
+ LEFT JOIN books AS b
+	ON b.book_id = t.book_id
+ LEFT JOIN authors AS a
+	ON b.author_id = a.author_id;
+
+
+SELECT * FROM authors ORDER BY rand() limit 10;
+
+
+----------------------------------------------------------------------------------------------------------
+
+DELETE Y UPDATE
+
+DELETE FROM authors WHERE author_id = 161 LIMIT 1;          [IMPORTANTE BORRAR POR ID Y PONERLE LÍMITE]
+
+Más que borrar conviene desactivar:
+SELECT client_id, name FROM clients WHERE active <> 1;      [ver solo los inactivos]
+
+SELECT client_id, name, active FROM clients ORDER BY rand() limit 10;
+
+UPDATE [tabla]
+ SET [columna=valor]
+ WHERE [condiciones]
+ LIMIT 1;
+
+SELECT client_id, name, active FROM clients WHERE client_id IN (80, 78, 2, 15);
+
+UPDATE clients
+ SET active = 0                              [desactiva el 80]
+ WHERE client_id = 80
+ LIMIT 1;
+
+UPDATE clients
+ SET active = 0                              [desactiva el 80]
+ WHERE client_id IN (80, 6, 8, 90)
+ OR name LIKE '%Lopez%';                     [suma ambas condiciones
+
+
+UPDATE clients
+ SET email = 'javier@gmail.com'              [desactiva el 80]
+ WHERE client_id = 7
+ LIMIT 1;
+
+
+UPDATE authors SET nationality = 'GBR' WHERE nationality = 'ENG';
+
+
+SELECT * FROM transactions;
+
+TRUNCATE transactions;             [VACÍA COMPLETAMENTE LA TABLA, NO BORRA LA ESTRUCTURA]
+
+
+-------------------------------------------------------------------------------------------------------
+
+SELECT COUNT(book_id) FROM books;
+
+SELECT COUNT(book_id), SUM(1) FROM books;
+
+SELECT SUM(price) FROM books WHERE sellable = 1;
+
+SELECT SUM(price*copies) FROM books WHERE sellable = 1;
+
+SELECT sellable, SUM(price*copies) FROM books GROUP BY sellable;
+
+SELECT COUNT(book_id), SUM(IF(year < 1950, 1, 0)) AS `Menores a 1950` FROM books;
+
+SELECT COUNT(book_id),
+ SUM(IF(year < 1950, 1, 0)) AS `Menores a 1950`,
+ SUM(IF(year >=1950 AND year < 1990, 1, 0)) AS `<1990`,
+ SUM(IF(year >=1990, 1, 0)) AS `Actuales`,
+ FROM books;
+
+SELECT nationality, COUNT(book_id),
+ SUM(IF(year < 1950, 1, 0)) AS `Menores a 1950`,
+ SUM(IF(year >=1950 AND year < 1990, 1, 0)) AS `<1990`,
+ SUM(IF(year >=1990, 1, 0)) AS `Actuales`,
+ FROM books AS b
+ JOIN authors AS a
+	ON a.author_id = b.author_id
+ WHERE a.nationality IS NOT NULL
+ GROUP BY nationality;
+
+
+----------------------------------------------------------------------------------------------------------
+
+AGREGAR Y BORRAR UNA COLUMNA A TABLA
+
+ALTER TABLE authors ADD COLUMN birthyear INTEGER DEFAULT 1930 AFTER name;
+
+	[crea columna "birthyear" después de "name"]
+
+ALTER TABLE authors MODIFY COLUMN birthyear YEAR DEFAULT 1920;
+
+	[modifica el tipo de dato y el default]
+
+ALTER TABLE authors DROP COLUMN birthyear;
+
+	[borrar columna]
+
+SHOW TABLES LIKE %i%;
+
+	[mostrar tablas que tengan alguna i en el nombre]
+
+
+-----------------------------------------------------------------------------------------------
+
+EXPORTAR RESPALDOS
+
+Salir de MySQL
+
+mysqldump -u root -p cursoplatzi (es la base de datos)     [host, o nada si es lo]
+
+	[traer toda la base de datos a texto, sirve a respaldo local]
+
+mysqldump -u root -p -d cursoplatzi                        [host, o nada si es lo]
+
+	[d de sin datos, solo el esquema]
+
+mysqldump -u root -p -d cursoplatzi > esquema.sql
+mysqldump -u root -p cursoplatzi > esquema.sql
+
+	[exporta a ~/ o sea al home del usuario]
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+mysql_secure_installation para configurar MySQL
+mysql -u root -p      (por default son root y root)   o sudo mysql -u root
+
+CREATE USER 'php_user'@'localhost' IDENTIFY BY 'contraseña';
+
+GRANT ALL PRIVILEGES ON php_mysql_crud.* TO 'php_user'@'localhost';
+
+
+CAMBIAR HORARIO
+SET GLOBAL time_zone = '-3:00';
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+MONGODB
+
+MongoDB Server: terminal, trae mongo y mongod
+MongoDB Compass: gráfica
+MongoDB Atlas: nube
+
+mongod: servidor local
+mongo: aplicación de consola para manipular las bases de datos en los servidores, intérprete de js
+
+Windows: agregar path C:\Program Files\MongoDB\Server\4.2\bin a variables de entorno y crear subcarpeta C://data/db/
+
+Abrir dos consolas admin: mongod (port 27017) y mongo
+Colección: nodo o subnodo
+Documento: combinación llave-valor que se aloja en una colección como última instancia
+
+db: muestra la base actual (test por default pero no está guardada porque no tiene colecciones)
+show dbs: muestra todas las db
+help: comandos
+db.help(): todos los métodos db.
+use mibasededatos: cambia a esa db, la crea si no existe, pero no la guarda hasta que se cree alguna colección
+db.createCollection("users")
+show collections
+db.micoleccion.drop(): elimina la colección
+
+Mongo captura JSON pero almacena BSON (binarios), por eso se le mandan funciones de .js como new Date("12/12/2020") pero almacena 
+  ISODate("2020-12-12T06:00:00Z")
+Acepta expresiones regulares
+Acepta listas y objetos JSON dentro de objetos JSON sin límites
+
+No hace falta crear la colección antes de insertar datos
+Conviene formar el objeto en editor de código y luego copiarlo a consola para que se usen múltiples líneas de comando
+db.micoleccion.insert({ ... })
+db.micoleccion.insert({"name": "ghp", "email": "ghp.@g.com", "age": 33})     Genera ID automáticamente
+
+db.micoleccion.find(): muestra todos los documentos de la colección
+db.micoleccion.find().pretty(): ordena en múltiples líneas y con tabulación, muestra BSON
+
+Insertar varios documentos a la vez: db.micoleccion.insert([{...}, {...}, {...}])
+
+Búsqueda de valor para cierto key: db.micoleccion.find({"key": "valorbuscado"})
+Búsqueda de valor, un solo resultado, el primero: db.micolección.findOne({"key": "valorbuscado"})
+Un solo resultado y que no muestre todo el documento: db.micolección.findOne({"key": "valorbuscado"}), {"otrokey": 1, " ootrokey": 1}
+1 significa true
+Que no muestre el _id: db.micolección.findOne({"key": "valorbuscado"}), {"otrokey": 1, " ootrokey": 1, "_id": 0}
+
+Ordenar alfabéticamente por nombre: db.micoleccion.find({"key": "valorbuscado"}).sort({name: 1}) si name es el key que tiene que ordenar
+
+db.micoleccion.find().limit(3) muestra los primeros 3
+db.micoleccion.count() muestra la cantidad de documentos
+db.products.find().forEach(producto => print("Nombre de producto:" + producto.name )) muestra el nombre de cada documento
+Se puede achichar poniendo parámetros en find() y agregando limit()
+
+Actualizar:
+db.micoleccion.update({"keyparaubicar": "valorparaubicareldocumento"}, {"key2": "valornuevo"})
+Va a modificar todos los que cumplan "keyparaubicar": "valorparaubicar" pero va a borrar todo el documento
+db.micoleccion.update({"key": "valorviejo"}, {"key": "valornuevo", "otrokey": "otrovalor"}) hace un reemplazo total del documento
+db.micoleccion.update({"keyparaubicar": "valorparaubicar"}, {$set: {"keyacambiar": "nuevovalor"} }) actualiza ESPECÍFICAMENTE keyacambiar
+keyacambiar puede ser un key nuevo
+
+Agregar documentos usando update funciona como un "crear pero si ya existe actualizar"
+db.micoleccion.update({"keyparaubicar": "valornuevo"}, {$set: {"keynuevo": "valor"}}, {upsert: true})
+Si keyparaubicar existe, va a actualizar o agregar keynuevo. Si no existe, va a creaerlo, generando su id.
+
+Modificar valores numéricos:
+db.micoleccion.update({"keyparabuscar": "valorparabuscar"}, {$inc: {"price": 0.01}})   va a sumar un centavo al precio
+
+Modificar los keys:
+db.micoleccion.update({"keyparacambiar": "valorparabuscar"}, {$rename: {"keyparacambiar": "keycambiado"}})
+
+Eliminar un documento:
+db.micoleccion.remove({"keyparabuscar": "claveparabuscar"}) elimina todo documento donde halla un par así
+db-micoleccion.remove({'_id': ObjectId("65516abc6789abc548")})
+
+Vaciar la colección:
+db.micoleccion.remove({})
+
+
+
+EXPRESIONES REGULARES
+
+Empiece con S:
+db.posts.find({'post':/^S/}).limit(5).pretty()
+
+Contiene 'marxismo':
+db.posts.find({'post':/marxismo/}).limit(5).pretty()                        
+
+Mayores de 30 años:
+db.people.find({age:{$gt:30}},{name:1,age:1})
+
+Menores de 30 años:
+db.people.find({age:{$lt:30}},{name:1,age:1})
+
+No tienen 30 años:
+db.people.find({age:{$ne:30}},{name:1,age:1})
+
+db.people.find({age:{$in:[25,30,35]}},{name:1,age:1})
+
+Dos condiciones:
+db.collection.find( { $and: [{titulo: /miguel/i}, {titulo: /cervantes/i}] } );
+
+Buscar el primer documento que tenga dos ciertos valores en la key "tags":
+db.posts.find({tags:{$all:["marxismo","greenpeace"]}},{name:1,tags:1})
+
+Buscar el primer documento que tenga alguno de estos 3 values en "tags":
+db.people.find({tags:{$in:["laborum","sunt","nisi"]}},{name:1,tags:1})
+
+Buscar el primer documento que no contenga ninguno de los 3:
+db.people.find({tags:{$nin:["laborum","sunt","nisi"]}},{name:1,tags:1})
+
+Buscar nombres que terminen con "fis" sin tener en cuenta mayúsculas:
+db.posts.find({"post": {$regex:".*Marx", $options:"i"}},{name:5})
+
+Buscar posteos que contengan "marx" ignorando mayúsculas/minúsculas:
+db.posts.find({"post": /marx/i}).limit(5).pretty()
+
+Buscar palabra clave en posteos y usuarios ignorando minúsculas/mayúsculas:
+db.posts.find({"post": /maslaton/i}).limit(5).pretty()
+
+Buscar en dos keys distintos:
+db.posts.find({ $or: [{"user":/maslaton/i}, {"post": /maslaton/i}] }).pretty()
+
+db.posts.find({ $and: [{"post":/kirchner/i}, {"year": /2019/i}] }).pretty()
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+EXPORTACIÓN
+
+mongoexport --db base_de_datos_a_exportar --collection coleccion_a_exportar --authenticationDatabase admin -u usuario_exportacion -p Pa$$ --out /ruta/export/exportacion_simple.csv
+
+
+PERMISOS
+
+Primero hay que crear una cuenta de superAdmin:
+
+$ use admin          [base de datos]
+$ db.createUser(
+  {
+    user: "superAdmin",
+    pwd: "pass1234",
+    roles: [ { role: "root", db: "admin" } ]
+  })
+
+Segundo se modifica la configuración:
+
+$ sudo nano /etc/mongod.conf ...
+# network interfaces
+net:
+  port: 27017
+#  bindIp: 127.0.0.1  <- comenta esta linea para no limitar a conexiones locales
+
+security:
+  authorization: 'enabled'
+
+sudo service mongod restart
+
+Tercero abrir puertos:
+
+sudo iptables -A INPUT -p tcp --dport 27017 -j ACCEPT
+sudo iptables -L
+
+Abrir puerto también en el firewall de AWS
+
+INGRESO LOCAL
+$ mongo --port 27017 -u "superAdmin" -p "pass1234" --authenticationDatabase "admin"
+
+INGRESO EXTERNO
+$ mongo -u superAdmin -p pass1234 123.45.67.89
+
+-------------------------------------------------------------------------------------------------------------------
+
+client = pymongo.MongoClient("mongodb://superAdmin:pass1234@123.45.67.89:27017/blog?ssl=false&authSource=admin")
+db = client.blog
+post = {"autor": "Martin",
+        "titulo": "My first blog post!",
+        "tags": ["mongodb", "python", "pymongo"]}
+posts = db.posts
+post_id = posts.insert_one(post).inserted_id
+
+
+MiseriScraping:
+
+pymongo.MongoClient("mongodb://ms:...@3.22.60.96:46016/miseriscraping")
+
+Clave superAdmin
+db.createUser({user: "admin", pwd: "...", roles: [{role:"root", db: "admin"}] })
+
+Acceso remoto
+mongo --host 3.22.60.96 --port 46016 -u ms -p ... --authenticationDatabase miseriscraping

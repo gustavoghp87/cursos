@@ -1,0 +1,191 @@
+https://institutosanisidro.com.ar/java/
+
+UNIDAD 1:
+
+Introducción.
+Breve historia de Java.
+¿Qué es Java?
+ 
+
+UNIDAD 2: J2SDK, El entorno de programación.
+
+Instalación.
+¿Qué aplicaciones hay en el J2SDK?
+Compilación: javac.
+Ejecución de aplicaciones: java.
+Ejecución de applets: appletviewer.
+Corrección de errores: el debugger jdb.
+ 
+
+UNIDAD 3: Estructuras básicas de programación.
+
+Comentarios.
+Identificadores.
+Palabras reservadas.
+Tipos de datos primitivos.
+Enteros.
+Tipos en coma flotante.
+Caracteres: char.
+Booleanos: boolean.
+Declaraciones de variables.
+Constantes.
+Asignaciones.
+Strings.
+Arrays.
+Operadores.
+Estructuras de control de flujo.
+Condicionales.
+Bucles.
+Aserciones.
+Invariantes internos.
+Invariantes de control de flujo.
+Precondiciones, postcondiciones e invariantes de clase.
+El método main.
+ 
+
+UNIDAD 4: Programación orientada a objetos.
+
+Conceptos.
+Uso de clases ya existentes.
+La API de Java.
+Declaración de variables e instanciación de objetos.
+Invocación de métodos y acceso a atributos.
+Creación de nuestras propias clases.
+Cuerpo de la clase.
+Constructores.
+Acceso a los miembros del propio objeto.
+Visibilidad public y private.
+Paso de parámetros.
+Asignaciones, copias y comparaciones.
+Destruir objetos.
+Miembros de clase.
+Herencia.
+Conceptos y terminología.
+Sobrescribir métodos.
+La herencia como especialización.
+Visibilidad protected.
+Polimorfismo y dynamic binding.
+Casting de objetos.
+La clase Object.
+Clases abstractas.
+Interfaces.
+Simulando la genericidad mediante herencia.
+Agrupación de clases.
+ 
+
+UNIDAD 5: Excepciones.
+
+Introducción.
+¿Que es una excepción?
+¿Qué es un error?
+Primer ejemplo.
+Manejo de excepciones.
+Sentencias try y catch.
+Sentencia finally.
+El mecanismo de pila de llamadas.
+Categorías de excepciones.
+Excepciones más frecuentes.
+La regla de “declarar o capturar”.
+Creación de excepciones de usuario.
+Introducción.
+Ejemplo.
+ 
+
+UNIDAD 6: Programación gráfica.
+
+El entorno Swing.
+Primer ejemplo.
+Modo gráfico.
+Texto y fuentes.
+Líneas.
+Rectángulos.
+Polígonos.
+Óvalos.
+Arcos.
+Colores.
+Un ejemplo completo.
+Swing.
+Jerarquía de Swing.
+Índice visual.
+Contenedores de alto nivel en la jerarquía.
+Contenedores de propósito general.
+Contenedores de propósito especial.
+Controles básicos.
+Pantallas no editables.
+Pantallas editables o información formateada.
+Un ejemplo ilustrativo.
+Layouts.
+FlowLayout.
+BorderLayout.
+CardLayout .
+GridLayout.
+GridBagLayout.
+Componentes de Swing.
+JFrame.
+JPanel.
+Canvas.
+JButton.
+JLabel.
+JTextField .
+JTextArea.
+JCheckBox.
+JRadioButton y BottonGroup.
+JComboBox.
+JList.
+Menús.
+JDialog.
+ 
+
+UNIDAD 7: Eventos.
+
+Conceptos básicos.
+Interfaces.
+Interfaz ActionListener.
+Interfaz ItemListener.
+Interfaz WindowListener.
+Interfaz ComponentListener.
+Interfaz AdjustmentListener.
+Interfaz MouseListener.
+Interfaz MouseMotionListener.
+Interfaz FocusListener.
+Interfaz KeyListener.
+Tabla resumen de interfaces.
+Look and Feel.
+ 
+
+UNIDAD 8: El paradigma modelo-vista-controlador.
+
+Ejemplo comentado
+ 
+
+UNIDAD 9: Applets.
+
+El applet como caso particular de aplicación Swing.
+El ciclo de vida de un applet.
+Diferencias entre Applet y JApplet.
+Ejemplo.
+El tag <APPLET> de HTML.
+Atributos del tag <APPLET>.
+Paso de parámetros a un applet.
+Restricciones por razones de seguridad.
+Algunas capacidades interesantes.
+Utilizando el HTML Converter.
+ 
+
+UNIDAD 10: Entrada/salida: Streams.
+
+InputStream.
+OutputStream.
+Otras clases básicas de streams.
+Encadenar streams.
+Lectura/escritura en formato ASCII.
+Canales de entrada y salida estándar y de error.
+Ficheros.
+Creación de un objeto fichero.
+Comprobaciones y utilidades sobre los ficheros.
+La interfaz Serializable.
+ObjectInputStream y ObjectOutputStream.
+ 
+
+Datos de contacto
+Dirección: Alsina 16 [B1642FNB] San Isidro | Pcia. De Buenos Aires | Argentina Tel.: (011) 4742-1532 ó (011) 4742-1665

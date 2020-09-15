@@ -1,0 +1,81 @@
+sudo su
+apt-get [administrador de paquetes (programas/actualizaciones/documentación) update / apt-get upgrade
+apt update / apt upgrade
+
+ver procesos: htop
+
+tab autocompleta
+
+ctrl + h [ver ocultos]
+ls, ls -al [tamaño, permisos], ls -l, ls -lh (permisos), ls ../, cd, cd ../, pwd, cd ~ [root], reset
+ls *ssh* [que liste todos los ficheros que contengan ssh en el nombre]
+cd E* [completa, Escritorio], cd - [devuelve al directorio último], du -sh [cuánto pesa la carpeta], df -h [peso de contenido]
+mkdir carpeta, mkdir -p carpeta/subcarpeta
+mkdir -p subcarpeta/{subsub1,subsub2,subsub3}
+touch archivo.txt [crea]
+rm archivo, rmdir carpeta/ [vacía], rm -rf carpeta/ [forzar borrada]
+mv carpeta/ otra/, mv carpeta/ nombreNuevo/
+man [+comando], info [+comando], apropos [+comando, dns sta], whatis [+comando, dnd sta el manual]
+find . -name "archivo" [punto es directorio actual]
+locate sshd
+whereis cat [dnd sta el ejecutable]
+file nombre [devuelve tipo de archivo]
+descargar desde url: wget http...
+sudo chown root.ghp21 carpeta/ [hacer que un archivo sea propiedad del adm]
+chmod +x file.txt [permisos de ejecución al usuario principal]
+
+cat archivo                   [lectura en la terminal]
+cat archivo | grep palabra    [busca la palabra en el archivo]
+cat archivo | wt -l           [cuenta las líneas]
+
+Los programas [paquetes] están compilados y solo se descargan, o sin compilar
+
+tar cvf /carpeta/archivo.tar        [empaquetar]
+gzip -9r /carpeta/archivo.tar       [comprimir, sale .tar.gz]
+tar cvf archivo.tgz capeta/archivo  [comprimir, verbose, file]
+tar cvfz archivo.tar.gz carpeta     [comprimir paquete]
+tar xvf archivo.tgz                 [descomprime]
+tar xvfz archivo.tar.gz             [descomprime el empaquetado]
+[mejor usar tar porque respeta los permisos, usuarios, grupos]
+zless archivo.tz                    [para verlo sin descomprimirlo]
+
+apt-get remove |paquete|   [lo elimina con seguridad... mantiene los archivos de conf y bases de datos]
+dpkb -P |paquete|   [también borra los archivos pero es muy puntual] P de purgar
+
+[apt-get install aptitude ... administrador de paquetes]
+
+apt-cache search keyring   [anillos de seguridad]
+vim permiso para guardar: :w !sudo tee %
+
+cd /etc/apt/sources.list   [url de repositorios para actualizar apt]
+Hay un comando para agregar url a sources.list [comando echo "deb ... "]
+Cada repositorio tiene una llave [sudo apt-key ... ]
+[apt-get update siempre después de modificar sources.list y agregar la llave]
+
+Proteger archivos y carpetas:
+	sudo chattr -V +i "nombre archivo o carpeta"
+	sudo chattr -V -i "nombre archivo o carpeta"
+
+Ver RAM
+    sudo dmidecode --type memory
+
+Hacer launchers (accesos directos) en Ubuntu:
+	which eclipse    (buscar la aplicación)
+	gnome-desktop-item-edit ~/Desktop/ --create-new
+
+~/ significa usuario actual
+
+
+Para listar cualquier proceso escuchando el puerto 8080:
+lsof -i:8080
+
+Para matar cualquier proceso escuchando el puerto 8080:
+kill $(lsof -t -i:8080)
+o más violentamente:
+kill -9 $(lsof -t -i:8080)
+
+
+ABRIR PUERTOS
+sudo iptables -L        lista
+sudo iptables -A INPUT -p tcp --dport 8005 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 8005 -j DROP      cerrar

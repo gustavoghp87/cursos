@@ -1,0 +1,271 @@
+GIT
+
+En Windows usar Git Bash
+
+Hay 3 estados:
+	1. working directory: en carpeta, normal (untracked files)
+	2. staging area: versión guardada (stage files --> tracked files)
+	3. git directory, repository: versión guardada comentada y/o etiquetada (--> commit files)
+
+
+CONFIGURAR
+	git --version
+	git config --list    [lista usuarios]
+	git config --global user.mail @gmail.com   [global o local]
+	git config --global user.name ghp  [con comillas si son más de una palabra]
+	git config --global color.ui true
+	git config --global core.editor vim
+	git config --global core.editor "atom --wait"    [más conveniente]
+	git config --global core.editor "code --wait"    [visual studio code... no chequeado]
+	git config --global core.editor wordpad
+
+
+CREAR UNA ESTRUCTURA GIT	
+hacer un repositorio:
+crear carpeta y estando adentro...      git init
+o desde afuera...                       git init carpeta_repositorio
+
+(master) significa que estás en una carpeta repositorio
+borrar repositorio: borrar carpeta .git
+
+	touch index.html
+	git status
+	git add index.html   [segundo estado]
+	git status
+
+Borrar archivo del segundo estado sin eliminarlo del repo:
+	git rm --cached index.html
+
+Borrar archivo del segundo estado y eliminarlo del repo:
+	git rm -f index.html
+
+	touch index.css
+	git add -A           [agrega todo]
+	git commit -m "inicializar el landing"   [agregar comentario al cambio realizado y pasar al tercer estado]
+	
+Después de modificar alguno de los archivos del proyecto:
+	git add index.html
+	git add imagen.jpeg   [hacer con todos, o git add -A]
+
+Si quiero indexar algo al commit vigente:
+	git commit -m "[este comentario reemplaza al que estaba]" --amend      ["concatena"]
+
+Lista de commits:
+	git log                     [salir con q]
+	git log --oneline           [resumido en una línea c/u]
+	git log --oneline --graph   [incluye gráfico de avance]
+	git log -3                  [últimos 3]
+
+
+ETIQUETAR: etiquetas ligeras, etiquetas anotadas...
+	git tag -a 2.0                             [agrega etiqueta al commit actual]
+	git tag -a 2.0 -m "versión estable"        [hace commit nuevo con etiqueta] [las comillas cuando hay un espacio]
+	git tag -l                                 [listado de tags]
+
+Se pueden agregar muchas etiquetas y quedan separadas por coma
+
+	git log                                    [para ver los hashs]
+	git tag 0.3 [hash]                         [etiquetar un commit anterior]
+
+borrar etiqueta liviana "1.3":
+	git tag -d 1.3
+
+renombrar:
+	git tag -f -a 0.1 "iniciando el proyecto" [hash]         [no borra...]
+
+
+COMPARAR
+Ver diferencias entre la versión vigente y otra:
+	git diff [hash otra versión]
+Ver cambios de una versión respecto a otra "posterior":
+	git diff [hash1 +viejo] [hash2 +nuevo]
+
+
+BORRAR-RESET
+	git reset --soft [hash desde el cual, sin incluir]    [borra solo commits, no los archivos en stage]
+	git reset --mixed [hash desde el cual, sin incluir]   [saca las versiones de stage y sus commits]
+		[sirve para sacar archivos puntuales, modificarlos y volver a subirlos]
+	git reset HEAD archivo.ext                            [sacar archivo.ext del commit vigente, luego add el modificado]
+	git reset --hard        	                      [borra de los 3 estados, del commit vigente]
+	git reset --hard [hash]                               [borra de los 3 estados desde el hash excluyente]    usar este!
+
+	git reset --hard [hash más reciente eliminado]        [resucita los eliminados]
+
+	git checkout -- index.html                            [eliminar cambios en index, volviendo a versión commit]
+
+Volver a una versión anterior de la rama en la que estoy:
+	git checkout [hash]            [es igual que reset --hard pero sin eliminar]
+
+Regresar a la versión más avanzada de una rama:
+	git checkout rama
+, pero va a arrastrar los cambios no commiteados
+	(los commits funcionan como las papas lays en lata)
+
+	
+BRANCHS (ramas)
+(Master es la rama principal pero se le puede cambiar el nombre)
+	git branch rama2                      [crear rama]
+	git branch -l                         [listar las ramas]
+	git branch -d responsive              [borrar si no tiene commits]
+	git branch -D responsive              [forzar borrado cuando tiene commits]
+	git branch -m responsive responsive2  [cambiar nombre]
+
+	git checkout rama2                    [lleva a navegar a la rama en su estado más avanzado]
+	git checkout master
+
+	git checkout -b nuevaRama             [nueva rama y comenzar a navegarla (checkout), 2x1]
+Los archivos untracked se van a cambiar de rama con el cambio de rama
+	git checkout -- archivo.html          [elimina los últimos cambios no trackeados]
+
+
+MERGE
+Mezclar el estado más avanzado de la rama A con el más avanzado de la B, como commit para la A:
+Colocarse en la rama A y hacer
+	git checkout A                 git checkout master
+	git merge B                    git merge ramaAuxiliar
+y luego hacer el add y el commit
+
+Fast-forward: sin complicaciones, solo agrega los avances
+
+Si abre el editor de texto, mezcla recursiva, exige un commit para los cambios (conviene usar Atom)
+
+Sin conflictos. Ambas ramas salieron de un mismo origen.
+	git log --oneline
+	git merge rama4
+Automezclado, conflicto. Si se usa Atom, resalta en colores los conflictos... "Use me"
+Arreglado, finalizar con add y commit
+Ir viendo los diagramas en git log --oneline --graph
+
+
+REBASE
+Reescribir el proyecto sin usar ramas (hace merge sin dejar rastros)
+	git rebase rama3         [simplifica pero es riesgoso y desaconsejable para trabajo en equipo]
+Otra opción:
+	git rebase -i archivoA   [abre Atom con instrucciones, cambiar primer palabra del comando, cambiar commit]
+
+
+STASH	
+Guardado temporal precautorio (de archivos ya en el stage)
+[estando en la rama correspondiente y habiendo hecho las modificaciones transitorias]
+
+	git stash   [ahora se puede cambiar de rama sin perder los cambios y sin guardar definitivo]
+	git stash list
+	git stash drop stash@{1}    [elimina el "1"]
+	git stash apply             [hacer definitivo el último cambio]
+	git stash apply stash@{2}   [hace definitivo el cambio temporal "2"]
+
+
+CHERRY-PICK
+Cambiar un commit de rama:
+Ir a la rama donde está para poder copiar el hash, y cambiar a la rama destino. Luego:
+	git cherry-pick [hash]
+(chequear esto)
+
+------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+GITHUB
+
+hacer cuenta y hacer ssh
+git config --list
+	user.name=ghp
+	user.email=@gmail.com
+	git config --global core.editor "code --wait"   [visual studio code como editor predeterminado]
+
+       [de la clave]
+  [del sitio]
+
+CREAR SSH DESDE TERMINAL
+$ ssh-keygen -t rsa -b 4096 -C "@gmail.com"
+	---> agregar al sitio desde settings/ssh_and_gpg_keys
+$ eval $(ssh-agent -s) ... Agent pid 349
+
+CREAR SSH DESDE EL SITIO
+Agregar a desktop mediante terminal: ssh: ghp-github
+ssh-rsa (...)
+
+FORK es crear una copia de un proyecto ajeno en mi Github sin tenerlo sincronizado con los demás
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Para trabajar con GitHub se puede:
+
+ 1) descargar una copia del repositorio creado en el sitio y comenzar a trabajar dentro
+     de esa carpeta, para luego sincronizar, o
+ 2) convertir en git una carpeta común y subir a un repositorio en GitHub (para luego,
+     hacer merge o commit si ya hay contenido en ese repo)
+
+
+	1) BAJAR COPIA
+		git clone git@github.com:gustavoghp87/ghp-rep.git
+			[baja una copia del repositorio, aparece el .git]
+		git clone https://www.github.com/gustavoghp87/nodeserver
+		cd /ghp21/ghp-rep   [dice el branch]
+
+
+	2) UNIFICAR REPOSITORIO LOCAL Y REPOSITORIO GITHUB
+	Estando en la carpeta con .git:
+		git remote -v
+		git remote add origin ...          marcha atrás: git remote remove origin
+			git remote add mastersitio git@github.com:gustavoghp87/nuevo2020.git (por ssh)
+				[origin (mastersitio) es una palabra de convención y pasa a ser el APODO LOCAL
+				 para el repositorio remoto nuevo2020]
+				[si se hace por https va a pedir usuario y contraseña con cada push]
+
+			[o] git remote add origin git@github.com:gustavoghp87/ghp_rep.git
+				[sacado de clone o download --> use ssh]
+		[Esto crea una nueva rama "master/origin" que es idéntica a la del sitio y que se debe mezclar]
+		
+		git remote -v   [tiene que decir fetch y push]
+
+
+ Hasta acá, se trajo la versión del sitio y se generó una conexión inmediata con un repositorio remoto.
+ Resta hacer algo con las divergencias de versiones.
+ Si queremos unificar versiones (merge) tenemos dos formas alternativas:
+
+	Forma 1: fetch + merge
+		git fetch origin master   [fetch:traer, tráeme la rama master del repositorio remoto que yo llamo origin]
+			[Se debe evitar modificar directamente el master por seguridad, que, aparte, podría estar bloqueado]
+			[Creó una rama "origin/master"]
+		git merge origin/master   [va a hacer merge con la rama que esté vigente en el repo local]
+		git merge origin/master --allow-unrelated-histories   [si falla]
+			[abre editor para que se haga el commit de la mezcla]
+
+	Forma 2: pull
+	git pull origin master   [hace un merge entre la versión vigente en el repo remoto origin y la rama master del repo local]
+		[trae cambios hechos en el sitio en un único paso]
+
+ Unificó en desktop, falta llevar unificado a GitHub (add y commit si es necesario)
+
+
+CLONAR (SINCRONIZAR) EN GITHUB UN REPOSITORIO EN DESKTOP
+
+	git push origin master
+	[o sea] git push [empujar al repo remoto que yo llamo] origin [la rama de mi repo local] master
+	git push origin master --tags   [envía las etiquetas] Importante, en el sitio se puede navegar 
+					  entre versiones etiquetadas, no entre commits sin etiquetar
+	git push origin otraRamaLocal
+
+
+EN SETTING PROTEGER LA RAMA MASTER U OTRAS
+Conviene proteger la rama master para que su modificación se haga en 2 pasos:
+ primero se incluyen los cambios en una rama nueva y luego se las unifica (merge),
+ preferentemente por otros colaboradores
+Proteger, requerir pull request reviews antes de merging, incluir administradores
+
+
+EXCLUIR ARCHIVOS DE LA SINCRONIZACIÓN CON GITHUB
+	touch setting.py    [o cualquier otro/otros para incluir información delicada]
+	touch .gitignore    [escribirle dentro: setting.py y todos los que no se tienen que sincronizar]
+	git status          [para ver que ahora el untracked es solo .gitignore y no los incluidos en la lista]
+	git add -A
+	git commit -m "agregando git ignore"	
+	git pull origin master      [hace merge]
+	git push origin master      [solo válido para owners]
+El .gitignore se sincroniza pero los ficheros listados no
+
+www.gitignore.io y buscar el tipo de proyecto para copiar los ignore recomendados
+Crear una rama, hacer pull request
+

@@ -1,0 +1,68 @@
+Tipos de red:
+LAN/WLAN: pequeñas, área local, cable o access point, 
+WAN: conexión de redes LAN, vía router
+MAN: metropolitana, barrio
+Área que cubren y servicios
+Hay otros
+
+
+Topologías de red:
+Diseño de la red
+Gráfico de dispositivos físicos
+Diagrama lógico
+
+
+Ancho de banda:
+Se mide en bits, no bytes, en megabits/seg
+1 bit = un cero o un uno
+8 bits = 1 byte
+1 Mb/s = 1 Mbps = 1000 Kb/ws = 1,000,000 b/s
+1 MB = 1024 KB = 1,048,576 B = 8,388,608 b
+Por tanto,
+1 Mb/s = 1,000,000 b/s / 8 / 1024 / 1024 = 0.119 MB/s
+50 Mb/s = 5.96 MB/s
+2 GB se descargan en 344 seg = 5.7 min
+
+
+Protocolos de internet
+TCP/IP y UDP Unit Data
+
+Acceso por cable de consola: cable
+Acceso remoto: por SSH, por Telnet 
+
+
+255.255.255.224 significa máscara 27
+ , o sea se usan 27 bites para red y los 5 restantes para hosts = 30 (2^5-2)
+
+255.255.255.0 significa máscara 24
+ , o sea se usan 24 bites para red y los 8 restantes para hosts = 254 (2^8-2)
+
+
+254 = mask /24 = 255.255.255.0
+126 = mask /25 = 255.255.255.128
+ 62 = mask /26 = 255.255.255.192
+ 30 = mask /27 = 255.255.255.224
+ 14 = mask /28 = 255.255.255.240
+  6 = mask /29 = 255.255.255.248
+  2 = mask /30 = 255.255.255.252
+
+
+IP pasada a binario AND máscara de red pasada a binario = 
+
+183.26.103.215/30 ---> Red 193.26.103.212, BC 183.26.103.215, 1ra dirección 183.26.103.213, últ dirección 183.26.103.214
+Máscara grande, solo 2 bits para hosts
+
+192.168.1.0/24    --->  clase C con 254 posibles hosts, dividir en 4 segmentos
+			se toman 3 bytes de los hosts para hacer la segmentación,
+			 para que 2^n-2 >= 4
+			nueva máscara es /27, 2^5 = 32 los saltos de red
+			30 IP asignables por segmento
+	192.168.1.0   dirección de red, se asigna de  1 a  30, broadcast  31
+	192.168.1.32  dirección de red, se asigna de 33 a  62, broadcast  63
+	192.168.1.64  dirección de red, se asigna de 65 a  94, broadcast  95
+	192.168.1.96  dirección de red, se asigna de 97 a 126, broadcast 127
+Se asignan 120 hosts
+
+
+ping intercambia ICMP, fping intercambia UDP
+

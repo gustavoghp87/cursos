@@ -1,0 +1,959 @@
+ANGULAR
+
+tener instalado nodejs
+
+npm install -g @angular/cli
+
+[en carpeta] ng new name-app
+
+cd name-app
+
+ng serve --open
+
+[desconectando con ctrl c] ng generate component login/home/profile/conversation/menu
+	[un component por cada "página" de la app, aunque sea app de una vista sola]
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+(Si quisiera hacer login la página de inicio: reemplazar AppComponent por LoginComponent en el bootstrap de app.module.ts
+ y <app-root> por <app-login> en index.html)
+
+Crear routes (ver screenshot) en app.module.ts y agregar RouterModule.forRoot(appRoutes) al imports bajo BrowserModules
+
+Reemplazar el contenido de app.component.html por <router-outlet></router-outlet>, comprobar desde browser con localhome:4000/home etc
+Lo que se agregue en este archivo va a estar presente en todos los componentes
+Acá se puede hacer un menú para navegación de anchor tags pero <a routerLink="/home"> HOME </a> | para que no recargue página,
+ pero conviene llevarlo al html de menu, para lo cual se escribe el selector de menu <app-menu></app-menu> en app.component.html
+ antes del <router-outlet></router-outlet>
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+let a: number = 4;
+let b: string = "na";
+let c: boolean = true;
+let d: object = {};
+let e = [a, b, c, d, e];
+let f: boolean[] = [true, c]            [arreglo solo de booleanos, etc]
+let g: any[] = [1, "bla", {}, [], true]
+
+let h: [String, number];    // tuple
+let i: string | number;
+
+function miFuncion (variable1: string, variable 2: boolean | string): boolean {
+	...
+	return true;
+}
+
+Typescript permite crear tipos de arrays personalizados:
+Crear una carpeta interface en app y crear archivo user.ts
+
+
+Interface: define la estructura de un objeto (como Mongoose)
+
+export interface User {
+    nick: string;
+    subnick?: string;             con interrogación es opcional
+    age?: number;
+    email: string;
+    friend: boolean;
+    uid: any;
+}
+
+que se va a usar en home.component.ts en el constructor como let usuario1: User = { nick: nombre, subnick... } (importar primero)
+ y se pueden crear arrays de tipo User... let users: User[] = [myUser, ...];
+La interface declarada se puede reutilizar para la definición de nuevas variables:    let otraVariable: IUser = { ... : "...", etc }
+
+También en las funciones:
+function laFuncion (unObjeto: {title:string; text:string; year:number}) { ... }
+También en los constructores de las clases y en los parámetros.
+
+
+En React:
+ useState<string>('inicial')
+
+
+Se crean 5 arrays User en el constructor de home.component.ts y arriba del constructor ... friends: User[];
+ y debajo de los User en el constructor ... this.friends = [usuario1, usuario2, ..., usuario5];
+
+
+Se los va a usar en home.component.html. Se hace una directiva mediante una etiqueta:
+<p *ngFor="let user of friends">             recorre cada objeto en el array
+    {{user.nick}} - {{user.email}}
+<p>                                          , también:
+
+<p *ngFor="let user of friends; let i = index">
+   {{i}}. {{user.nick}} - {{user.email}}
+<p>
+
+Para usar dos *ngFor se agrega una etiqueta html provista por typescript:
+
+<ng-container *ngFor="let user of friends; let i = index">
+    <p *ngIf="true">                                         se muestra o no se muestra
+       {{i}}. {{user.nick}} - {{user.email}}
+    <p>
+</ng-container>
+
+
+Mostrar solo mis amigos: *ngIf
+<b> Amigos </b>
+<ng-container *ngFor="let user of friends; let i = index">
+    <p *ngIf="user.friend">                                         se muestra o no se muestra
+       {{i}}. {{user.nick}} - {{user.email}}
+    <p>
+</ng-container>
+<b> No amigos </b>
+<ng-container *ngFor="let user of friends; let i = index">
+    <p *ngIf="!user.friend">                                         se muestra o no se muestra
+       {{i}}. {{user.nick}} - {{user.email}}
+    <p>
+</ng-container>
+
+
+Pasar a anchor tag:
+<ng-container *ngFor="let user of friends; let i = index">
+    <div *ngIf="user.friend">
+	<a routerLink="/conversation/{{user.uid}}">                    routerLink en vez de href para que no recargue toda la página
+            {{i}}. {{user.nick}} - {{user.email}}
+        <a>
+    </div>
+</ng-container>
+
+Se crearon direcciones para conversation/1 etc. Ahora hay que modificar el path conversation en app.module.ts:
+	{path: 'conversation/:uid', component:ConversationComponent}
+
+
+Ahora se usa el constructor de conversation.component.ts para construir la conversación particular:
+Variable global ... friendId:any;
+	constructator(private activatedRoute: ActivatedRoute) {             para privacidad
+		this.friendId = this.activatedRoute.snapshot.params['uid'];
+}
+
+sigue el 6 de carpeta 3
+
+
+Así como está, home tiene los usuarios pero conversation no; para no repetir el código, se llevan los usuarios a un servicio común
+Service es una clase que puede ser inyectada en otros componentes (en los paréntesis de los constructores), reutilizando sus métodos
+Crear carpeta services en app y agregar uno por consola : ng generate service services/user
+Llevamos a user.service.ts los arrays de los usuarios y el array friends, y se crea un método get que retorne el arreglo
+Se declara friends: User[] en home.component.ts, se inyecta el servicio en el constructor: (private userService: UserService)
+ y se llama desde el constructor this.friends = userService.getFriends();
+Reiniciar servicio ng serve
+conversation.component.ts va a definir friendId, friends y friend y usar los métodos params y find, ver captura
+
+Pipes: 
+friend: User;                         <p>{{friend | json}}</p>                   pasa el objeto a json
+price: number = 78.265469566265;      <p>{{ price | number: '1.2-2' }}</p>       toma solo dos decimales
+today: any = Date.now();              <p>{{ today | date }}</p>                  cambia formato
+                                      <p>{{ today | date: 'medium' }}</p>
+                                      <p>{{ today | date: 'fullDate' }}</p>
+
+
+Hacer pipes propios:
+Carpeta pipes en app, archivo search.ts, ver captura
+Agregar al declarations de app.module.ts
+En home.component.html borrar la lista de no amigos, borrar la etiqueta *ngIf del div y agregar input con [(ngModel)] ="query"
+ para actualización de dos vías
+Se declara en home.component.ts   query: string = '';   y se importa en app.module.ts    FormsModule     (import { FormsModule } from '@angular/forms';)
+
+<input type="text" placeholder="Buscar amigo" [(ngModel)] ="query" />
+<ng-container *ngFor="let user of friends | search: query; let i = index">
+    <div>
+        <a routerLink="/conversation/{{user.uid}}">
+        {{i+1}}. - {{user.nick}} - {{user.email}}
+        </a>
+    </div>
+</ng-container>
+
+Así se usa el pipe propio para hacer búsquedas
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Incorporar imágenes y sonidos a assets
+
+Referenciar estilos externos:
+
+npm install bootstrap --save-exact     la bandera es para que se agregue también a package.json (importante porque el módulo no sincroniza 
+                                       con github), exact para que registre la versión específica y evitar problemas de compatibilidad
+                                       (exacto es sin ^) EVITA QUE SE ACTUALICE AUTOMÁTICAMENTE
+
+npm install @fortawesome/fontawesome-free --save-exact
+
+En nodejs los módulos no se importan desde el html como en sitios web porque los módulos no van a estar disponibles en la versión de producción,
+ por eso se los importa desde angular.json "styles":
+      "styles": [
+        "node_modules/bootstrap/dist/css/bootstrap.css",
+        "node_modules/@fortawesome/fontawesome-free/css/all.css",
+        "src/styles.css"
+      ],
+
+Bandera de prioridad en .css:
+.center {
+    text-align: center !important;
+}
+
+
+*ngClass permite elegir cómo aplicar css
+Queremos que el menú no se vea en la sección login
+En app.component.ts se crea un constructor en la clase AppComponent:
+  constructor(public router: Router) { }
+, y se aplican los ng en app.component.html:
+
+<app-menu *ngIf="router.url != '/login'"></app-menu>
+<div [ngClass]="{'generalContent': router.url != '/login'}">
+    <router-outlet></router-outlet>
+</div>
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+Instalar las dos librerías de Firebase
+https://github.com/angular/angularfire/blob/master/docs/install-and-setup.md
+npm install angularfire2 firebase --save-exact
+Agregar a environment.ts, en el export const environment, el objeto que está en la guía de github y personalizarlo
+ , o copiar todo de una desde Firebase (CDN)
+Y todo igual en environment.prod.ts, salvo que vaya a haber una base de datos de prueba y otra de producción
+En app.module.ts importar:
+import { AngularFireModule } from "angularfire2";
+import { environment } from "../environments/environment";
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule} from 'angularfire2/database'
+
+AngularFireModule.initializeApp(environment.firebase),
+AngularFirestoreModule,
+AngularFireAuthModule,
+AngularFireStorageModule,
+AngularFireDatabaseModule
+
+ng generate service services/authentication
+En authentication.service.ts import { AngularFireAuth } from 'angularfire2/auth';
+ , inyectar objeto en el constructor (private angularFireAuth: AngularFireAuth) { } y agregar métodos:
+
+loginWithEmail(email: string, password: string) {
+    return this.angularFireAuth.auth.signInWithEmailAndPassword(email, password);
+}
+
+registerWithEmail(email: string, password: string) {
+    return this.angularFireAuth.auth.createUserWithEmailAndPassword(email, password);
+}
+
+getStatus() {
+    return this.angularFireAuth.authState;
+}
+
+logOut() {
+    return this.angularFireAuth.auth.signOut();
+}
+
+
+En login.component.ts inyectar en el constructor (private authenticationService: AuthenticationService) y:
+import { AuthenticationService } from "../services/authentication.service";
+email: string = null;
+password: string = null;
+(constructor) { }
+
+login() {
+    this.authenticationService.loginWithEmail(this.email, this.password). then( (data) => {
+	alert('Logueado correctamente');
+	console.log(data);
+    }).catch((error) => {
+	alert('Ocurrió un error');
+	console.log(error);
+    });
+}
+
+register() {
+    this.authenticationService.registerWithEmail(this.email, this.password). then( (data) => {
+	alert('Registrado correctamente');
+	console.log(data);
+    }).catch((error) => {
+	alert('Ocurrió un error');
+	console.log(error);
+    });
+}
+
+
+En login.component.html:
+Agregar [(ngModel)]="email" y [(ngModel)]="password" a los input
+Agregar (click)="login()" y (click)"register()" a los anchor de iniciar sesión y registrarse
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Toca reemplazar los usuarios provisorios de user.service.ts. Eliminar usuarios, array friends y método getFriends
+
+import { AngularFireDatabase } from 'angularfire2/database';
+constructor(private angularFireDatabase: AngularFireDatabase) { }
+getUsers() {
+    return this.angularFireDatabase.list('/users');     //nodo
+}
+getUserById(uid) {
+    return this.angularFireDatabase.object('/users/' + uid);
+}
+createUser(user) {
+    return this.angularFireDatabase.object('/users/' + user.uid).set(user);    //insertar el usuario en el nodo de su uid
+}
+editUser(user) {
+    return this.angularFireDatabase.object('/users/' + user.uid).set(user);    //insertar el usuario en el nodo de su uid
+}
+
+Inyectar este user.service.ts en el login.component.ts para usar el createUser
+import { UserService } from "../services/user.service";
+Agregar al constructor , private userService: UserService
+nick: string = null;         (ngModel="nick" en login.component.html)
+
+Modificar el register()
+register() {
+    this.authenticationService.registerWithEmail(this.email, this.password).then( (data) => {
+      const user = {
+        uid: data.user.uid,
+        email: this.email,
+        nick: this.nick
+      };
+      this.userService.createUser(user).then((data2) => {
+        alert('Registrado correctamente');
+        console.log(data2);
+      }).catch((error) => {
+        alert('Ocurrioo un error');
+        console.log(error);
+      });
+    }).catch((error) => {
+      alert('Ocurrioo un error');
+      console.log(error);
+    });
+}
+
+Habilitar base de datos desde consola Firebase, ajustar reglas
+Esto es Realtime Database, no Cloud Firestore
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Login --> Profile
+Agregar al constructor de login.component.ts , private router: Router    ...    import { Router } from "@angular/router";
+En el then de login() ... this.router.navigate(['home']);      (ver rutas en app.module.ts)
+En home.component.ts reemplazar el this.friends en el constructor por:
+  constructor(private userService: UserService) {
+    userService.getUsers().valueChanges().subscribe((data: User[]) => {
+      this.friends = data;
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+En home.component.html agregar *ngIf="friends"
+En conversation.component.ts eliminar friends y la línea de getFriends y la de find y poner en el constructor:
+this.userService.getUserById(this.friendId).valueChanges().subscribe( (data: User) => {
+    this.friend = data;
+}, (error) => { 
+    console.log(error);
+});
+console.log(this.friend);
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Guards:
+ng generate guard services/authentication   ...   (can activate)
+Crear un constructor en authentication.guard.ts
+constructor(private authenticationService: AuthenticationService, private router: Router) {}
+Reemplazar el return true por:
+return this.authenticationService.getStatus().pipe(
+    map(status => {
+        if(status) {
+            return true;
+        } else {
+	    this.router.navigate(['login']);
+            return false;
+        }
+    })
+);
+
+import { AuthenticationService } from './authentication.service';
+import { map } from "rxjs/operators";
+
+En app.module.ts agregar , canActivate: [AuthenticationGuard] a los path de home, conversation y profile
+Queda: {path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard]}
+import { AuthenticationGuard } from './services/authentication.guard';
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Botón de logout:
+En home.component.ts inyectar private authenticationService: AuthenticationService y private router: Router
+import { AuthenticationService} from '../services/authentication.service';
+import {Router} from '@angular/router';
+
+  logout() {
+    this.authenticationService.logOut().then( () => {
+      alert('Sesión cerrada');
+      this.router.navigate(['login']);
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
+
+En home.component.html agregar <a (click)="logout()"> Logout </a> en el div del online
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Recuperar datos del usuario logueado y mostrarlos en profile:
+import { User } from '../interfaces/user';
+import { UserService } from "../services/user.service";
+import { AuthenticationService } from '../service/authentication.service';
+
+user: User;
+constructor(private userService: UserService, private authenticationService: AuthenticationService) {
+    this.authenticationService.getStatus().subscribe( (status) => {
+        this.userService.getUserById(status.uid).valueChanges().subscribe( (data: User) => {
+            this.user = data;
+            console.log(this.user);
+        }, (error) => {
+            console.log(error);
+        });
+    }, (error) => {
+        console.log(error);
+    });
+}
+
+En profile.component.html agregar [(ngModel)]="user.nick", "user.subnick" y "user.email" a los 3 inputs, y "user.status" al select
+ (agregar status?: string; a la interface user.ts )
+Al div de la columna md-9 se le agrega *ngIf="user" para que no cargue hasta haber recuperado los datos del usuario
+Agregar (click)="saveSettings()" al a de guardar y se crea la función en profile.component.ts:
+
+saveSettings() {
+    this.userService.editUser(this.user).then( () => {
+	alert('Cambios guardados');
+    }).catch( (error) => {
+	alert('Hubo un error');
+	console.log(error);
+    });
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+Imagen cuadrada de perfil:
+Habilitar Storage de Firebase y 
+npm install ngx-image-cropper --save-exact
+Importar en app.module.ts ImageCropperModule from ngx-image-cropper
+Modificar el input en profile.component.html: <input type="file" (change)="fileChangeEvent($event)">
+Agregar:
+<image-cropper
+    [imageChangedEvent]="imageChangedEvent"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="1 / 1"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    (imageLoaded)="imageLoaded()"
+    (cropperReady)="cropperReady()"
+    (loadImageFailed)="loadImageFailed()"
+></image-cropper>                                        //se puede agregar [resizeToWidth="100"]
+
+// <img [src]="croppedImage" />    vista previa va directo a avatar
+
+En profile.component.ts:
+import { ImageCroppedEvent } from "ngx-image-cropper";
+(...)
+imageChangedEvent: any = '';
+croppedImage: any = '';
+constructor(...) {...}
+fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;
+}
+imageCropped(event: ImageCroppedEvent) {
+      this.croppedImage = event.base64;
+}
+imageLoaded() {
+      // show cropper
+}
+cropperReady() {
+      // cropper ready
+}
+loadImageFailed() {
+      // show message
+}
+
+Se modifica el <img [src]="croppedImage" class="avatarImage img-fluid">
+
+Agregar avatar?: string a user.ts
+
+Agregar método a user.service.ts:
+import { FirebaseStorage } from "angularfire2";
+setAvatar(avatar, uid) {
+    return this.angularDireDatabase.object('/users/' + uid + '/avatar').set(avatar);
+}
+
+Y para enviar a Firebase:
+En profile.component.ts agregar al constructor , private firebaseStorage: AngularFireStorage
+import AngularFireStoragefrom 'angularfire2/storage';
+agregar variable global picture: any; y modificar el método saveSettings():
+
+saveSettings() {
+    if (this.croppedImage) {
+      const currentPictureId = Date.now();
+      const pictures = this.firebaseStorage.ref('pictures/' + currentPictureId + '.jpg').putString(this.croppedImage, 'data_url');
+      pictures.then( (result) => {
+        this.picture = this.firebaseStorage.ref('pictures/' + currentPictureId + '.jpg').getDownloadURL();
+        this.picture.subscribe( (p) => {
+          this.userService.setAvatar(p, this.user.uid).then( () => {
+            alert('Avatar subido correctamente');
+          }).catch( (error) => {
+            alert('Hubo un error al intentar subir la imagen');
+            console.log(error);
+          });
+        });
+      }).catch( (error) => {
+        console.log(error);
+      })
+    } else {
+      this.userService.editUser(this.user).then( () => {
+        alert('Cambios guardados');
+      }).catch( (error) => {
+        alert('Hubo un error');
+        console.log(error);
+      });
+    }
+}
+
+Y modificar el html para mostrar la imagen de perfil:
+<div class="avatarFrameOnline" *ngIf='user'>
+    <img [src]="croppedImage || user.avatar || 'assets/img/generic_avatar.png'" class="avatarImage img-fluid">
+</div>
+                
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+Conversaciones:
+Crear servicio ng generate service services/conversation
+En conversation.service.ts inyectar al constructor private angularFireDatabase: AngularFireDatabase
+import { AngularFireDatabase } from 'angularfire2/database';
+createConversation(conversation) {
+    return this.angularFireDatabase.object('conversations/' + conversation.uid + '/' + conversation.timestamp).set(conversation);
+}
+getConversation(uid) {
+    return this.angularFireDatabase.list('conversations/' + uid);
+}
+
+En conversation.component.ts inyecta , private conversationService: ConversationService, private authenticationService: AuthenticationService
+import { ConversationService } from '../services/conversation.service';
+import { AuthenticationService } from "../services/authentication.service";
+Crear   ...   user: User; conversation_id: string; textMessage: string;
+Modificar el constructor:
+    this.authenticationService.getStatus().subscribe( (session) => {
+      this.userService.getUserById(session.uid).valueChanges().subscribe( (user: User) => {
+        this.user = user;
+        this.userService.getUserById(this.friendId).valueChanges().subscribe( (data: User) => {
+          this.friend = data;
+          const ids = [user.uid, this.friend.uid].sort();    //ordena
+          this.conversation_id = ids.join('|');     //genera string concatenando separando con un pipe
+	  this.getConversation();
+        }, (error) => { 
+            console.log(error);
+        });
+      });
+    });
+
+Método:
+  sendMessage() {
+    const message = {
+      uid: this.conversation_id,
+      timestamp: Date.now(),
+      text: this.textMessage,
+      sender: this.user.uid,
+      receiver: this.friend.uid,
+    };
+    this.conversationService.createConversation(message).then( () => {
+      this.textMessage = '';
+    });
+  }
+
+
+En conversation.component.html agregar al textarea [(ngModel)]="textMessage" (keyup.enter)="sendMessage()"
+Ya marchan las conversaciones a Firebase
+
+Variable global conversation: any[];
+this.getConversation() {
+    this.conversationService.getConversation(this.conversation_id).valueChanges().subscribe( (data) => {
+      console.log(data);
+      this.conversation = data;
+    }, (error) => {
+      console.log(error);
+    })
+}
+
+En conversation.component.html agregar dentro de <div class="vh55 overscroll pabo10" id="messageArea"> em columna sm-9
+<div class="messageGroup" *ngFor="let m of conversation">
+    <b> {{m.sender}} </b> dice: <br />
+    <span> {{m.text}} </span>
+</div>
+
+En conversation.component.ts método
+getUserNickById(id) {
+    if(id === this.friend.uid) {
+	return this.friend.nick;
+    } else {
+	return this.user.nick;      //soy yo
+    }
+}
+Y reemplazar en html el m.sender por getUserNickById(m.sender)
+
+Editar: agregar método a conversation.component.ts
+  editConversation(conversation) {
+    return this.angularFireDatabase.object('conversations/' + conversation.uid + '/' + conversation.timestamp).set(conversation);
+  }
+
+Recorrer todos los mensajes marcándolos como vistos y si alguno no se vio encender sonido, agregar al método getConversation de conv.comp.ts
+this.conversation.forEach( (message) => {
+    if(!message.seen) {
+          message.seen = true;
+          this.conversationService.editConversation(message);
+          const audio = new Audio('assets/sound/new_message.m4a');
+          audio.play();
+    }
+});
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Zumbido:
+Agregar a la const message en sendMessage() de conv.comp.ts type: 'text';
+Crear método sendZumbido() idéntico a sendMessage cambiando text a null y type a zumbido, quitar el contendio de then, y llamar a un this.doZumbido();
+Agregar variable global shake: boolean = false;
+doZumbido() {
+    const audio = new Audio('assets/sound/zumbido.m4a');
+    audio.play();
+    this.shake = true;
+    window.setTimeout( () => {
+        this.shake = false;
+    }, 1000);
+}
+
+Agregar a style.css .shake y @keyframes shake
+.shaker {
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1pz) rotate(0deg); }
+    10% { transform: translate(-1px, 2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+Agregar al div de la ventana de conversación ."conversationContainer bluewhitebg" [ngClass]="{'shaker': shake}"
+Agregar al div que contiene el ícono de zumbido (click)="sendZumbido()"
+getConversation necesita un if para no reproducir ambos sonidos a la vez
+if(!message.seen) {
+    message.seen = true;
+    this.conversationService.editConversation(message);
+    if(message.type == 'text') {
+        const audio = new Audio('assets/sound/new_message.m4a');
+        audio.play();
+    } else if (message.type == 'zumbido') {
+        this.doZumbido();
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Amigos:
+
+ng generate service services/requests
+En requests.service.ts inyectar private AngularFireDatabase
+
+createRequest(request) {                //firebase no tolera puntos pero email no tolera comas
+    const cleanEmail = request.receiver_email.replace('.', ',');
+    return this.angularFireDatabase.object('requests/' + cleanEmail + '/' + request.sender).set(request);
+}
+
+setRequestStatus(request, status) {
+    const cleanEmail = request.receiver_email.replace('.', ',');
+    return this.angularFireDatabase.object('requests/' + cleanEmail + '/' + request.sender + '/status').set(status);
+}
+
+getRequestsForEmail(email) {
+    const cleanEmail = email.replace('.', ',');
+    return this.angularFireDatabase.list('requests/' + cleanEmail);
+}
+
+
+Libraría para el model que se despliega para enviar solicitud: ng bootstrap: npm install @ng-bootstrap/ng-bootstrap --save-exact
+Importar a app.module.ts import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; NgbModule
+
+Se inserta modal de bootstrap (de la web) en home.component.html:
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Agregar amigo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div>
+            <b>Ingresa el email de tu amigo</b>
+            <input type="email" class="form-control" placeholder="Email" [(ngModel)]="friendEmail" (keyup.enter)="sendRequest()">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="sendRequest()">Guardar</button>
+    </div>
+</ng-template>
+
+
+Agregar click a la imagen logo_live_add: (click)="open(content)"
+
+Y en home.component.ts inyectar private modalService: NgbModal, private requestsService: RequestService, 
+ importar desde ng-bootstrap y ../services/ , variable global friendEmail: string = ''; y user: User;
+
+open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+//        this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+//        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+}
+
+Agregar al constructor:
+this.authenticationService.getStatus().subscribe( (status) => {
+    this.userService.getUserById(status.uid).valueChanges().subscribe( (data: User) => {
+        this.user = data;
+    });
+})
+
+sendRequest() {
+    const request = {
+        timestamp: Date.now(),
+        receiver_email: this.friendEmail,
+        sender: this.user.uid,
+        status: 'pending'
+    };
+    this.requestsService.createRequest(request).then( () => {
+        alert('Solicitud enviada');
+    }).catch((error) => {
+        alert("Hubo un error");
+        console.log(error);
+    });
+}
+
+---
+---
+--- DialogService no funciona
+
+Modal de responder a la solicitud:
+Librería para agregar Modals 
+npm install ng2-bootstrap-modal
+Importar en app.module.ts BootstrapModalModule.forRoot( { container:document.body }) para que se abra donde sea que el usuario esté
+import { BootstrapModalModule} from 'ng2-bootstrap-modal';
+
+Nueva subcarpeta modals para diferenciar componentes regulares y los de modals
+ng generate component modals/request
+En app.module.ts agregar entryComponents: [RequestComponent] en @Ngmodule    (RequestComponent tiene que estar en declarations)
+
+En request.component.html:
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            Nueva solicitud
+            <a class="closeButton" (click)="close()"> x </a>
+        </div>
+        <div class="modal-body" style="height: auto;">
+            <div class="row">
+                <div class="col-md-3
+                    <img src="assets/img/generic_avatar.png" class="img-fluid" />
+                </div>
+                <div class="col-md-9">
+                    <b> {{ currentRequest.sender }}</b>
+                    <small> Te ha enviado una solicitud </small>
+                </div>
+                <hr />
+		<div class="col-md-12">
+                    <h4> ¿Agregar? </h4> <br />
+                    <input type="radio" name="addToMsn" [(ngModel)]="shouldAdd" value="yes" id="add-yes"> <label for="add-yes">Sí, agregar</label> <br />
+                    <input type="radio" name="addToMsn" [(ngModel)]="shouldAdd" value="no" id="add-no"> <label for="add-no">No</label> <br />
+                    <input type="radio" name="addToMsn" [(ngModel)]="shouldAdd" value="later" id="add-later"> <label for="add-later">Decidir más tarde</label> <br />
+		</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-primary" (click)="accept()"> OK </a>
+            <a class="btn btn-default" (click)="close()"> Cerrar </a>
+        </div>
+    </div>
+</div>
+
+En request.component.ts extends DialogComponent<PromptModel, any> implements PromptModel (borrar ngInit)
+import { DialogComponent, DialogService } from 'ng2-bootstrap-modal'; import { UserService } from '../../services/user.service';
+import { RequestsService } from '../../services/requests.service';
+export interface PromptModel {    //el @Component va después
+    scope: any;
+    currentRequest: any;
+    shouldAdd: string;
+}
+Clase:
+    scope: any;
+    currentRequest: any;
+    shouldAdd: string = 'yes';
+Constructor: inyectar private dialogService: DialogService, private userService: UserService, private requestsService: RequestsService { super(dialogService) }
+accept() {
+    if (this.shouldAdd == 'yes') {
+        this.requestsService.setRequestStatus(this.currentRequest, 'accepted').then( (data) => {
+	    console.log(data);
+	    this.userService.addFriend(this.scope.user.uid, this.currentRequest.sender).then( () => {
+                alert('Solicitud aceptada con éxito')
+            });
+        }).catch( (error) => {
+	    console.log(error);
+        });
+    } else if (this.shouldAdd == 'no') {
+        this.requestsService.setRequestStatus(this.currentRequest, 'rejected').then( (data) => {
+	    console.log(data);
+        }).catch( (error) => {
+	    console.log(error);
+        });
+    } else if (this.shouldAdd == 'later') {
+        this.requestsService.setRequestStatus(this.currentRequest, 'decide_later').then( (data) => {
+	    console.log(data);
+        }).catch( (error) => {
+	    console.log(error);
+        });
+    }
+}
+
+En user.service.ts agregar método:
+addFriend(userId, friendId) {
+    this.angularFireDatabase.object('users/' + userId + '/friends' + friendId).set(friendId);
+    return this.angularFireDatabase.object('users/' + friendId + '/friends' + userId).set(userId);
+}
+
+En app.component.ts inyectar (no anda dialogService) , private authenticationService: AuthenticationService, private userService: UserService, private requestsService: RequestsService
+Variables globales user: User; requests:any[] = []; mailsShown: any[] = [];
+constructor(public router: Router, private authenticationService: AuthenticationService, private userService: UserService, private requestsService: RequestsService, private dialogService: DialogService) {
+    this.authenticationService.getStatus().subscribe( (status) => {
+        this.userService.getUserById(status.uid).valueChanges().subscribe( (data: User) => {
+            this.user = data;
+            this.requestsService.getRequestsForEmail(this.user.email).valueChanges().subscribe( (requests: any) => {
+                this.requests = requests;
+                this.requests = this.requests.filter( (r) => {
+                    return r.status !== 'accepted' && r.status !== 'rejected';
+                });
+                this.requests.forEach( (r) => {
+                     if (this.mailsShown.indexOf(r.sender) === -1) {
+              		  this.mailsShown.push((r.sender));
+//                	  this.dialogService.addDialog(RequestComponent, {scope: this, currentRequest: r});
+            	     }
+          	})
+             }, (error) => {
+                 console.log(error);
+             });
+        });
+    });
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Mostrar solo amigos:
+friends no es un array sino un objeto de llave:valor, hay que hacer un arreglo
+Agregar friends?: any en user.ts
+Agregar en home.component.ts al suscribir a los valor del uid del usuario:
+if (this.user.friends) {
+    this.user.friends = Object.values(this.user.friends);
+    console.log(this.user)
+}
+
+En home.component.html:
+<b *ngIf="user && user.friends"> AMIGOS ( {{ user.friends.length }} / {{user.friends.length}} ) </b>
+<div *ngIf="user && user.friends">
+    <div class="disblo marbo5">
+        <app-contact class="col-md-12" *ngFor="let user of user.friends [uid]="user"></app-contact>
+        <!--
+        <span routerLink="/conversation/{{user.uid}}">
+            <img src="{{user.avatar || 'assets/img/generic_avatar.png'}}" class="icon" alt="">
+           <b> {{ user.nick}} </b> - {{user.subnick || 'No subnick'}}
+            <small> {{user.email}} </small>
+        </span>
+        -->
+    </div>
+</div>
+
+Crear component contacto para recibir los datos de los amigos
+ng generate component contact
+En contact.component.ts importar Input de angular/core
+@Input() uid: string;
+contact: User;
+constructor(private userService: UserService) { }
+ngOnInit() {
+    console.log(this.uid);
+    this.userService.getUserById(this.uid).valueChanges().subscribe( (data: User) => {
+        this.contact = data;
+    });
+}
+
+En contact.component.html 
+<div *ngIf="contact" routerLink="/conversation/{{contact.uid}}">
+    <img src="{{contact.avatar || 'assets/img/generic_avatar.png'}}" class="icon">
+    <b> {{ contact.nick}} </b> - {{contact.subnick || 'No subnick'}}
+    <small> {{contact.email}} </small>
+</div>
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Crear aplicación windows nativa con Electron
+
+npm install electron --save-exact
+Crear proyecto/main.js 
+
+    const {app, BrowserWindow} = require('electron')
+    const url = require("url");
+    const path = require("path");
+
+    let mainWindow;
+
+    function createWindow () {
+      mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        webPreferences: {
+          nodeIntegration: true
+        }
+      })
+
+      mainWindow.loadURL(
+        url.format({
+          pathname: path.join(__dirname, `/dist/proyecto/index.html`),              // personalizar este
+          protocol: "file:",
+          slashes: true
+        })
+      );
+      // Open the DevTools.
+      mainWindow.webContents.openDevTools()
+
+      mainWindow.on('closed', function () {
+        mainWindow = null
+      })
+    }
+
+    app.on('ready', createWindow)
+
+    app.on('window-all-closed', function () {
+      if (process.platform !== 'darwin') app.quit()
+    })
+
+    app.on('activate', function () {
+      if (mainWindow === null) createWindow()
+    })
+
+ng build   crea carpeta /proyecto/dist/proyecto/
+
+En index.html del poyecto (no dist) agregar el punto para <base href="./">
+En package.json agregar   "main": "main.js",   debajo de version   y  
+    , "electron": "ng build && electron .", "electron-aot": "ng build --prod && electron ." en los script
+npm run electron   desde carpeta root
+y corre desde navegador
+
+Ahora: npm install electron-packager -g
+electron-packager ./ Angular-App --platform=win32 --icon src/assets/img/logo_live.ico
+
+

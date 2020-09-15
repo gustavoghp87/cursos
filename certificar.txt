@@ -1,0 +1,71 @@
+npm i pm2 -g
+pm2 start server.js
+pm2 startup ubuntu       para que se inicie solo en caso de reboot de la VM
+
+Instalar nginx
+
+-----------------------------------------------------------------------------------------------------------------
+(pero conviene hacer proxy inverso publicando por el 80 y después instalar certbot; no requiere cambiar la config)
+
+sudo apt install certbot
+sudo certbot certonly --standalone -d maslabook.com
+
+-----------------------------------------------------------------------------------------------------------------
+
+hacer copia de seguridad de la llave:
+cp -r /etc/letsencrypt/ /home/user
+tar czf letsencrypt.tar.gz letsencript/     y enviar el paquete a alguna parte
+
+-----------------------------------------------------------------------------------------------------------------
+
+(Lo siguiente es mejor reemplazarlo con copy and paste del default de siempre)
+
+sudo touch /etc/nginx/conf.d/maslabook.com.conf
+Ir a https://ssl-config.mozilla.org/   Nginx  Intermediate  Versión sacada de nginx -v
+Insertar el texto en .conf
+Copiar las líneas server_name y root debajo de los dos listen del 443
+Ponerle el verdadero path en ssl_certificate /etc/letsencrypt/live/maslabook.com/fullchain.pem;
+Ponerle el verdadero path en ssl_certificate_key /etc/letsencrypt/live/maslabook.com/privkey.pem;
+Comentarssl_dhparam
+prefer_server_ciphers on;
+Borrar ssl_trusted_certificate
+Resolver 8.8.8.8;
+
+systemctl restart nginx    ya tiene que funcionar el https
+
+Para evitar que se entre por puerto 80 cortar todo lo que hay debajo de root (proxy_set_header --> ) hasta error page con su paréntesis de cierre
+ y pegarlo debajo del resolver del 443
+Reemplazar la línea root por    return 301 https://$host$request_uri;
+systemctl restart nginx
+
+-----------------------------------------------------------------------------------------------------------------
+
+PROXY INVERSO
+En /etc/nginx/sites-availables/ modificar default:
+
+server_name maslabook.com www.maslabook.com;
+location / {
+	(6 proxy_)
+}
+nginx -t para saber si la sintaxis quedó correcta
+
+
+En fin, ver    /etc/nginx/conf.d/maslabook.com.conf    y   /etc/nginx/sites-available/default
+
+
+------------------------------------------------------------------------------------------------------
+
+(Otro)
+
+Ya deployeada la app en puerto interno, en ~ de root:
+add-apt-repository ppa:certbot/certbot
+apt update
+apt-get install python-certbot-nginx
+certbot --nginx -d maslabook.com -d www.maslabook.com
+
+
+Si falla:
+apt-add-repository -r ppa:certbot/certbot
+curl -o- https://raw.githubusercontent.com/vinyll/certbot-install/master/install.sh | bash
+
+Modificar default

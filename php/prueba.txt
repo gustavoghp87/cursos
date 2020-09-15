@@ -1,0 +1,9 @@
+<?php
+
+    $numero = 3;
+
+    echo "all right!";
+    echo "<br>";
+    echo "esto es un número: $numero"
+
+?>

@@ -1,0 +1,617 @@
+setTime("unaFuncion()", 1000);    ejecuta cada segundo
+jwt.verify(req.token, "el string de seguridad", (err, data), ()=>{});
+if (typeof variable !== 'undefined') {req.token = token};
+Centrar Bootstrap:   class="col-md-6 offset-md-3"
+style = {{display: user.isAuth ? "block" : "none"}}
+array.spice(i, 1)   remueve el del puesto 1
+
+Resaltar al pasar el mouse:  .unaClase { cursor:pointer;}  .unaClase:hover {border: 1px solid black;}
+
+    <input type="button">
+    <input type="checkbox">
+    <input type="color">
+    <input type="date">
+    <input type="datetime-local">
+    <input type="email">
+    <input type="file">
+    <input type="hidden">
+    <input type="image">
+    <input type="month">
+    <input type="number">
+    <input type="password">
+    <input type="radio">
+    <input type="range">
+    <input type="reset">
+    <input type="search">
+    <input type="submit">
+    <input type="tel">
+    <input type="text">
+    <input type="time">
+    <input type="url">
+    <input type="week">
+document.addEventListener("mousedown", función);  "mousemove"   "mouseup"
+.addEventListener("keyup", functión)   function función (evento) { switch (evento.keyCode) { case teclas.UP: ... break; etc; default: ;}}
+.addEventListener("load", función)
+
+
+TYPESCRIPT:
+npm i typescript -D
+npx tcs --init                              npm i typescript -g
+o  npx tsconfig.json  según ben awad
+
+  "target": "ES2020",
+  "module": "commonjs",
+  "outDir": "./dist",
+  "rootDir": "./src",
+  "strict": true,
+  "moduleResolution": "node",
+
+agregar por fuera  "include": ["src"], "exclude": ["node_modules"]          o "./src/**/*"
+
+crear carpeta src   y   index.ts + app.ts
+npx tsc                  de nuevo, genera dist/app.js   y   dist/index.js
+
+npm i ts-node          y crear archivo de configuración    nodemon.json
+
+{
+    "watch": ["src"],
+    "ext": "ts",
+    "ignore": ["src/**/*.spec.ts"],
+    "exec": "ts-node ./src/index.ts"
+}
+
+  "build": "tsc ",
+  "start": "npm run build && node dist/index.js",
+  "dev": "nodemon src/index.ts"
+
+usar "dev": "concurrently /"tsc -w/" /"nodemon dist/index.js/""     tcs -w compila (vigilante) y nodemon ejecuta
+npm i @types/express @types/morgan -D @types/mongoose
+const app: Application = express();
+
+
+Fetch para el Next.js: isomorphic-fetch, incluir es6-promise, usar función getInitialProps
+
+
+ES8 recordar:
+
+const unArray = [...]
+
+Object.entries(unArray)                       devuelve un array hecho de arrays [llave, valor]
+Object.keys(unArray)                          devuelve un array con las llaves
+Object.values(unArray)                        devuelve un array con los valores
+Object.getOwnProperty.Descriptors(unObjeto)   descripción detallada de cada uno de los parámetros
+
+
+Tiempo (función autoejecutable):
+(async () =>
+	let prom1 = new Promise( (resolve, reject) => {setTimeOut( () => resolve("Termina en 1 segundo"), 1000); });
+	let prom2 = new Promise( (resolve, reject) => {setTimeOut( () => resolve("Termina en 1 segundo"), 1000); });
+	let prom3 = new Promise( (resolve, reject) => {setTimeOut( () => resolve("Termina en 1 segundo"), 1000); });
+
+	const arrProm = [prom1, prom2, prom3];
+
+	for await (const prom of arrProm) {
+	    console.log(prom);
+	};
+})();
+
+
+Si un objeto tiene muchas llaves, se puede asignar una a una variable y las demás a otra con puntos susp
+const obj = { x: algo, a: algo, b: algo, c: algo, d: algo };
+const { x, ...y } = obj;
+
+
+const array_ = [ [1, 2], 2, 3, [4, 5, 6], 7];
+const array_plano = array_.flat();               lo convierte en  [1, 2, 3, 4, 5, 6, 7]   pero solo un nivel
+const array_plano = array_.flat(2);              hasta dos niveles, etc
+
+El método flatMap sirve para generar un array plano uniendo dos array intercalando los elementos
+
+
+const Arra = [ [1, "uno"], [2, "dos], [3, "tres"] ];
+Object.fromEntries(Arra)      { 1:"uno", 2:"dos", 3:"tres" };
+
+
+
+WEBPACK
+npm i webpack webpack-cli        (también   html-webpack-plugin   image-webpack-loader  webpack-dev-server)
+También:   css-loader    style-loader o mini-css-extrac-plugin   sass-loader node-sass     autoprefixer (soporte a navegadores) postcss-loader   file-loader
+npx webpack app.js -o bundle.js      convierte un archivo js que tiene características que el navegador no entiende
+html importa bundle.js, que compila todos los js que estén en una red de importaciones y exportaciones (no soportado por navegadores)
+Exportar a carpeta build/ por convención
+Conviene crear webpack.config.js y colocar un    module.exports = { entry:'./src/app.js', output: { path: __dirname+'/build', filename: 'bundle.js' } };
+ y ahora alcanza con   npx webpack -p     p de producción    -d es desarrollo, hace un bundle legible
+
+npm i html-webpack-plugin
+agregar   const HtmlWebpackPlugin = require('html-webpack-plugin');    al config
+ y    plugins: [ new HtmlWebpcakPlugin({ template: './src/index.html' }) ]
+ y ahora hará una copia de .html en /build    que incorpora la importación de bundle.js automáticamente
+
+npm i webpack-dev-server
+npx webpack-dev-server    emite desde localhost:8080 y compila automáticamente ante cambios y refresca el navegador
+ o se cambia el puerto desde config   devServer: {port: 5000},
+
+Conviene importar los .css a app.js para que los incorpe a la compilación y desentenderse de la carpeta /build
+ pero requiere:   npm i style-loader css-loader
+ y agregar:       module: { rules: [ { test: /\.css$/,  use: [ {loader:'style-loader'}, {loader:'css-loader'} ] }]},
+
+npm i sass-loader node-sass
+Cambiar el /\css por /\scss   y añadir   {loader:'sass-loader'}
+Cambiar la extensión a los .css por .scss y usar sass tranquilamente
+
+Con un plugin se puede exportar el css por separado
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+   								REACT.JS
+
+
+CREAR PROYECTO
+En carpeta y desde terminal,
+	npx create-react-app nombredelaapp    [necesidad de tener instalado jode.js]
+	npx create-react-app nombredelaapp --typescript
+	npx create-react-app nombredelaapp --template typescript
+
+Cerrar terminal. Abrir el proyecto en VS Code. Abrir terminal integrada (F1).
+	npm start     y sale por localhost:3000 (para cambiar el puerto, crear archivo .env y escribir PORT=3001 )
+
+Eliminar serviceWorker de src/index.js si no va a funcionar como app (offline)
+
+En babeljs.io/repl se puede practicar la traducción jsx (símil html) a javascript
+
+noscript indica lo que se debe mostrar al usuario que no tenga habilitado javascript
+
+Instalar extensión ES7 React/Redux/GraphQL/React-Native para resumir la importación de React con rcc
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+En el archivo App.js:
+
+function HelloWorld() {
+   return (
+	<div id="hello"> Hello World </div>
+   )
+}
+
+function App() {
+   return (
+	<div> This is a component: <HelloWorld/> </div>
+   )
+}
+
+, reemplazable por: const App = () => <div> This ir a component: <HelloWorld/> </div>
+
+, y también reemplazable con una clase heredera de React.Component:
+
+class App extends React.Component {
+   render() {
+	return <div> This ir a component: <HelloWorld/> </div>
+   }
+}
+
+Video 00:57
+
+
+// PROPS //
+
+function Helloworld(props) {
+   console.log(props)
+   return(
+	<div id="hello">
+	    <h3> {props.subtitle} </h3>
+	    {props.mytext} 
+	</div>
+   )
+}
+
+function App () {
+   return (
+	<div> This is my component:
+		<Helloworld mytext="Hello 1" />
+		<Helloworld mytext="Hello 2" subtitle="subtítulo" />
+		<Helloworld mytext="Hello 3" />
+	</div>
+   )
+}
+
+Video 1:04
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+ESTADO DE COMPONENTE
+
+Ya no pasarle datos al componente
+Datos internos del componente:
+
+class Helloworld extends React.Component {
+    state = {
+	show:true             el estado es una variable interna a la función/clase
+    }
+
+    render() {
+	if(show) {
+            return ( <div id="hello"> 
+				<h3> {this.props.subtitle} </h3> {this.props.mytext}
+				<button onClick={() => this.setState({show: false})}> Botón para cambiar el estado </button> 
+		     </div> )
+	} else {
+	    return <h3> There are no elements </h3>
+	}
+    }
+}
+
+O también:
+
+class Helloworld extends React.Component {
+    state = {
+	show:true
+    }
+
+    toggleShow = () => {
+	this.setState({show: !this.state.show})
+    }
+
+    render() {
+	if(show) {
+            return ( <div id="hello"> 
+				<h3> {this.props.subtitle} </h3> {this.props.mytext}
+				<button onClick={this.toggleShow}> Botón para cambiar el estado </button> 
+		     </div> )
+	} else {
+	    return <h3> There are no elements </h3>
+	}
+    }
+}
+
+Video 1:16
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+TASKS APP
+
+Se crea un json con datos
+Se crea dos componentes, donde uno usa al otro, y ese es usado a su vez por App.js
+ para generar secuencias en la aplicación de acuerdo a los datos en la base de datos
+     json => task => tasks => app
+
+1:41 cierro ejercicio april2020
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+FORMATO
+
+Creo Task.css en subcarpeta components
+Se importa en Task.js con import './Task.css' y se usa en las etiquetas, como <p className="red"> si en .css hay un .red {background: red;}
+ , o sea que se le pasa objetos de javascript a la etiqueta de JSX, usando css en el .css
+ , en todo caso es <p style={{background: 'red'}}>
+
+También se puede crear una constante js para almacenar el objeto-atributo 
+const redColor = {background: 'red'};     y llamarlo <p style={redColor}>
+const btnDelete = {fontSize: '18px'};     que no es css sino js
+
+const btnDelete = {
+    fontSize: '18px',
+    background: '#ea2027',
+    color: '#fff',
+    border: 'none',
+    padding: '10px 15px',
+    borderRadius: '50%',
+    cursor: 'pointer',
+    float: 'right'
+}
+
+Esta es la opción favorita porque cada componente de la aplicación suele llevar su propio formato
+ y es práctico tener el código todo junto, pero no como constantes sino como funciones para poder
+ usar condicionales
+
+1:52
+
+Cambiar formato de acuerdo a algún parámetro interno:
+    StyleCompleted() {
+        return {
+            fontSize: '20px',
+            color: this.props.task.done ? 'green' : 'red',
+            textDecoration: 'none'
+        }
+    }
+
+    render(){
+        const {task} = this.props;
+        return <div style={this.StyleCompleted()}>
+            {task.title} - 
+            {task.description} - 
+            {task.done} - 
+            {task.id}
+        </div>
+    }
+
+Descargar React Developer Tools (extensión de Chrome)
+2:00
+
+
+PROPTYPES          , pero Flow y TypeScript son superiores
+import PropTypes from 'prop-types';
+Task.propTypes = {
+    task: PropTypes.object.isRequired           o tasks: PropTypes.array.isRequired
+}
+Hará que salte un error por consola cuando a task no se le pase un objeto en Tasks.js
+2:06
+
+
+FORMS
+TaskForm.js en carpeta componentes, importar React y Component
+(la exportación se puede poner al final o en la definición de la clase)
+retorna form input tipo text con placeholder
+Se importa este TaskForm en App.js y se introduce el <TaskForm /> en el return div
+
+Capturar click en botón:
+onSubmit = () => {
+    console.log("acá el envío del formulario");
+}
+
+render/return( <form onSubmit={this.onSubmit}> ...)
+
+Prevenir que se refresque la página: 
+onSubmit = (e) => {
+    console.log("acá el envío del formulario");
+    e.preventDefault();
+}
+
+Capturar los tipeos de teclado: onChange
+onChange = e => {
+    console.log(e.target.value);
+}
+
+render/return( form/ <input type="text" placeholder="blablabla" onChange={} /> <textarea placeholder="blabla" onChange={this.onChange} />
+
+Para que capture lo escrito y lo utilice, se ponen etiquetas name="string" y value={this.state.parámetroenelestado}
+ y onSubmit pasa a capturar this.state
+2:31
+
+
+PASSING FUNCTIONS
+Para que la información en formulario modifique la información en componentes se tiene que modificar el estado de App.js
+Se agrega función addTask() {ejecución} a la clase App y se modifica el <TaskForm>:
+	<TaskForm addTask={this.addTask} /> y se ejecuta desde TaskForm.js con this.props.addTask("prop1", "prop2");
+Que addTask reciba título y descripción addTask = (title, description) =>
+
+2:36
+
+
+DELETE & UPDATE
+2:41
+Función deleteTask en App.js que use el método filter
+    const newTasks = this.state.tasks.filter(task => task.id !== id)
+    this.setState({tasks: newTasks})
+y en el componente: <button style={btnDelete} onClick={this.props.deleteTask.bind(this, task.id)}> x </button>
+pasando por el conector componentes: deleteTask={this.props.deleteTask} en la tarea del mapa del render
+
+Función checkDone en App.js que use el método map
+checkDone = id => {
+    const newTasks = this.state.tasks.map(task => {
+      if (task.id === id) {
+        task.done = !task.done
+      }
+      return task
+    });
+    this.setState({tasks: newTasks})
+}
+en el componente: <input type="checkbox" onChange={this.props.checkDone.bind(this, task.id)} />
+en el conector componentes: checkDone ={this.props.checkDone} en la tarea del mapa del render
+
+y llamarlos en el render de App.js
+
+Se simplifica con la API Redux
+
+
+FETCHING DATA
+2:53
+Tomar datos de servidores externos, ejemplo jsonplaceholder.typicode.com
+Creamos componente Posts.js
+Fetch es una API para hacer peticiones a servidores; usarlo antes del render y dentro de 
+async componentDidMount() {
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts')
+    const data = await res.json()
+}
+ de manera asíncrona porque va a tardar en cargar
+(Incluirlo en el render de App.js como <Posts /> )
+
+Y en el render de Posts.js:
+{
+    this.state.posts.map(post => {
+        return <div key={post.id}> 
+            <h1> {post.title} </h1>
+            <p> {post.body} </p>
+        </div>
+    })
+}
+
+
+REACT ROUTER
+3:07
+El enrutador permite crear equivalentes a url dentro del navegador
+npm install react-router-dom
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+En el render de App.js:
+<Route path="/" render={() => {
+    
+}}>
+</Route>
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+								REACT NATIVE
+
+npm i -g react-native
+npm i -g react-native-cli
+
+
+Con EXPO:
+
+npm i -g expo-cli
+expo init proyecto      ... completar el json
+expo start              (adentro) localhost:19002, QR para visualizar en android (modo desarrollador activado), iOS con LAN
+
+Abrir el simulador desde Android Studio o XCode y sincroniza solo
+
+View: div
+Text: p
+Image source={{uri:"https..."}} o source={require('/assets/file.pgn')}: Img src
+<Button title="" onPress={this.funcion} />
+ImageBackground
+<TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
+WebBrowser.openBrowserAsync('https:...');
+TextInput placeholderTextColor maxLength
+Ver video en la doc de expo y en github (react-native-video)
+ScrollView
+onChangeText: onChange
+
+import {FontAwesome, Ionicons} from '@expo/vector-icons';
+<FontAwesome name="user" size={20} />
+
+import {Platform} from 'react-native';      para dar órdenes distintas según android/ios
+const version = Platform.Version
+
+Platform.OS == 'ios'
+?
+<Text> Estamos en iSO {version} </Text>
+:
+<Text> Estamos en Android {version} </Text>
+
+y en StyleSheet.create({ container: { ...Platform.select({ 'ios': {backgroundColor: 'blue'}, 'android': {backgroundColor:'red'}})}})
+
+
+
+const styles = StyleSheet.create({ etc })   y luego style={styles.container} etc o style={[styles.stl1, styles.stl2]}
+Si hago container flex 1 con flexDirection "column" o "row" y después dos contenedores con flex 1 serán 50% cada uno y así
+
+
+
+Alert.alert("string")
+
+
+class functions {
+	variasFunciones() {...}
+}
+export default new functions()
+
+... y: import Functions from 'path/functions.js';
+
+
+
+<FlatList
+	data={this.state.unArray}
+	renderItem={ ({item}) => <Text> {item.name} </Text>  } horizontal={false}
+	ItemSeparatorComponent={this.separador}   que es una función que retorna un View con estilo height, width. backColor y marginVertical
+	ListEmptyComponent={ <Text> No hay elementos para mostrar </Text> }
+/>
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+React-base framework
+
+npm i native-base
+
+Hay que descargar el paquete KitchenSink de github y pegar partes en el proyecto propio
+https://github.com/GeekyAnts/NativeBase
+Necesitamos App.js y la carpeta Src (sin screens)
+
+(Otro:
+  git clone -b RN git@github.com:GeekyAnts/react-native-boilerplate-redux-typescript.git
+  npm i, react-native start (react-native run-ios   react-native run-android)
+)
+
+*******************************
+
+react-native link
+expo install expo-font
+
+En src/App.js están las importaciones de componentes
+Reemplazar el contenido por piezas de código de la documentación (problemas en setup.js)
+expo start
+
+npm i react-navigation
+import {createStackNavigator, createAppContainer} from 'react-navigation';
+const LoginNavigator = createStackNavigator({
+    Login: {
+	screen: Login(js importado)
+	navigationOptions: {title: "Un título"}
+    },
+    Register: {
+	screen: Register (,
+	navigationOption: {
+	    title: "Registrarse"
+	}
+    }
+}, {headerLayoutPreset: 'center');
+
+export default createAppContainer(LoginNavigator) 
+
+
+Cambio de página: this.props.navigation.navigate('Register');   en un método
+
+
+Ver https://forums.expo.io/t/expo-start-web-failed-to-compile-after-import-native-base/40826/4
+
+Veamos los cambios que la consola nos pide en nuestro proyecto:
+1) Constants en nuestro header ahora lo instalamos con expo install expo-constants e importamos con import Constants from ‘’expo-constants”
+2) Linear gradient en nuestro header lo instalamos con expo install expo-linear-gradient e importamos con import {LinearGradient} from ‘expo-linear-gradient’
+3) Font en nuestro setup ahora lo importamos como import * as Font from ‘expo-font’. Para instalar expo font usamos expo install expo-font
+4) Ejecutar npm audit fix te permitirá corregir vulnerabilidades y paquetes por agregar y actualizar. Preferiblemente instala native-base con ¡YARN!
+
+React Navigation 4:
+1) Ahora además de instalar react navigation, aquellos que usamos expo debemos instalar expo install react-navigation react-native-gesture-handler react-native-reanimated react-native-screens.
+2) StackNavigator debes instalarlo por individual: npm install react-navigation-stack o yarn add react-navigation-stack para aquellos que usan yarn. Y lo importamos de la siguiente manera: import { createStackNavigator } from 'react-navigation-stack';
+3) Debes instalar yarn add react-navigation-tabs e importar como import { createBottomTabNavigator } from 'react-navigation-tabs';
+
+
+
+Notificaciones:
+expo install expo-permissions
+buscar push-notification en la documentación de expo.io para copiar el código y pegar en async ComponentDidMount () {}
+generar el token
+instalar sdk
+
+Localización: expo install expo-location + código de la documentación
+let api = await API.sendNotificationPush(token);
+if (Constants.platform === "ios" {
+  Notification.addListener(notif => {Toast.show({ duration: 40000, text: `Título ${notif.data.title} Mensaje `${notif.data.msg}`, position: "bottom" }) })
+}
+
+
+<Text> {internet ? "Hay" : "No hay"} </Text>
+Para saber si está conectado a wifi installar   expo
+Netinfo.fetch().then( state =>
+  state.type
+  state.isConnected
+}
+
+
+
+
+
+
+
+
+
+
+
+

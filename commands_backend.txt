@@ -1,0 +1,495 @@
+Windows 7 Enterprise: user w7enter, pc w7enter-PC, psw Enter7, hint nombrepc
+Windows 2008 Server: user Administrador, pc w8server, psw Server8
+Ubuntu 18.04 x64: user g-ubuntu, pc g-buntu, psw ..., your name Ubuntu
+Ubuntu Server: user ghp_server, pc ghp_server, psw ghpserverwww000
+mac OS X Mojave 10.14: user root root, psw ..., apple id ...
+
+sudo su
+apt-get update [+upgrade]
+apt update [+upgrade]
+sudo apt install ifupdown [+ifupdown2]
+
+Recordar:   res.send(req.rawHeaders);
+npm i dotenv
+Crear archivo .env y guardar todas las variables PORT=4000 DB_PASS=jshUy&k9658jj    etc, sin comillas
+require('dotenv').config();   en main
+
+Asignar variables de entorno donde no esté el .env:
+Linux: export PORT=4000   export DB_PASS=blabla    etc
+Windows: set PORT=4000    export ATLAS_URL=...
+Pero sirven hasta que se cierra la terminal, o sea se pierden en caso de reiniciar la VM
+
+Con PM2 se necesita crear un archivo ecosystem.config.js estilo package.json con su propio script (que se limita a direccionar al main)
+module.exports = {
+  apps : [
+      {
+        name: "myapp",
+        script: "./app.js",
+        watch: true,
+        env: {
+            "PORT": 3000,
+            "NODE_ENV": "development"
+        },
+        env_production: {
+            "PORT": 80,
+            "NODE_ENV": "production",
+        }
+      }
+  ]
+}
+
+npm i dotenv-cross      npx cross-env PORT=4000 node index.js
+(también se podrían incorporar a los scripts de package.json pero quedarían expuestas)
+
+--------------------------------------------------------------------------------------------------------
+
+Conectar máquinas a misma 192.168.xxx.1: adaptador puente wifi o solo anfitrión (manualmente)
+
+La ubuntu server se va a conectar a solo anfitrión porque queremos que no descargue nada de internet
+(tenerla ya actualizada)
+[red VB host-only ethernet adapter (1) conectada a red física (eth0 o wlan0)]
+
+ifconfig / ifdown enp0s3 / ifup enp0s3 para ver IP asignada a ubuntu server en el segmento (red local)
+
+EN HUÉSPED (máquina que administra el sitio)
+ping 192.168.xxx.xxx   (IP de ubuntu server)
+ssh ghp_server@192.168.xxx.xxx ... pero ingresar por contraseña de su es incorrecto por seguridad
+ssh-keygen -b 4096 [genera una llave RSA de 4096 bits y coloca 2 archivos en .ssh/subcarpeta creada previamente con mkdir]
+ssh-copy-id -i .ssh/id_rsa.pub ghp_server@192.168.xxx.xxx [enviamos la clave pública al servidor]
+
+EN UBUNTU SERVER
+...Se crea ghp_server/.ssh/authorized_keys en ubuntu server...
+sudo vim /etc/ssh/sshd_config
+[descomentar y pasar a no el #PasswordAuthentication para que solo se pueda acceder al servidor vía llave]
+[y descomentar PermitRootLogin prohibit-password]
+sudo /etc/init.d/ssh restart [reiniciar servidor]
+
+EN HUÉSPED
+ssh ghp_server@192.168.xxx.xxx [acceso denegado]
+ssh -i "C:\Users\..." ghp_server@192.168.0.2   [envío la clave privada para acceder]
+
+service ssh start [, status, stop]
+service ssh htop [ver procesos]
+
+-----------------------------------------------------------------------------------------------------------
+
+Si el administrador usa linux...
+Para acceder a los servidores desde un comando más simple... "ssh platzi" "ssh amazon" "ssh disney"
+1. guardar la llave privada en .ssh (directorio oculto) o subcarpeta
+2. crear un archivo .ssh/config
+3. abrirlo con editor de texto y aplicar alguno de los formatos
+4. por ejemplo:
+Host ubuntu-server
+	HostName 192.168.0.2
+	Port 22
+	User ghp_server
+	IdentityFile ~/.ssh/ubuntu-server/ubuntu-server
+5. comando en terminal: ssh ubuntu-server
+
+-----------------------------------------------------------------------------------------------------------
+
+Si el administrador usa linux...
+sudo apt-get install tmux    [multiplexador de terminales vía remoto]
+tmux   [abre una terminal, que abre pestañas con ctrl + c y cierra con ctrl +
+
+-----------------------------------------------------------------------------------------------------------
+
+apt-get install aptitude   [programa de terminal que permite instalar componentes]
+aptitud   [administrar paquetes... curso adm serv linux 02x02]
+
+apt-get install module-assistant   [ayuda para compilar librerías o módulos que van directamente al kerner]
+[programas compiladores etc]
+[agregar una fuente a sources.list ...
+apt-get source git
+apt-get source -b git
+apt-get build-dep git   [ver orden]
+apt-get source -b git
+module-assistant update
+m-a module-assistant
+m-a prepare
+vim /etc/apt/sources.list
+
+-----------------------------------------------------------------------------
+
+service apache2   [software de servidor]
+service apache2 start [ejecutarlo]
+netstat -ntpl [ver servicios corriendo, que liste protocolo TCP sin resolución de nombres]
+service apache2 stop
+
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+
+AMAZON
+https://aws.amazon.com/es/getting-started/tutorials/launch-a-virtual-machine/
+
+Volume ID 100GiB
+vol-05babd4bb764ba121
+
+ghp_amazonssh
+
+ssh -i {full path of your .pem file} ec2-user@{instance IP address}
+ssh -i 'C:\Users\...' ubuntu@3.134.84.152  [la -i indica qué llave se va a utilizar...]
+3.134.84.152 o 172.31.39.67
+
+chmod 600 ghp_amazonssh.pem  [reducir los permisos para el puerto]
+
+
+ghpbucket87
+videoWill | Son 4 MB
+
+Usuario IAM gustavoghp87, ID clave de acceso ..., Clave de acceso .../
+, Región us-east-1, Contraseña ---
+[Instalación de CLI Command Line Interface, luego abrir cmd adm y tipear aws configure]
+Entrar desde Bash a directorio C:\Program Files\Amazon\AWSCLI>
+Creación de bucket: [comando] aws s3 mb s3://my-first-backup-bucket
+Cargar: aws s3 cp “C:\users\my first backup.bak” s3://my-first-backup-bucket/
+Descargar: aws s3 cp s3://my-first-backup-bucket/my-first-backup.bak ./
+Eliminar: aws s3 rm s3://my-first-backup-bucket/my-first-backup.bak
+
+
+
+terminar...
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+NGINX servidor
+
+Como root:
+	apt update
+	apt install nginx
+
+
+CONFIGURACIÓN DEL FIREWALL:
+Recordar configurar también el firewall de AWS desde 
+
+	ufw app list                     [ajuste del firewall]
+	ufw allow 'Nginx HTTP'           [permitir]
+	ufw allow ssh                    [o ufw allow 22]
+	ufw allow 443
+	ufw allow 6000:6007/tcp
+	ufw allow 6000:6007/udp
+	uft allow from 181.229.235.57
+		[+] to any port 22
+	uft allow from 181.229.235.57/24
+	ufw status                       [para chequear]
+	ufw status verbose
+	ufw enable                       [habilitar el firewall]
+
+INICIAR SERVIDOR
+	systemctl status nginx           [inicia servidor]
+	systemctl restart nginx          [refresh]
+	systemctl stop nginx
+
+CARGAR SITIO WEB DESDE GITHUB
+Entrar en ~/var/www/ como sudo su después de haber instalado Nginx
+	git clone git@github.com:gustavoghp87/nuevo2020.git      [requiere alojar la ssh privada de github en el server]
+o:	git clone https://github.com/gustavoghp87/nuevo2020.git
+
+
+Comprar un dominio: namecheap, goDaddy
+
+
+SUBIR SITIO
+PRIMERO:
+	Entrar como root en ~/etc/nginx/sites-available/default con editor
+	Modificar el "root /var/www/html;"
+	 o crear un nuevo fichero... se necesita uno por cada sitio alojado en la máquina
+		touch sitio.com
+		vim sitio.com
+
+	server {
+		listen 80;
+		listen [::]:80;
+		
+		root /var/www/nuevo2020;
+		index index.html index.htm index.nginx-debian.html;
+	
+		server_name ec2-18-219-255-3.us-east-2.compute.amazonaws.com www.ec2-18-219-255-3.us-east-2.compute.amazonaws.com;
+	
+		location / {
+			try_files $uri/ =404;
+		}
+	}
+
+SEGUNDO:
+	Como root desde ~/
+	ln -s /etc/nginx/sites-available/sitio.com /etc/nginx/sites-enabled/
+
+
+O MÁS FÁCIL: Copiar los archivos desde GitHub en /var/www/html/ e invalidar el index de muestra
+
+INICIAR: sudo systemctl restart nginx
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+NODE.JS
+
+instalar node.js para que la terminal pueda leer javascript
+	node
+	abrir node ("node") y tipear comandos en javascript, o abrir "node archivo.js"
+
+instalar npm (node package manager) para usar las librerías
+	npm install express       [en la carpeta donde se quiere trabajar]
+	npm install express -g    [g de global todos los usuarios de la pc, lo cual no conviene por los cambios de versiones,
+		 	           conviene bajarlo una vez para cada proyecto]
+	npm install readline-sync  [lee texto de terminal y lo usa]
+	También se pueden descargar paquetes y leer sus descripciones en npmjs.com
+
+	npm init                  [crea el package.json]
+
+instalar jsonview para que chrome pueda leer json
+
+instalar posman para probar los json
+
+instalar browserify para que el navegador pueda leer node
+	npm install -g browserify
+
+ver ejercicio de API en onedrive
+
+
+Node en CURSO DE PROGRAMACIÓN BÁSICA
+
+Archivo server.js a ser ejecutado desde consola en node:
+
+var express = require("express");
+var app = express();
+app.get("/", function (req, res)           [una función por cada url]
+{				       	   [petición, resultado]
+	res.send("hello world");	  
+})
+app.listen(8080)
+
+
+--------------------------------------
+
+var express = require("express");
+var app = express();
+app.get("/", inicio)
+app.get("/subseccion", subseccion)
+
+function inicio (req, res)                 [una función por cada url]
+{					   [petición, resultado]
+	res.send("Este es el home");	  
+}
+
+function subseccion (req, res)             [una función por cada url]
+{					   [petición, resultado]
+	res.send("Esta es la subseccion");	  
+}
+
+app.listen(8080)
+
+
+NUEVO NUEVO NUEVO NUEVO
+
+Crear carpeta, crear archivo server.js
+	npm init
+	(nombre de la API nueva, etc etc)
+	(crea un archivo package.json)
+	npm install --save express
+Escribir servidor con app.get(req,res) y con app.listen([port], function(){console.log...;})
+	node server.js
+
+
+Servidor de HTML
+
+const http = require('http')
+http.createServer(function(req, res) {
+	res.writeHead(200, {'Content-type': 'text/html' });
+	res.write('<h2> Hello World </h2>');
+	res.end();
+}).listen(80);
+
+
+
+CURSO AVANZADO DE NODE.JS DESDE mac OS X:
+
+nvm - Node Version Manager (GitHub) es un software que permite usar distintas versiones de Node en diferentes proyectos
+[hacer un trámite... video 05 de curso avanzado de Node.js]
+
+Instalar Brew (brew.sh, comando GitHub) para instalar PostgreSQL y Redis (bases de datos relacional y no relacional)
+	brew install postgresql
+	brew services start postgresql
+	brew redis
+	brew services start redis
+	brew install ansible
+Instalar VS Code (descomprimir y arrastrar a Aplicaciones)
+Descargar VS Code for Node.js - Development Pack de marketplace.visualstudio.com o desde VS Code extensiones
+Descargar e instalar Vagrant
+
+	mkdir plativerse
+	git init
+	mkdir platziverse-db
+	cd platziverse-db
+	npm init   [licencia MIT (es open source)]
+	touch index.js
+	code .
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+PARTICIONES DE DISCO EN LINUX
+
+	En AWS se puede agregar un "volumen" a la "instancia" (tienen que estar en misma "zona" geográfica).
+	Conectar a máquina remotamente. Se monta nuevo disco "en caliente". Volumes, botón derecho, attach.
+
+Particiones primarias: máximo 4, o 3 + 1 extendida
+Partición extendida: contenedor de varias particiones lógicas
+Particiones lógicas: particiones dentro de una partición extendida
+Cada partición primaria y lógica necesita algún sistema de archivos (formato)
+
+sudo su
+dmesg               [leer]
+fdisk -l
+fdisk /dev/xvdf     [editar el disco xvdf]
+m                   [ayuda]
+n                   [nueva]
+
+	primaria:        (sale con formato por default)
+	p
+	1                   [1-4]
+	[enter]             [primer sector]
+	+20G                [segundo sector]
+	
+	extendida:       (sale con formato por default)
+	e
+	2                   [1-4]
+	[enter]             [primer sector]
+	+40G                [segundo sector]
+	
+	lógica:          (sale con formato por default)
+	l
+	5                   [ >4 ]
+	[enter]             [primer sector]
+	[enter]             [segundo sector, ocupa todo la part extend]
+
+p                   [ver particiones]
+m ... l             [tipos de particiones admitidas]
+
+Elegir pre-formato...
+t                   [cambiar una partición]
+1                   [selección de partición]
+L                   [ver listado]
+83                  [linux]
+
+d (+ num)           [eliminar una]
+
+w                   [aceptar, o q salir]
+
+FORMATEAR
+fdisk -l/dev/xvdf
+mkfs                     [programa]
+mkfs.vfat /dev/xvfa1     [windows fat32, USB hasta Windows XP]
+mkfs.ext3 /dev/xvdf5     [NTFS se usa desde Server]
+mkfs.ext4 /dev/xvdf6     [EXT = Linux]
+mkfs.xfs /dev/xvdf       [otros: XFS recomendado para MongoDB, ZFS]
+mkfs.xfs -f /dev/xvd6
+mkfs.ext4 /dev/xvdf3
+
+MONTAR
+Manualmente:
+	crear directorios /tmp/xvdf1 y /tmp/xvdf3
+	mount /dev/xvdf1 /tmp/xvdf1
+	mount /dev/xvdf3 /tmp/xvdf3
+	df -h
+	umount /tmp/xvdf3/       [primero salir cd ../]
+	umount /tmp/xvdf1/
+
+Automáticamente:
+	vim /etc/fstab ...
+	/dev/xvdf3	/var_new	ext4	defaults,discard	0 0   [cargue al iniciar el sistema]
+	mkdir /var_new
+	mount /var_new/
+	df -h
+
+SWAP
+Partición swap: asiste a la memoria RAM cuando escasea
+Lo óptimo es aumentar la RAM pero si escasea se hacen 4 o 5 GB de swap, o =RAM
+En servidores no conviene usar: más swap, menos velocidad en bases de datos
+free
+free -m
+apt-get install htop
+htop
+
+crear:  fdisk /dev/xvdf
+	t
+	L
+	5
+	82
+	w
+	umount /var_new
+	w
+	swapon
+	mkswap /dev/xvdf5
+	[copiar el Id y pegarlo en fstab	swap	sw	0 0]
+	htop
+	reboot
+
+swapoff /dev/xvdf5 ... o quitarla de fstab
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+IMÁGENES DE DISCOS
+fdisk -l
+cd /tmp/
+mkdir xvdf6
+mount /dev/xvdf6 xvdf6/
+cp -ra /var /tmp/xvdf6/var     [copiar todo de forma recursiva, TODO]
+du -sh
+df -h
+Sacar esa imagen, primero desmontar partición
+umount xvdf6/
+(ya estaba mount /var_new/)
+cd /var_new/
+dd if=/dev/xvdf6 of=/var_new/backup_xvdf6 bs=1M    [imagen bit a bit]
+
+ssh amazon1
+sudo su
+df -h   [en /home/ubuntu]
+
+disco rayado: dd if=/dev/cdroom of=/dev/ISO bs=1M   [o algo así]
+
+modprobe loop
+mkdir /tmp/iso
+
+seguir**
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+ARRANQUE DEL SISTEMA
+MVR (viejo) o UEFI
+
+
+GRUB
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+PASAR DOMINIO A HTTPS
+
+https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx
+
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo add-apt-repository universe
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+
+sudo apt-get install certbot python-certbot-nginx
+sudo certbot --nginx [o manualmente: sudo certbot certonly --nginx]
+
+renovar ... sudo certbot renew --dry-run

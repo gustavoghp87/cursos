@@ -1,0 +1,304 @@
+"Agregar Firebase a tu app web" (rosca)
+Copiar código (Red CDN) y pegarlo en index.html al final de body
+Con Web Server for Chrome ya se puede abrir desde localhost:puerto
+Se puede comprobar la conexión agregando un script a index.html que llame a un ./js/index.js que diga
+ "console.log(firebase)" y mirar la consola de chrome si aparece la configuración de Firebase
+
+	(sudo) npm install -g firebase-tools
+Ubicarse en la carpeta root del proyecto
+	firebase login
+	firebase init   ...  (espacio en databases)
+	firebase init   ...  (espacio en hosting... no aceptar public/index.html sino /index.html)
+	firebase use --add   (agregar proyecto y alias)
+	firebase deploy      (subir al hosting de Firebase)
+	firebase serve       (iniciar app en servidor local)
+Se habilitan nombreDeApp.web.app, localhost:5000 y localhost:5001
+
+Conviene reemplazar el script CDN de gstatic.com por scripts puntuales en guías/web
+O sea quitar firebase.js y poner firebase-app.js más los que se vayan a usar
+https://firebase.google.com/docs/web/setup/?authuser=0
+https://firebase.google.com/docs/web/setup/?authuser=0#libraries_CDN
+
+
+AUTENTICACIÓN CON GOOGLE
+Habilitar desde firebase.google.com
+Agregado el firebase-auth.js en index.html, escribir en ./js/index.js lo siguiente:
+(botones en html)
+
+var btnLogin = document.getElementById("btnLogin");
+console.log(btnLogin);   //para chequear que capta el evento
+var btnLogout = document.getElementById("btnLogout");
+
+firebase.auth().onAuthStateChanged(function(user) {
+ console.log(user)
+ if (user) {
+   console.log("Tenemos usuario");
+ else {
+   console.log("No tenemos usuario")
+   window.location.href = "index.html";     //para redirigir fuera del perfil
+ }
+});
+
+btnLogin.addEventListener("click", function() {
+ event.preventDefault();     //para evitar que se reinicie
+ console.log("El botón funciona");
+ var provider = new firebase.auth.GoogleAuthProvider();
+ provider.addScope('https://www.googleapis.com/auth/contacts.readonly');   // o 'public_profile' para los demás métodos
+
+ firebase.auth().signInWithPopup(provider)
+ .then(function(datosUsuario) {
+  console.log(datosUsuario)
+  usuario = {
+    nombre: datosUsuario.user.displayName,
+    email: datosUsuario.user.email,
+    uid: datosUsuario.user.uid
+    agregarUsuario(usuario, usuario.uid);        //a partir de acá presupone base de datos
+  }).catch(function(err) {
+    if (error) {
+      alert(error.message)
+    }
+  })
+})
+
+btnLogout.addEventListener("click", function() {
+  event.preventDefault();
+  firebase.auth().signOut();
+});
+
+(También necesita un código para guardar el usuario en base de datos)
+
+function agregarUsuario(usuario, uid) {
+  ref.child(uid).update(usuario);
+}
+
+.update para que no sobreescriba cada vez que se loguee el usuario
+
+AUTENTICACIÓN CON FACEBOOK
+Ir a developers.facebook.com, llevar el cógido a Firebase, y llevarle de Firebase otro código
+El código es idéntico, consultar platzi master en Curso Firebase
+
+
+
+CONECTAR A BASE DE DATOS
+Agregar CDN https://firebase.google.com/docs/web/setup/?authuser=0
+Habilitar desde consola Realtime Database, reglas de seg modo prueba
+El html necesita CDN básico, auth y database y también el script de config
+Su .js va a necesitar una función push(Usuario) y un array Usuario con los datos
+La base de datos va a recibir los datos básicos del usuario logueado
+
+Aparte del método push, están los métodos set, update y delete
+Se hacen botones en html y se los llama desde js, se les agrega listener
+Se crea una referencia al comienzo del .js "var referencia = firebase.database().referencia("nodo");
+.push genera nuevo nodo con nuevo UID dentro de la referencia para enviar el objeto aunque sea repetido
+.set sobreescribe todo el nodo (si coincide la referencia)
+.update pone los datos nuevos al final sin borrar lo que queda viejo, y también sirve para agregar tips
+.remove elimina
+
+
+
+LEER BASE DE DATOS
+Hay dos métodos para leer la base de datos: once (carga una vez) y on (escucha en tiempo real)
+
+EN INDEX.HTML:
+<form class="formulario">
+          <div class="col1">
+            <label for="nombre">Nombre</label>
+            <input type="text" required id="nombre" name="nombre"/>
+            <label for="email">E-mail</label>
+            <input type="email" required id="email" name="email"/>
+          </div>
+</form>
+<script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-database.js"></script>
+
+En PERFIL.HTML:
+<section class="tabla datosPerfil" id="datosPerfil">
+      <div class="contenedor">
+        <h1>Tu Perfil</h1>
+        <label for="perfilNombre">Nombre</label>
+        <h3 id="perfilNombre"></h3>
+        <label for="perfilEmail">Email</label>
+        <h3 id="perfilEmail"></h3>
+        <h3 id="perfilDireccion"></h3>
+        <button id="perfilEditar">Editar</button>
+      </div>
+</section>
+
+EN PERFIL.JS:
+var perfilNombre = document.getElementById("perfilNombre");
+var perfilEmail = document.getElementById("perfilEmail");
+var datosPerfil = document.getElementById("datosPerfil");            // sección visible por default
+var formularioPerfil = document.getElementById("formularioPerfil");  // sección  oculta por default
+
+firebase.auth().onAuthStateChanged(function(user) {
+ console.log(user)
+ if (user) {
+   console.log("Tenemos usuario");
+   mostrarLogout();
+   leerInformacion(user.uid);
+ else {
+   console.log("No tenemos usuario")
+   mostrarLogin();
+   window.location.href = "index.html";     //para redirigir fuera del perfil
+ }
+});
+
+function leerInformacion(uid) {
+  ref.child(uid).once('value', function(data) {              //once - on
+    console.log(data.val());
+    llenarInformacion(data.val().nombre, data.val().email);
+  })
+}
+
+function llenarInformacion(nombre, email) {
+  console.log(nombre, email);
+  perfilNombre.innerHTML = nombre;
+  perfilEmail.innerHTML = email;
+}
+
+perfilEditar.addEventListener("click", function() {
+  console.log("editar");
+  datosPerfil.style.display = "none";
+  formularioPerfil.style.display = "block";
+})
+
+
+
+
+REGLAS DE SEGURIDAD
+
+Promíscuo:
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
+
+
+Solo leer y escribir lo propio:
+{
+   "rules": {
+      "usuario": {
+            "$uid": {
+               ".read": "$uid == auth.uid",
+               ".write": "$uid == auth.uid"
+                    }
+                 }
+	    }
+}
+
+Solo leer lo propio:
+{
+   "rules": {
+      "usuario": {
+            "$uid": {
+               ".read": "$uid == auth.uid"
+                    }
+                 }
+	    }
+}
+
+Puede leer lo propio pero no el uid:
+{
+   "rules": {
+      "usuario": {
+            "$uid": {
+			".read": false,		
+                    }
+                 }
+	    }
+}
+
+Un permiso de nivel superior invalida las denegaciones de nivel inferior
+Una denegación de nivel superior invalida los permisos de nivel inferior
+
+
+Roles. Crear administrador:
+Crear nuevo nodo desde consola Firebase con nombre admin y copiarle el uid del usuario como child
+Darle sus propias reglas de seguridad
+{
+   "rules": {
+      "usuario": {
+            "$uid": {
+			".read": true,
+			".write": "root.child('admin').hasChild(auth.uid)"
+                    }
+                 },
+      "admin": {
+		  
+	       }
+            }
+}
+
+(expresiones regulares)
+
+
+Indexación:
+{
+   "rules": {
+      "usuario": {
+            "$uid": {
+			".read": true,
+			".write": "root.child('admin').hasChild(auth.uid)"
+                    }
+                 },
+      "admin": {
+		  
+	       },
+      "records": {
+	".indexOn": "tiempo"
+	".validate": "newData.val().contains('.')"     // el child tiempo del nodo record tiene que tener un punto para ser aceptado el dato
+	".validate": "newData.val().isBoolean()"       // tiene que ser booleano
+	".validate": "newData.val().isString()"
+	".validate": "newData.val().matches()"
+	}
+}
+
+
+Solo admin puede hacer cambios en un nodo:
+{
+   "rules": {
+      "usuario": {
+           	   "$uid": {
+		            ".read": true,
+		            ".write": "root.child('admin').hasChild(auth.uid)"
+                           }
+                 },
+      "admin": {
+		  
+	       },
+      "guitarras": {
+			".read": "root.child('admin').hasChild(auth.uid)",
+			".write": "root.child('admin').hasChild(auth.uid)"
+		   }
+	    }
+}
+
+
+Solo administradores pueden agregar administradores nuevos:
+{
+   "rules": {
+      "usuario": {
+           	   "$uid": {
+		            ".read": "$uid == auth.uid",
+		            ".write": "$uid == auth.uid"
+                           }
+                 },
+      "admin": {
+		  ".read": "root.child('admin').hasChild(auth.uid)",
+		  ".write": "root.child('admin').hasChild(auth.uid)"
+	       },
+      "guitarras": {
+			".read": "root.child('admin').hasChild(auth.uid)",
+			".write": "root.child('admin').hasChild(auth.uid)"
+		   }
+	    }
+}
+
+
+Constatar desde consola de navegador con
+ firebase.database().ref("Usuario").remove()
+ firebase.database().ref("Usuario").push({hola: "agregar esto")
+ firebase.database().ref("Usuario").child("uid...").once("value", function(valor){console.log(valor.val())})
+ firebase.database().ref("Usuario").child("uid...").set({hola: "incluir data"})
+

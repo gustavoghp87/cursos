@@ -1,0 +1,114 @@
+https://www.youtube.com/watch?v=NVvZNmfqg6M
+
+sudo apt update
+sudo apt-get install \ apt-transport...             copiar del sitio
+curl -fsSL https...download...                      instalar llave
+sudo add-apt-repository...                          instalar llave
+sudo apt-get update
+sudo apt-get install dockerc-ce ...                 instalar docker
+
+docker version                                      si requiere sudo, agregar al grupo de usuarios (groupadd)
+
+
+https://hub.docker.com
+
+docker run hello-world                              descarga y ejecuta la imagen hello-world
+docker images                                       lista imágenes descargadas
+
+docker search ubuntu                                evita ir al sitio
+
+No es lo mismo imagen que contenedor. Los contenedores son procesos o instancias que corren dentro de una imagen.
+
+docker run ubuntu echo 'hello world'                ejecuta desde bash de ubuntu y termina
+docker run -it ubuntu bash                          ejecuta bash de ubuntu iterativamente o sea se queda esperando órdenes
+
+docker ps                                           lista los procesos en ejecución
+docker ps -a                                        lista el histórico de procesos
+docker ps -aq                                       lista los id de los procesos en historial
+docker images -aq                                   lista los id de las imágenes instaladas
+docker rm [id o name]                               con las primeras 3 letras del id alcanza, con --name nombre agrega nombre en vez del aleatorio
+docker stop [id o name]
+docker rm $(docker ps -aq)                          elimina todos los procesos
+docker stop $(docker ps -aq)                        detiene todos los procesos
+docker rm [proceso] .f                              fuerza a eliminar aunque esté corriendo
+docker rmi mysql                                    remueve imagen
+docker rmi $(docker images -aq)                     pero elimina las que no se estén utilizando
+
+docker pull nginx
+docker run nginx
+docker run -p 80:80 nginx
+docker run -p 3000:80 nginx                         en el 3000 lo que también sale por el 80
+docker run -p 80:80 -d nginx                        ditash, deamon
+docker run -p 80:80 -p 3000:80 -p 4000:80 -d nginx
+
+docker run -p 80:80 -d httpd                        apache2 (si no está lo instala)
+
+docker run -d -p 3306:3306 --name myDB mysql
+docker run -d -p 3307:3306 --name myDB -e MYSQL_ROOT_PASSWORD=contraseña mysql
+
+
+Automatizar: docker ps (por ejemplo) --format="ID\t{{.ID}}"     donde la \t es para tabulación, imprime el ID de cada contenedor
+queda:  ID    [id]
+
+docker ps (por ejemplo) --format="ID:\t{{.ID}}\nNombre:\t{{.Names}}"     ver documentación en docs.docker.com para las diferentes salidas
+
+Guardar comandos personalizados mediante variables de entorno:
+nano ~/.bashrc
+export DOCKER_FORMAT="ID:\t{{.ID}}\nNombre:\t{{.Names}}"     por ejemplo
+source ~/.bashrc
+echo $DOCKER_FORMAT                                 para ver el comando guardado
+docker ps --format=$DOCKER_FORMAT                   para ejecutarlo
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Copiar al contenedor:
+docker run -d -p 80:80 --name website -v /home/fazt/Desktop/website:/usr/share/nginx/html:ro nginx          read only
+docker run -d -p 80:80 --name website -v $(pwd):/usr/share/nginx/html:ro nginx
+
+La v genera sincronización unilateral: desde la carpeta de trabajo hacia el contenedor
+Me conecto al contenedor website
+
+docker exec -it website bash
+cd /usr/share/nginx/html   ls    está el sitio, solo lectura
+
+Sin :ro la sincronización es bilateral
+
+
+Se crea archivo "Dockerfile" con las instrucciones para ejecutar el proyecto (usar extensión Docker de VS Code)
+
+FROM nginx:1.17.10                           (o  nginx:latest  o  nginx:1.17, imagen de hub docker)
+WORKDIR /usr/share/nginx/html                dónde se ejecutarán los siguientes comandos
+COPY . .                                     que copie todo lo que hay en el directorio donde está este Dockerfile al workdir (segundo punto)
+
+docker build -t proyecto .
+docker images
+docker run ...
+
+(en nodejs:
+	FROM node:12
+	WORKDIR /app
+	COPY package*.json ./   
+	RUN npm install
+	COPY . .
+	CMD ["npm", "start"]
+)
+
+
+Docker Hub:
+
+docker build -t ghpUsernameDockerHub/website
+docker login     ...
+docker push ghpUsernameDockerHub/website
+
+docker pull 
+
+
+... y   docker run -it -p 4000:3000 proyecto
+
+
+.dockerignore
+node_modules
+npm-debug.log
+

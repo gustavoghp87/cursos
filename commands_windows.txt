@@ -1,0 +1,32 @@
+WINDOWS
+
+################################## ATAJOS ##############################################
+
+	Windows + v   	     [Historial de Portapapeles (requiere habilitación) ]
+	Windows + .   	     [Emoticones y símbolos]
+	Windows + + 	     [Lupa]
+	Windows + Alt + s    [captura de pantalla parcial]
+
+################################# COMANDOS #############################################
+
+diskpart / list disk / select disk [n°] 
+ list volume / list partition
+select disk [n°] / clean / create partition primary / select partition [n] / active / format fs=NTFS
+
+net users [usuarios]
+net users ghp21
+netplwiz [cuentas de usuarios] [entrando desde modo seguro (4) en conf de inicio se
+ puede hacer cambios de cuenta como administrador]
+[para entrar a windows sin elegir usuario y contraseña]
+
+devmgmt.msc [adm de dispositivos]
+dxdiag      [vista de sistema]
+
+ipconfig    [interfaces de red], ipconfig /release, ipconfig /renew
+arp -a      [tabla ARP]
+
+Claves wifi almacenadas:
+    netsh wlan show profile name="xxxxxxxx" key=clear
+
+osk   [teclado completo en pantalla]
+

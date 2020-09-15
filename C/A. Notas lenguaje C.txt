@@ -1,0 +1,22 @@
+El archivo .c generado en editor de texto se debe compilar
+
+Para compilar en Windows se necesita instalar MinGW y luego
+en configuraciones avanzadas del sistema se debe incluir C:\MinGW\bin\ al path de las variables de entorno
+
+gcc -o nombreFinal nombreActual.c
+
+Dando nombreFinal.exe como resultado, que se ejecuta desde la consola por simple nombre.
+En terminal, con ./nombre
+-o significa generar salida de compilación
+
+
+// stdio.h es el paquete para imprimir, escanear y hacer operaciones básicas
+// %letra indica el lugar de la variable a ser insertada y el tipo de variable:
+// c es caracter, d es entero, f es real (6 díg), s es cadena, x es hexadecimal, X.Yf es número de enteros y número de decimales
+// barra invertida n ejecuta salto de línea
+
+char nombre[25] puede tener la cantidad máxima de caracteres permitidos
+do while se asegura la primera ejecución, a diferencia de while
+
+algoritmos de ordenación insertionSort, wikSort, selectionSort
+
