@@ -1,9 +1,9 @@
 public class java010_02_JuegoDeDados {
-	private Dado dado1,dado2;
+	private java010_02_Dado dado1,dado2;
 
 	public java010_02_JuegoDeDados() {
-		dado1=new Dado();
-		dado2=new Dado();
+		dado1=new java010_02_Dado();
+		dado2=new java010_02_Dado();
 	}
 
 	public void jugar() {
@@ -12,17 +12,20 @@ public class java010_02_JuegoDeDados {
 		dado2.tirar();
 		dado2.imprimir();
 		if (dado1.retornarValor()==dado2.retornarValor() ) {
-			System.out.println("Ganó");
+			System.out.println("Ganï¿½");
 		} else {
-			System.out.println("Perdió");
+			System.out.println("Perdiï¿½");
 		}
 	}
 
-	public static void main(String[] ar){
+	public static void main(String[] ar) {
 		java010_02_JuegoDeDados j=new java010_02_JuegoDeDados();
 		j.jugar();
 	}
 }
 
+
+
+
 //Plantear un programa que permita jugar a los dados. Las reglas de juego son: se tiran tres (dos)
-//dados. Si los tres salen con el mismo valor mostrar un mensaje que "ganó", sino "perdió".
+//dados. Si los tres salen con el mismo valor mostrar un mensaje que "ganï¿½", sino "perdiï¿½".

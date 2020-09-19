@@ -1,17 +1,17 @@
 import java.util.Scanner;
 public class java010_03_Club {
-	private Socio socio1, socio2, socio3;
+	private java010_03_Socio socio1, socio2, socio3;
 	private Scanner keyboard;
 	
 	public Club() {
 		keyboard = new Scanner(System.in);
-		socio1 = new Socio(keyboard);
-		socio2 = new Socio(keyboard);
-		socio3 = new Socio(keyboard);
+		socio1 = new java010_03_Socio(keyboard);
+		socio2 = new java010_03_Socio(keyboard);
+		socio3 = new java010_03_Socio(keyboard);
 	}
 	
 	public void mayorAntiguedad() {
-		System.out.print("Socio con mayor antigüedad: ");
+		System.out.print("Socio con mayor antigï¿½edad: ");
 		if (socio1.retornarAntiguedad()>socio2.retornarAntiguedad() && socio1.retornarAntiguedad()>socio3.retornarAntiguedad()) {
 			socio1.imprimir();
 		} else {
@@ -30,7 +30,7 @@ public class java010_03_Club {
 }
 
 //Plantear una clase Club y otra clase Socio.
-//La clase Socio debe tener los siguientes atributos privados: nombre y la antigüedad en el club (en años).
-//En el constructor pedir la carga del nombre y su antigüedad.
+//La clase Socio debe tener los siguientes atributos privados: nombre y la antigï¿½edad en el club (en aï¿½os).
+//En el constructor pedir la carga del nombre y su antigï¿½edad.
 //La clase Club debe tener como atributos 3 objetos de la clase Socio. Definir una responsabilidad
-//para imprimir el nombre del socio con mayor antigüedad en el club.
+//para imprimir el nombre del socio con mayor antigï¿½edad en el club.

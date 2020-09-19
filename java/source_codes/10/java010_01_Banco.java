@@ -1,9 +1,9 @@
 public class java010_01_Banco {
-	private Cliente cliente1,cliente2,cliente3;
+	private java010_01_Cliente cliente1,cliente2,cliente3;
 	public java010_01_Banco() {
-		cliente1=new Cliente("Juan");
-		cliente2=new Cliente("Ana");
-		cliente3=new Cliente("Pedro");
+		cliente1=new java010_01_Cliente("Juan");
+		cliente2=new java010_01_Cliente("Ana");
+		cliente3=new java010_01_Cliente("Pedro");
 	}
 	public void operar() {
 		cliente1.depositar(100);
@@ -25,5 +25,5 @@ public class java010_01_Banco {
 	}
 }
 
-//Un banco tiene 3 clientes que pueden hacer depósitos y extracciones. También el banco
-//requiere que al final del día calcule la cantidad de dinero que hay depositada.
+//Un banco tiene 3 clientes que pueden hacer depï¿½sitos y extracciones. Tambiï¿½n el banco
+//requiere que al final del dï¿½a calcule la cantidad de dinero que hay depositada.

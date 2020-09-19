@@ -12,7 +12,6 @@ public class Carta {
 	public void imprimir() {
 		System.out.println(numero + " - " + palo);
 	}
-
 }
 
 // Crear un proyecto y dentro del mismo crear dos clases. La primer clase se debe llamar 'Carta' y

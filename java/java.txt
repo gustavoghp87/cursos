@@ -16,7 +16,18 @@ Métodos: si es void no retorna nada, si retorna una variable debe estar su tipo
 No se puede anidar métodos
 
 EJECUCIÓN DESDE CONSOLA
-java -jar archivo.jar
+set path=C:\Program Files\Java\jdk1.8.0_121\bin
+javac archivo.java      (compila a .class incluyendo a los archivos relacionados)
+java archivo            (sin .class)
+
+Compilar a ejecutable:
+jar -cvfe [nombre].jar [claseConMain SinExtensión] *.class
+
+Dicen pero no me funciona:
+Crear archivo manifest.txt en la misma carpeta   y escribir:    Main-Class: [clase con el main]
+jar -cfm [programa].jar manifest.txt *.class
+
+Ejecutar: java -jar [programa].jar
 
 
 OPERADOR CONDICIONAL (condición)? valor1 : valor2

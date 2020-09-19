@@ -18,6 +18,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.util.Properties;
+
+
 public class FormularioBorrar extends JFrame {
 
      private JPanel contentPane;
@@ -48,7 +51,7 @@ public class FormularioBorrar extends JFrame {
 		 setContentPane(contentPane);
 		 contentPane.setLayout(null);
 
-		 JLabel lblDescripcinDelArtculo = new JLabel("Descripción del artículo:");
+		 JLabel lblDescripcinDelArtculo = new JLabel("Descripciï¿½n del artï¿½culo:");
 		 lblDescripcinDelArtculo.setBounds(23, 38, 193, 14);
 		 contentPane.add(lblDescripcinDelArtculo);
 
@@ -70,7 +73,7 @@ public class FormularioBorrar extends JFrame {
 		 labelResultado.setBounds(361, 122, 229, 14);
 		 contentPane.add(labelResultado);
 
-		 btnConsultaPorCdigo = new JButton("Consulta por código");
+		 btnConsultaPorCdigo = new JButton("Consulta por cï¿½digo");
 		 btnConsultaPorCdigo.setBounds(25, 122, 177, 23);
 		 contentPane.add(btnConsultaPorCdigo);
 		 btnConsultaPorCdigo.addActionListener(new ActionListener() {
@@ -79,6 +82,7 @@ public class FormularioBorrar extends JFrame {
 				 tf1.setText("");
 				 tf2.setText("");
 				 try {
+            		 Class.forName("com.mysql.jdbc.Driver");
 					 Connection conexion=DriverManager.getConnection("jdbc:mysql://localhost/bd1","root","");
 					 Statement comando = conexion.createStatement();
 					 ResultSet registro = comando.executeQuery("select descripcion,precio from articulos where codigo="+tf3.getText());
@@ -86,7 +90,7 @@ public class FormularioBorrar extends JFrame {
 						 tf1.setText(registro.getString("descripcion"));
 						 tf2.setText(registro.getString("precio"));
 					 } else {
-						 labelResultado.setText("No existe un artículo con dicho código");
+						 labelResultado.setText("No existe un artï¿½culo con dicho cï¿½digo");
 					 }
 					 conexion.close();
 				 } catch(SQLException ex){
@@ -113,9 +117,9 @@ public class FormularioBorrar extends JFrame {
 					 if (cantidad==1) {
 						 tf1.setText("");
 						 tf2.setText("");
-						 labelResultado.setText("Se borro el artículo con dicho código");
+						 labelResultado.setText("Se borro el artï¿½culo con dicho cï¿½digo");
 					 } else {
-						 labelResultado.setText("No existe un artículo con dicho código");
+						 labelResultado.setText("No existe un artï¿½culo con dicho cï¿½digo");
 					 }
 					 conexion.close();
 				 } catch(SQLException ex){
@@ -135,9 +139,9 @@ public class FormularioBorrar extends JFrame {
 					 Statement comando = conexion.createStatement();
 					 int cantidad = comando.executeUpdate("update articulos set descripcion='" + tf1.getText() + "'," + "precio=" + tf2.getText() + " where codigo="+tf3.getText());
 					 if (cantidad==1) {
-						 labelResultado.setText("Se modifico la descripcion y el precio del artículo con dicho código");
+						 labelResultado.setText("Se modifico la descripcion y el precio del artï¿½culo con dicho cï¿½digo");
 					 } else {
-						 labelResultado.setText("No existe un artículo con dicho código");
+						 labelResultado.setText("No existe un artï¿½culo con dicho cï¿½digo");
 					 }
 					 conexion.close();
 				 } catch(SQLException ex){
