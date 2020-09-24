@@ -7,7 +7,8 @@ sudo add-apt-repository...                          instalar llave
 sudo apt-get update
 sudo apt-get install dockerc-ce ...                 instalar docker
 
-docker version                                      si requiere sudo, agregar al grupo de usuarios (groupadd)
+docker version
+si requiere sudo, agregar al grupo de usuarios:  sudo groupadd docker   sudo usermod -aG docker $USER   newgrp docker 
 
 
 https://hub.docker.com
@@ -77,12 +78,13 @@ Sin :ro la sincronización es bilateral
 
 
 Se crea archivo "Dockerfile" con las instrucciones para ejecutar el proyecto (usar extensión Docker de VS Code)
+Usar siempre el --assume-yes para instalaciones (apt install python3-pip -y)
 
 FROM nginx:1.17.10                           (o  nginx:latest  o  nginx:1.17, imagen de hub docker)
 WORKDIR /usr/share/nginx/html                dónde se ejecutarán los siguientes comandos
 COPY . .                                     que copie todo lo que hay en el directorio donde está este Dockerfile al workdir (segundo punto)
 
-docker build -t proyecto .
+docker build -t [proyecto] .
 docker images
 docker run ...
 

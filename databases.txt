@@ -802,7 +802,7 @@ MiseriScraping:
 pymongo.MongoClient("mongodb://ms:...@3.22.60.96:46016/miseriscraping")
 
 Clave superAdmin
-db.createUser({user: "admin", pwd: "...", roles: [{role:"root", db: "admin"}] })
+db.createUser({user: "admin", pwd: "...", roles: [{role:"root", db: "admin"}] })            role:"readWrite"   etc
 
 Acceso remoto
 mongo --host 3.22.60.96 --port 46016 -u ms -p ... --authenticationDatabase miseriscraping
