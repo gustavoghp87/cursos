@@ -7,6 +7,8 @@ array.spice(i, 1)   remueve el del puesto 1
 
 REACT: agregar    "homepage": ".",    al package.json del cliente antes de npm run build
 
+useEffect(() => {document.addEventListener("scroll", function...) }, [])   ...   window.scrollY = ...
+
 Resaltar al pasar el mouse:  .unaClase { cursor:pointer;}  .unaClase:hover {border: 1px solid black;}
 
     <input type="button">
@@ -224,6 +226,7 @@ function App () {
 Video 1:04
 
 capturar valor en url: /products/:id   ...   this.props.match.params.id
+const { id } = useParams();
 
 componentDidMount() { const {match: {params:{user_id, comp_id}}} = this.props; ... }
 

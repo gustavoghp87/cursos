@@ -6,6 +6,8 @@
 # pip freeze > requirements       imprime en archivo (.txt para muchos)             pip3 install -r requirements
 # django trae su servidor de prueba:   python index.py runserver 0.0.0.0:8080
 
+# npm install --global --production windows-build-tools node-gyp
+
 x = 5
 y = 7
 
