@@ -1,3 +1,16 @@
+
+Crear imagen desde Dockerfile: docker build . -t [nombreParaImagen]         t de tag
+Variables de entorno: docker run -it -e key="asdkfnasdnasdf -e token="ljsdnflasdnfaksdv" [nombreDeImagen]          --name nombre le da un nombre al ps
+
+Guardar y comprimir:
+	docker image save favbot:latest -o favbot.tar
+	gzip favbot.tar
+
+docker attach b33   ver logs de proceso
+
+
+#############################################################################################################################
+
 https://www.youtube.com/watch?v=NVvZNmfqg6M
 
 sudo apt update
@@ -7,9 +20,24 @@ sudo add-apt-repository...                          instalar llave
 sudo apt-get update
 sudo apt-get install dockerc-ce ...                 instalar docker
 
-docker version
-si requiere sudo, agregar al grupo de usuarios:  sudo groupadd docker   sudo usermod -aG docker $USER   newgrp docker 
 
+EC2:
+ubuntu@ip-172-31-44-227:~$ sudo apt-get update
+ubuntu@ip-172-31-44-227:~$ sudo apt install docker.io
+ubuntu@ip-172-31-44-227:~$ sudo adduser ubuntu docker
+ubuntu@ip-172-31-44-227:~$ exit
+
+
+docker version
+si requiere sudo, agregar al grupo de usuarios:  sudo groupadd docker   sudo usermod -aG docker $USER   newgrp docker
+
+enviarle la imagen:
+	scp -i "mykeypair.pem" favbot.tar.gz ubuntu@3.86.66.73:/tmp
+
+	gunzip /tmp/favbot.tar.gz 
+	docker image load -i /tmp/favbot.tar
+	docker run -d --restart always -e token="sdlfknasdf" favbot
+	docker logs e6aefe73a885
 
 https://hub.docker.com
 
@@ -114,3 +142,26 @@ docker pull
 node_modules
 npm-debug.log
 
+
+#############################################################################################################################
+
+docker-compose.yml:
+
+version: "3"
+services:
+    web:
+        container_name: exampleapp
+        restart: always
+        build: .
+            - "5000:3000"
+        links:
+            -mongo
+    mongo:
+        container_name: mymongodb
+        image: mongo
+        ports:
+            - "27018:27017"
+
+
+docker-compose build
+docker-compose up

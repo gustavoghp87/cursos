@@ -37,11 +37,43 @@ document.addEventListener("mousedown", función);  "mousemove"   "mouseup"
 .addEventListener("keyup", functión)   function función (evento) { switch (evento.keyCode) { case teclas.UP: ... break; etc; default: ;}}
 .addEventListener("load", función)
 
+const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false
+const [rememberMe, setRememberMe] = useState(rememberMeChecked)
+setRememberMe(!rememberMe)
+window.localStorage.setItem('rememberMe', values.email)
+localStorage.removeItem('rememberMe')
+
+
+Cookie:
+{
+	name,
+	value,
+	domain,
+	path,
+	expires/max
+	size,
+	httpOnly
+	secure: strict  no envía
+	samaSite
+	priority
+}
+res.cookie('token', accessToken, { sameSite: x, secure: x })
+https://expressjs.com/en/api.html#res.cookie
+
+res.set("Set-Cookie", "HttpOnly;Secure;SameSite=Strict")
+
+const cookie = "user=ghp@com; samesite=strict/lax/none; secure"
+res.setHeader("set-cookie", [cookie])
+res.send("ok")
+
+
 
 TYPESCRIPT:
+(npm i typescript -g)
 npm i typescript -D
-npx tcs --init                              npm i typescript -g
-o  npx tsconfig.json  según ben awad
+npx tcs --init       (o  npx tsconfig.json)    para el archivo de configuración
+
+React: yarn create react-app my-app --template typescript
 
   "target": "ES2020",
   "module": "commonjs",
