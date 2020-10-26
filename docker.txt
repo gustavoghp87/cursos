@@ -1,5 +1,5 @@
 
-Crear imagen desde Dockerfile: docker build . -t [nombreParaImagen]         t de tag
+Crear imagen desde Dockerfile: docker build . -t [nombreParaImagen]         t de tag, --name para contenedores
 Variables de entorno: docker run -it -e key="asdkfnasdnasdf -e token="ljsdnflasdnfaksdv" [nombreDeImagen]          --name nombre le da un nombre al ps
 
 Guardar y comprimir:
@@ -7,6 +7,14 @@ Guardar y comprimir:
 	gzip favbot.tar
 
 docker attach b33   ver logs de proceso
+	-d    dettach, deamon  Vs.
+	-it   iteractive
+
+docker exec -it mongodb bash    ls  mongo   comando dentro de una imagen
+
+-v C://usuarios/ghp/Documents/Proyecto/data:/data/db
+	hace copias de los archivos generados por el contenedor fuera de él para que puedan usarse aunque se elimine el contenedor
+	y también se usa tal cual para copiar los datos cuando se cree otro contenedor
 
 
 #############################################################################################################################

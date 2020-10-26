@@ -5,6 +5,12 @@ Centrar Bootstrap:   class="col-md-6 offset-md-3"
 style = {{display: user.isAuth ? "block" : "none"}}
 array.spice(i, 1)   remueve el del puesto 1
 
+
+li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+Imagen circular: borderRadius:'50%'
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 REACT: agregar    "homepage": ".",    al package.json del cliente antes de npm run build
 
 useEffect(() => {document.addEventListener("scroll", function...) }, [])   ...   window.scrollY = ...
@@ -590,6 +596,7 @@ expo start
 
 npm i react-navigation
 import {createStackNavigator, createAppContainer} from 'react-navigation';
+
 const LoginNavigator = createStackNavigator({
     Login: {
 	screen: Login(js importado)
@@ -647,6 +654,45 @@ Netinfo.fetch().then( state =>
 
 
 
+apk: expo login (loguear), agregar lo que falte en app.json, expo build:android
+"sdkVersion": "39.0.0",
+"android": {
+    "package": "com.ghp.native-test",
+    "versionCode": 1,
+    "supportsTablet": true
+},
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	NEXT.JS
+
+npx create-next-app
+npm init next-app
+yarn create next-app
+
+npm i next react react-dom
+
+"dev": "next,
+"build": "next build",
+"start": "next start"
+
+No hace falta importar React, y no hace falta enrutar, lo hace solo
+
+import Link from 'next/link'
+usa <Link href="/">
+
+Conviene crear un componente Container y pasarle las páginas como props.children, pasa a ser como un main o template
+En las otras: return <Container> (código) </Container>
+
+import Head from 'next/head'   y agregar <Head> <title> ... <link rel=""> ... </Head>
+
+useEffect:   Index.getInitialProps = async (ctx) => {const resp = await fetch ...}
+
+Parámetro dinámico en la url: crear archivo [id].js   import {useRouter} from 'next/router'   const router = useRouter(); const {id} = router.query   captura
+En el User.getInitialProps se usa   ctx.query.id
+
+npm build + npm start
 
 
 
