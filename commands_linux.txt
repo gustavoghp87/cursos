@@ -4,7 +4,9 @@ apt update / apt upgrade
 
 ver procesos: htop
 
-tab autocompleta
+uname -a && lsb_release -a
+
+(lsusb   y   lsusb -vv       tarjeta de red externa)
 
 ctrl + h [ver ocultos]
 ls, ls -al [tamaño, permisos], ls -l, ls -lh (permisos), ls ../, cd, cd ../, pwd, cd ~ [root], reset
@@ -79,3 +81,7 @@ ABRIR PUERTOS
 sudo iptables -L        lista
 sudo iptables -A INPUT -p tcp --dport 8005 -j ACCEPT
 sudo iptables -A INPUT -p tcp --dport 8005 -j DROP      cerrar
+
+
+------------------------------------------------------------------------------------------------------------------------------
+

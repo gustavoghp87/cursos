@@ -1,0 +1,22 @@
+
+apt update
+apt upgrade -y
+
+termux-setup-storage        dar acceso a las memorias interna y externa
+
+apt list                    todos los repositorios de aptitude
+apt install util-linux
+apt install util-linux coreutils vim python python2 ruby perl clang curl wget make openssl php zip unzip tar htop bison findutils git apr apr-util libtool pkg-config tmux termux-tools ncurses-utils ncurses postgresql termux-elf-cleaner openssl-tool
+apt install vim
+
+directorio típico:  /data/data/com.termux/files/home   y  /file/usr
+
+env                         lista las variables de entorno
+
+variable='contenido'        solo este formato
+alias escanear='nmap localhost'
+
+variables de entorno y alias permanentes: modificar /data/data/com.termux/files/usr/etc/bash.bashrc
+
+
+

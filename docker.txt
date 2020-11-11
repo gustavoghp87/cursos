@@ -16,6 +16,38 @@ docker exec -it mongodb bash    ls  mongo   comando dentro de una imagen
 	hace copias de los archivos generados por el contenedor fuera de él para que puedan usarse aunque se elimine el contenedor
 	y también se usa tal cual para copiar los datos cuando se cree otro contenedor
 
+#############################################################################################################################
+
+persistencia:
+
+docker volume create myfolder
+docker volume inspect myfolder
+docker volume rm myfolder
+docker volume ls     listar
+
+docker run -i -t -v /myfolder:/myfolder a7c /bin/bash
+
+docker run ... \
+  --mount source=myfolder,target=/root/myfolder \
+  [image]
+
+docker run -d \
+  --name devtest \
+  -v myvol2:/app \
+  nginx:latest
+
+In general, --mount is more explicit and verbose. The biggest difference is that the -v syntax combines all the options
+ together in one field, while the --mount syntax separates them.
+
+version: "3.8"
+services:
+  frontend:
+    image: node:lts
+    volumes:
+      - myapp:/home/node/app
+volumes:
+  myapp:
+
 
 #############################################################################################################################
 

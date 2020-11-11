@@ -502,169 +502,6 @@ En el render de App.js:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-								REACT NATIVE
-
-npm i -g react-native
-npm i -g react-native-cli
-
-
-Con EXPO:
-
-npm i -g expo-cli
-expo init proyecto      ... completar el json
-expo start              (adentro) localhost:19002, QR para visualizar en android (modo desarrollador activado), iOS con LAN
-
-Abrir el simulador desde Android Studio o XCode y sincroniza solo
-
-View: div
-Text: p
-Image source={{uri:"https..."}} o source={require('/assets/file.pgn')}: Img src
-<Button title="" onPress={this.funcion} />
-ImageBackground
-<TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-WebBrowser.openBrowserAsync('https:...');
-TextInput placeholderTextColor maxLength
-Ver video en la doc de expo y en github (react-native-video)
-ScrollView
-onChangeText: onChange
-
-import {FontAwesome, Ionicons} from '@expo/vector-icons';
-<FontAwesome name="user" size={20} />
-
-import {Platform} from 'react-native';      para dar órdenes distintas según android/ios
-const version = Platform.Version
-
-Platform.OS == 'ios'
-?
-<Text> Estamos en iSO {version} </Text>
-:
-<Text> Estamos en Android {version} </Text>
-
-y en StyleSheet.create({ container: { ...Platform.select({ 'ios': {backgroundColor: 'blue'}, 'android': {backgroundColor:'red'}})}})
-
-
-
-const styles = StyleSheet.create({ etc })   y luego style={styles.container} etc o style={[styles.stl1, styles.stl2]}
-Si hago container flex 1 con flexDirection "column" o "row" y después dos contenedores con flex 1 serán 50% cada uno y así
-
-
-
-Alert.alert("string")
-
-
-class functions {
-	variasFunciones() {...}
-}
-export default new functions()
-
-... y: import Functions from 'path/functions.js';
-
-
-
-<FlatList
-	data={this.state.unArray}
-	renderItem={ ({item}) => <Text> {item.name} </Text>  } horizontal={false}
-	ItemSeparatorComponent={this.separador}   que es una función que retorna un View con estilo height, width. backColor y marginVertical
-	ListEmptyComponent={ <Text> No hay elementos para mostrar </Text> }
-/>
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-React-base framework
-
-npm i native-base
-
-Hay que descargar el paquete KitchenSink de github y pegar partes en el proyecto propio
-https://github.com/GeekyAnts/NativeBase
-Necesitamos App.js y la carpeta Src (sin screens)
-
-(Otro:
-  git clone -b RN git@github.com:GeekyAnts/react-native-boilerplate-redux-typescript.git
-  npm i, react-native start (react-native run-ios   react-native run-android)
-)
-
-*******************************
-
-react-native link
-expo install expo-font
-
-En src/App.js están las importaciones de componentes
-Reemplazar el contenido por piezas de código de la documentación (problemas en setup.js)
-expo start
-
-npm i react-navigation
-import {createStackNavigator, createAppContainer} from 'react-navigation';
-
-const LoginNavigator = createStackNavigator({
-    Login: {
-	screen: Login(js importado)
-	navigationOptions: {title: "Un título"}
-    },
-    Register: {
-	screen: Register (,
-	navigationOption: {
-	    title: "Registrarse"
-	}
-    }
-}, {headerLayoutPreset: 'center');
-
-export default createAppContainer(LoginNavigator) 
-
-
-Cambio de página: this.props.navigation.navigate('Register');   en un método
-
-
-Ver https://forums.expo.io/t/expo-start-web-failed-to-compile-after-import-native-base/40826/4
-
-Veamos los cambios que la consola nos pide en nuestro proyecto:
-1) Constants en nuestro header ahora lo instalamos con expo install expo-constants e importamos con import Constants from ‘’expo-constants”
-2) Linear gradient en nuestro header lo instalamos con expo install expo-linear-gradient e importamos con import {LinearGradient} from ‘expo-linear-gradient’
-3) Font en nuestro setup ahora lo importamos como import * as Font from ‘expo-font’. Para instalar expo font usamos expo install expo-font
-4) Ejecutar npm audit fix te permitirá corregir vulnerabilidades y paquetes por agregar y actualizar. Preferiblemente instala native-base con ¡YARN!
-
-React Navigation 4:
-1) Ahora además de instalar react navigation, aquellos que usamos expo debemos instalar expo install react-navigation react-native-gesture-handler react-native-reanimated react-native-screens.
-2) StackNavigator debes instalarlo por individual: npm install react-navigation-stack o yarn add react-navigation-stack para aquellos que usan yarn. Y lo importamos de la siguiente manera: import { createStackNavigator } from 'react-navigation-stack';
-3) Debes instalar yarn add react-navigation-tabs e importar como import { createBottomTabNavigator } from 'react-navigation-tabs';
-
-
-
-Notificaciones:
-expo install expo-permissions
-buscar push-notification en la documentación de expo.io para copiar el código y pegar en async ComponentDidMount () {}
-generar el token
-instalar sdk
-
-Localización: expo install expo-location + código de la documentación
-let api = await API.sendNotificationPush(token);
-if (Constants.platform === "ios" {
-  Notification.addListener(notif => {Toast.show({ duration: 40000, text: `Título ${notif.data.title} Mensaje `${notif.data.msg}`, position: "bottom" }) })
-}
-
-
-<Text> {internet ? "Hay" : "No hay"} </Text>
-Para saber si está conectado a wifi installar   expo
-Netinfo.fetch().then( state =>
-  state.type
-  state.isConnected
-}
-
-
-
-
-apk: expo login (loguear), agregar lo que falte en app.json, expo build:android
-"sdkVersion": "39.0.0",
-"android": {
-    "package": "com.ghp.native-test",
-    "versionCode": 1,
-    "supportsTablet": true
-},
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	NEXT.JS
 
 npx create-next-app
@@ -695,9 +532,23 @@ En el User.getInitialProps se usa   ctx.query.id
 npm build + npm start
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+Manejo de cors
 
+// middlewares
+import cors from 'cors'
+app.use(cors())
+const whitelist = ['http://localhost:3000']
 
-
-
+export const corsOptions = {
+    'Access-Control-Allow-Credentials': true,
+    origin: function (origin:any, callback:any) {
+        if(whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
+}
 
