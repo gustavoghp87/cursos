@@ -1,5 +1,9 @@
 
 sudo iw dev    sudo iwconfig
+lsusb
+lsusb -t      driver
+lspci
+route
 
 sudo iw list   toda la info de la placa de red wifi
 Para aumentarle la potencia a la antena hay que configurarla para un país donde se permita: BZ, GY, NZ, VE   sudo iw reg get   para ver la actual
@@ -593,6 +597,8 @@ Spoofing total:
 En ettercap (ataque te quiero mucho) tocar p y tipear plugin "dns_spoof" dos veces
 	 (reinicia, para que tome los cambios)
 SALIR CON q, no con ctrl+c, y no quedan huellas
+
+dnsspoof -i wlan0
 
 
 SSL STRIP

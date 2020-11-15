@@ -1,0 +1,32 @@
+
+npm i -g windows-build-tools
+
+npm i electron
+script de desarrollo: electron index.js
+
+const { app, BrowserWindow } = require('electro')              app controla el ciclo de vida
+app.on('before-quit', () => {console.log("saliendo...")} )
+app.on('ready', () => {let win = new BrowserWindow(OPCIONES); win.on('closed', () => {win=null; app.quit()} ) })
+
+win.loadURL('https://devdocs.io/')   dentro del app.on('ready'... sirve para que simmplemente cargue la página como aplicación de escritorio
+win.loadURL(`file://${__dirname}/build/index.html`)
+
+
+npm r electron
+npm i electron-compile                       para usar ES6 desde Babel (mismo script)
+npm i electron-prebuilt-compile -D
+
+El nodemon de electron:
+import { enableLiveReload } from 'electron-compile'
+const devTools = () => { enableLiveReload() }
+(a ejecutar al principio de todo, solo si NODE_ENV=development)
+
+Instalar un inspect: 
+npm i electron-debug                         hacer también solo válido cuando NODE_ENV=development
+Se incorpora a la función devtools como      electronDebug({showDevTools:true})
+npm i devtron -D                             agrega funciones al inspector
+
+
+
+Sigue carpeta 3 video 4
+

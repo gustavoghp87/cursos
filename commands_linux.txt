@@ -1,3 +1,6 @@
+Ver apps: darktable (editor gráfico), kdinlive (editor de video)
+
+
 sudo su
 apt-get [administrador de paquetes (programas/actualizaciones/documentación) update / apt-get upgrade
 apt update / apt upgrade
