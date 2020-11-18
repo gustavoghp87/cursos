@@ -1,10 +1,17 @@
+yarn create electron-app my-app
+yarn start
+yarn run package     compila
+yarn make            crea instalador y compila
+yarn run publish     compila
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 npm i -g windows-build-tools
 
 npm i electron
 script de desarrollo: electron index.js
 
-const { app, BrowserWindow } = require('electro')              app controla el ciclo de vida
+const { app, BrowserWindow } = require('electron')              app controla el ciclo de vida
 app.on('before-quit', () => {console.log("saliendo...")} )
 app.on('ready', () => {let win = new BrowserWindow(OPCIONES); win.on('closed', () => {win=null; app.quit()} ) })
 
@@ -27,6 +34,94 @@ Se incorpora a la función devtools como      electronDebug({showDevTools:true})
 npm i devtron -D                             agrega funciones al inspector
 
 
+Frameworks:   photonkit   y   xel-toolkit
 
-Sigue carpeta 3 video 4
+
+
+sigue carpeta 04
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+BUSCADOR CTRL+f
+
+npm install electron-find
+
+En electron:
+globalShortcut.register('CommandOrControl+F', () => {
+    window.webContents.send('on-find');
+})
+
+y en
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+COMPILACIÓN de proyecto existente
+
+electron-forge   o   electron-packager   o   electron-builder
+
+npm i g electron-forge
+(requiere) yarn add electron-compile electron-squirrel-startup
+
+yarn add --dev @electron-forge/cli
+yarn electron-forge import
+
+electron-force import
+
+Si no se le da detalles sobre sistema y arquitectura (x64), toma los de la pc actual
+
+
+electron-forge package --platform=darwin --arch=x64
+electron-forge package --platform=win32 --arch=ia32
+electron-forge package --platform=linux --arch=x64
+
+
+
+También: ELECTRON WINDOWS INSTALLER
+npm i -g electron-packager
+electron-packager ./ --platform=win32 --arch=ia32 MisericordiaWeb     binarios de producción
+
+instalar también https://wixtoolset.org/releases/
+cuando haya terminado, cerrar ventana y agregar el path a las variables de entorno   C:\Program Files (x86)\WiX Toolset v3.11\bin
+verificar con "candle"
+
+yarn add -D electron-wix-msi exe-icon-extractor
+
+const { MSICreator } = require('electron-wix-msi')
+etc
+
+node build-installer.js
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+ÍCONOS
+.icns (mac), .png 128x128 (linux), .ico (windows),   ver iconverticons.com/online   usar .svg
+llamarlos main-ico.(...)
+ver el path en "electronPackagerConfig": {..., "icon": "./images/main-ico"}     ignorando extensión
+agregar    icon: path.join(__dirname, 'assets', 'icons', 'main-icon.png')       para que lo tome linux
+
+darwin: zip pero mejor dmg
+Personalización de instalación: electronInstallerDMG
+
+electron-forge make     corre package y hace el instalador
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+FIRMAR APLICACIONES
+Microsoft: Comprar certificado en symantec
+Apple: developer.apple.com/developer-id
+
+agregar "certificateFile": "./cert.pfx"   al electronInstallerConfig
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+ALTERNATIVA: CREAR INSTALADORES MEDIANTE UN SITIO Y QUE AVISE DE ACTUALIZACIONES
+Linux y Mac:   travis-ci.org      también pomodorize
+Windows:       appveyor.com
+ver ava y spectron
 

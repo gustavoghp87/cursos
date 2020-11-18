@@ -4,6 +4,7 @@ Ver apps: darktable (editor gráfico), kdinlive (editor de video)
 sudo su
 apt-get [administrador de paquetes (programas/actualizaciones/documentación) update / apt-get upgrade
 apt update / apt upgrade
+historial de comandos en esta terminal: history
 
 ver procesos: htop
 
@@ -87,4 +88,133 @@ sudo iptables -A INPUT -p tcp --dport 8005 -j DROP      cerrar
 
 
 ------------------------------------------------------------------------------------------------------------------------------
+
+
+
+PARTICIONES DE DISCO EN LINUX
+
+	En AWS se puede agregar un "volumen" a la "instancia" (tienen que estar en misma "zona" geográfica).
+	Conectar a máquina remotamente. Se monta nuevo disco "en caliente". Volumes, botón derecho, attach.
+
+Particiones primarias: máximo 4, o 3 + 1 extendida
+Partición extendida: contenedor de varias particiones lógicas
+Particiones lógicas: particiones dentro de una partición extendida
+Cada partición primaria y lógica necesita algún sistema de archivos (formato)
+
+sudo su
+dmesg               [leer]
+fdisk -l
+fdisk /dev/xvdf     [editar el disco xvdf]
+m                   [ayuda]
+n                   [nueva]
+
+	primaria:        (sale con formato por default)
+	p
+	1                   [1-4]
+	[enter]             [primer sector]
+	+20G                [segundo sector]
+	
+	extendida:       (sale con formato por default)
+	e
+	2                   [1-4]
+	[enter]             [primer sector]
+	+40G                [segundo sector]
+	
+	lógica:          (sale con formato por default)
+	l
+	5                   [ >4 ]
+	[enter]             [primer sector]
+	[enter]             [segundo sector, ocupa todo la part extend]
+
+p                   [ver particiones]
+m ... l             [tipos de particiones admitidas]
+
+Elegir pre-formato...
+t                   [cambiar una partición]
+1                   [selección de partición]
+L                   [ver listado]
+83                  [linux]
+
+d (+ num)           [eliminar una]
+
+w                   [aceptar, o q salir]
+
+FORMATEAR
+fdisk -l/dev/xvdf
+mkfs                     [programa]
+mkfs.vfat /dev/xvfa1     [windows fat32, USB hasta Windows XP]
+mkfs.ext3 /dev/xvdf5     [NTFS se usa desde Server]
+mkfs.ext4 /dev/xvdf6     [EXT = Linux]
+mkfs.xfs /dev/xvdf       [otros: XFS recomendado para MongoDB, ZFS]
+mkfs.xfs -f /dev/xvd6
+mkfs.ext4 /dev/xvdf3
+
+MONTAR
+Manualmente:
+	crear directorios /tmp/xvdf1 y /tmp/xvdf3
+	mount /dev/xvdf1 /tmp/xvdf1
+	mount /dev/xvdf3 /tmp/xvdf3
+	df -h
+	umount /tmp/xvdf3/       [primero salir cd ../]
+	umount /tmp/xvdf1/
+
+Automáticamente:
+	vim /etc/fstab ...
+	/dev/xvdf3	/var_new	ext4	defaults,discard	0 0   [cargue al iniciar el sistema]
+	mkdir /var_new
+	mount /var_new/
+	df -h
+
+SWAP
+Partición swap: asiste a la memoria RAM cuando escasea
+Lo óptimo es aumentar la RAM pero si escasea se hacen 4 o 5 GB de swap, o =RAM
+En servidores no conviene usar: más swap, menos velocidad en bases de datos
+free
+free -m
+apt-get install htop
+htop
+
+crear:  fdisk /dev/xvdf
+	t
+	L
+	5
+	82
+	w
+	umount /var_new
+	w
+	swapon
+	mkswap /dev/xvdf5
+	[copiar el Id y pegarlo en fstab	swap	sw	0 0]
+	htop
+	reboot
+
+swapoff /dev/xvdf5 ... o quitarla de fstab
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+IMÁGENES DE DISCOS
+fdisk -l
+cd /tmp/
+mkdir xvdf6
+mount /dev/xvdf6 xvdf6/
+cp -ra /var /tmp/xvdf6/var     [copiar todo de forma recursiva, TODO]
+du -sh
+df -h
+Sacar esa imagen, primero desmontar partición
+umount xvdf6/
+(ya estaba mount /var_new/)
+cd /var_new/
+dd if=/dev/xvdf6 of=/var_new/backup_xvdf6 bs=1M    [imagen bit a bit]
+
+ssh amazon1
+sudo su
+df -h   [en /home/ubuntu]
+
+disco rayado: dd if=/dev/cdroom of=/dev/ISO bs=1M   [o algo así]
+
+modprobe loop
+mkdir /tmp/iso
+
+seguir**
 

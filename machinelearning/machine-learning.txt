@@ -1,0 +1,33 @@
+anaconda.org   versión de python 3, lo agregué al path...
+
+Desde el prompt de anaconda, navegar hasta carpeta de trabajo
+jupyter notebook  (se puede usar desde el sitio también)
+  -->  crea app y abre localhost   ->   new, python3
+
+pip install tensorflow
+pip install sklearn
+
+•	Numpy   (matrices, cálculo)
+•	Pandas
+•	Matplotlib
+•	Scikit-learn
+
+
+
+Numpy
+np.array([1,2])    np.arange(10) como range(0,10)   np.zeros((2,3)) matriz de 2x3 de ceros   np.ones   linespace   a5   shape
+display(variable) imprime
+
+
+
+
+
+
+CHATBOT
+
+Como administrador:
+pip install chatterbot
+pip install chatterbot_corpus
+
+pip3 install chatterbot==1.0.4    si no
+

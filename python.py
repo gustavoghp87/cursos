@@ -1,12 +1,16 @@
 # Recordar:   sudo apt install python3-pip
-# pip install virtualenv     virtualenv venv   (para crear)        venv\Scripts\activate     venv\Scripts\deactivate.bat
+# pip install virtualenv     virtualenv venv   (para crear)
+# Windows:   venv\Scripts\activate       venv\Scripts\deactivate
+# Linux:     source venv/bin/activate    source venv/bin/deactivate
 # python -m pip install -U pip
 # requirements:  Django==3.0.6  etc          "venv" siempre es un nombre personalizado
 # virtualenv venv --python=python3           pip freeze   imprime las librerías instaladas en el venv
 # pip freeze > requirements       imprime en archivo (.txt para muchos)             pip3 install -r requirements
 # django trae su servidor de prueba:   python index.py runserver 0.0.0.0:8080
-
 # npm install --global --production windows-build-tools node-gyp
+
+
+#################################################################################################################################
 
 x = 5
 y = 7
