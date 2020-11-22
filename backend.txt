@@ -343,18 +343,3 @@ GRUB
 
 
 -----------------------------------------------------------------------------------------------------------------------------------
-
-PASAR DOMINIO A HTTPS
-
-https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx
-
-sudo apt-get update
-sudo apt-get install software-properties-common
-sudo add-apt-repository universe
-sudo add-apt-repository ppa:certbot/certbot
-sudo apt-get update
-
-sudo apt-get install certbot python-certbot-nginx
-sudo certbot --nginx [o manualmente: sudo certbot certonly --nginx]
-
-renovar ... sudo certbot renew --dry-run

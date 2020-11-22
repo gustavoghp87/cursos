@@ -1,0 +1,27 @@
+anaconda.org   versión de python 3, lo agregué al path...
+
+Desde el prompt de anaconda, navegar hasta carpeta de trabajo
+$ jupyter notebook       (se puede usar desde el sitio también)
+ -->  crea app y abre localhost:8888/tree   ->   new, python3
+
+
+Entorno virtual en Anaconda:   conda create -n my-venv
+Los crea en: environment location: C:\Users\[usuario]\anaconda3\envs\my-env
+Activa:    conda activate my-env
+
+pip install tensorflow
+pip install sklearn
+
+Numpy (matrices, cálculo), Pandas, Matplotlib, Scikit-learn
+
+
+#################################################################################################################################
+
+CHATBOT
+
+Como administrador:
+pip install chatterbot
+pip install chatterbot_corpus
+
+pip3 install chatterbot==1.0.4    si no, requiere AVX
+

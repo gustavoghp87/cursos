@@ -1,17 +1,18 @@
 WINDOWS
 
-################################## ATAJOS ##############################################
+################################## ATAJOS #######################################################################################
 
 	Windows + v   	     [Historial de Portapapeles (requiere habilitación) ]
 	Windows + .   	     [Emoticones y símbolos]
 	Windows + + 	     [Lupa]
 	Windows + Alt + s    [captura de pantalla parcial]
 
-################################# COMANDOS #############################################
+################################# COMANDOS ######################################################################################
 
 diskpart / list disk (o list volume) / select disk [n°] 
 list partition
 select disk [n°] / clean / create partition primary / select partition [n] / active / format fs=NTFS
+
 
 net users [usuarios]
 net users ghp21
@@ -23,6 +24,10 @@ devmgmt.msc [adm de dispositivos]
 dxdiag      [vista de sistema]
 
 ipconfig    [interfaces de red], ipconfig /release, ipconfig /renew
+netstat
+netstat -a
+netstat -ar
+
 arp -a      [tabla ARP]
 
 Claves wifi almacenadas:
@@ -32,7 +37,7 @@ osk   [teclado completo en pantalla]
 
 
 
-################################# WINDOWS LITE #############################################
+################################# WINDOWS LITE ##################################################################################
 
 Descargar el .iso, descomprimirlo, abrir shell como admin dentro de /sources y usar:
 

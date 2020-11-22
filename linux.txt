@@ -6,9 +6,16 @@ apt-get [administrador de paquetes (programas/actualizaciones/documentación) up
 apt update / apt upgrade
 historial de comandos en esta terminal: history
 
-ver procesos: htop
+pstree -p                           árbol de procesos
+ps
+ps -a                               u de usuario actual
+ps -r                               running processes
+ps -T                               on this Terminal
+ps -fea                             historial de procesos
+kill [número de proceso]            kill -9 [número de proceso]    forzar
+ver procesos en dinámico: htop
 
-uname -a && lsb_release -a
+uname -a && lsb_release -a          datos del sistema
 
 (lsusb   y   lsusb -vv       tarjeta de red externa)
 
