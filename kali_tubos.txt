@@ -1,12 +1,11 @@
-
-|NETCAT: Redirecciones y Tuberías|
-
 Archiva el resultado del comando en un fichero:
 ls > archivo
 echo "hola" > archivo                      [sobreescribe]
 echo "hola" >> archivo                     [agrega al final]
 ls > archivo ; echo "hola" >> archivo      [agrega al final]
 
+
+|NETCAT: Redirecciones y Tuberías|
 
 nc -l -v -p 8080
 
@@ -54,8 +53,7 @@ Desventaja de Netcat: todo va en texto plano, queda registrado, lo ven el firewa
 ... y todo va cifrado
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+#################################################################################################################################
 
 SECURE SHELL
 

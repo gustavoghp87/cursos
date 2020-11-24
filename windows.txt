@@ -7,6 +7,7 @@ WINDOWS
 	Windows + + 	     [Lupa]
 	Windows + Alt + s    [captura de pantalla parcial]
 
+
 ################################# COMANDOS ######################################################################################
 
 diskpart / list disk (o list volume) / select disk [n°] 
@@ -46,4 +47,19 @@ DISM /export-image /sourceimagefile:install.esd /sourceindex:1 /destinationimage
 
 Después abrir WinToolkit.exe, opciones avanzadas, components remover, seleccionar install.wim, doble click
 Usar el constructor de isos y elegir la carpeta /windows descomprimida
+
+
+################################# SSH Y SECURE COPY PROTOCOL ####################################################################
+
+Windows: por default trae solo el cliente.
+Aplicaciones/Características Opcionales/Agregar/Instalar
+Iniciar desde Servicios (Aplicaciones)
+El password es el de la cuenta Microsoft
+
+
+scp
+scp C:\Users\ghp21\Desktop\file.txt ubuntu@192.168.0.23:/home/ubuntu/Desktop
+scp -r C:\Users\ghp21\Desktop ubuntu@192.168.0.23:/home/ubuntu/Desktop
+
+https://canyouseeme.org/
 
