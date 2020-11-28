@@ -1,0 +1,105 @@
+let a: number = 4;
+let b: string = "na";
+let c: boolean = true;
+let d: object = {};
+let e = [a, b, c, d, e];
+let f: boolean[] = [true, c]            [arreglo solo de booleanos, etc]
+let g: any[] = [1, "bla", {}, [], true]
+
+let h: [String, number];    // tuple
+let i: string | number;
+
+function miFuncion (variable1: string, variable 2: boolean | string): boolean {
+	...
+	return true;
+}
+
+Typescript permite crear tipos de arrays personalizados:
+Crear una carpeta interface en app y crear archivo user.ts
+
+
+Interface: define la estructura de un objeto (como Mongoose)
+
+export interface User {
+    nick: string;
+    subnick?: string;             con interrogación es opcional
+    age?: number;
+    email: string;
+    friend: boolean;
+    uid: any;
+}
+
+let usuario1: User = { nick: nombre, subnick... }
+ y se pueden crear arrays de tipo User... let users: User[] = [myUser, ...];
+
+La interface declarada se puede reutilizar para la definición de nuevas variables:
+	let otraVariable: IUser = { ... : "...", etc }
+
+También en las funciones:
+    function laFuncion (unObjeto: {title:string; text:string; year:number}) { ... }
+
+También en los constructores de las clases y en los parámetros.
+
+En React:    useState<string>('inicial')
+
+
+#################################################################################################################################
+
+(npm i typescript -g)
+npm i typescript -D
+npx tsc --init       (o  npx tsconfig.json)    para el archivo de configuración
+
+tsconfig.json:
+
+  "target": "ES2020",
+  "module": "commonjs",
+  "outDir": "./dist",
+  "rootDir": "./src",
+  "strict": true,
+  "moduleResolution": "node",
+
+agregar por fuera  "include": ["src"], "exclude": ["node_modules"]          o "./src/**/*"
+
+crear carpeta src   y   index.ts + app.ts
+
+COMPILAR:   npx tsc              genera dist/app.js   y   dist/index.js   etc
+
+
+#################################################################################################################################
+
+NODEMON
+
+Comandos:
+    "build": "tsc"
+    "watch": "tsc -w",                    w de watch mode
+    "dev": "nodemon build/index.js"
+
+
+npm i ts-node          y crear archivo de configuración    nodemon.json
+
+{
+    "watch": ["src"],
+    "ext": "ts",
+    "ignore": ["src/**/*.spec.ts"],
+    "exec": "ts-node ./src/index.ts"
+}
+
+  "build": "tsc ",
+  "start": "npm run build && node dist/index.js",
+  "dev": "nodemon src/index.ts"
+
+usar "dev": "concurrently /"tsc -w/" /"nodemon dist/index.js/""     tcs -w compila (vigilante) y nodemon ejecuta
+npm i @types/express @types/morgan -D @types/mongoose
+const app: Application = express();
+
+
+#################################################################################################################################
+
+React:
+    npx create-react-app nombredelaapp --typescript
+    npx create-react-app nombredelaapp --template typescript
+    yarn create react-app my-app --template typescript
+
+
+#################################################################################################################################
+

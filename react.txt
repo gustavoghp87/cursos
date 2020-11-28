@@ -9,7 +9,8 @@ array.spice(i, 1)   remueve el del puesto 1
 li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
 Imagen circular: borderRadius:'50%'
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#################################################################################################################################
 
 REACT: agregar    "homepage": ".",    al package.json del cliente antes de npm run build
 
@@ -71,44 +72,6 @@ res.set("Set-Cookie", "HttpOnly;Secure;SameSite=Strict")
 const cookie = "user=ghp@com; samesite=strict/lax/none; secure"
 res.setHeader("set-cookie", [cookie])
 res.send("ok")
-
-
-
-TYPESCRIPT:
-(npm i typescript -g)
-npm i typescript -D
-npx tcs --init       (o  npx tsconfig.json)    para el archivo de configuración
-
-React: yarn create react-app my-app --template typescript
-
-  "target": "ES2020",
-  "module": "commonjs",
-  "outDir": "./dist",
-  "rootDir": "./src",
-  "strict": true,
-  "moduleResolution": "node",
-
-agregar por fuera  "include": ["src"], "exclude": ["node_modules"]          o "./src/**/*"
-
-crear carpeta src   y   index.ts + app.ts
-npx tsc                  de nuevo, genera dist/app.js   y   dist/index.js
-
-npm i ts-node          y crear archivo de configuración    nodemon.json
-
-{
-    "watch": ["src"],
-    "ext": "ts",
-    "ignore": ["src/**/*.spec.ts"],
-    "exec": "ts-node ./src/index.ts"
-}
-
-  "build": "tsc ",
-  "start": "npm run build && node dist/index.js",
-  "dev": "nodemon src/index.ts"
-
-usar "dev": "concurrently /"tsc -w/" /"nodemon dist/index.js/""     tcs -w compila (vigilante) y nodemon ejecuta
-npm i @types/express @types/morgan -D @types/mongoose
-const app: Application = express();
 
 
 Fetch para el Next.js: isomorphic-fetch, incluir es6-promise, usar función getInitialProps
@@ -194,7 +157,7 @@ Con un plugin se puede exportar el css por separado
 
 CREAR PROYECTO
 En carpeta y desde terminal,
-	npx create-react-app nombredelaapp    [necesidad de tener instalado jode.js]
+	npx create-react-app nombredelaapp
 	npx create-react-app nombredelaapp --typescript
 	npx create-react-app nombredelaapp --template typescript
 

@@ -1,16 +1,25 @@
 ANGULAR
 
-tener instalado nodejs
-
 npm install -g @angular/cli
 
-[en carpeta] ng new name-app
-
+ng new name-app
 cd name-app
-
 ng serve --open
 
-[desconectando con ctrl c] ng generate component login/home/profile/conversation/menu
+"build": "ng build",
+
+ng g c components/navigation              generate component
+ng g c components/game-form
+ng g c components/game-list
+
+ng g s services/games                     generate service
+
+
+#################################################################################################################################
+
+EJERCICIO MSN
+
+ng generate component login/home/profile/conversation/menu
 	[un component por cada "página" de la app, aunque sea app de una vista sola]
 
 --------------------------------------------------------------------------------------------------------------------------------------------
@@ -18,7 +27,7 @@ ng serve --open
 (Si quisiera hacer login la página de inicio: reemplazar AppComponent por LoginComponent en el bootstrap de app.module.ts
  y <app-root> por <app-login> en index.html)
 
-Crear routes (ver screenshot) en app.module.ts y agregar RouterModule.forRoot(appRoutes) al imports bajo BrowserModules
+Crear routes en app.module.ts y agregar RouterModule.forRoot(appRoutes) al imports bajo BrowserModules
 
 Reemplazar el contenido de app.component.html por <router-outlet></router-outlet>, comprobar desde browser con localhome:4000/home etc
 Lo que se agregue en este archivo va a estar presente en todos los componentes
@@ -63,18 +72,8 @@ que se va a usar en home.component.ts en el constructor como let usuario1: User 
  y se pueden crear arrays de tipo User... let users: User[] = [myUser, ...];
 La interface declarada se puede reutilizar para la definición de nuevas variables:    let otraVariable: IUser = { ... : "...", etc }
 
-También en las funciones:
-function laFuncion (unObjeto: {title:string; text:string; year:number}) { ... }
-También en los constructores de las clases y en los parámetros.
-
-
-En React:
- useState<string>('inicial')
-
-
 Se crean 5 arrays User en el constructor de home.component.ts y arriba del constructor ... friends: User[];
  y debajo de los User en el constructor ... this.friends = [usuario1, usuario2, ..., usuario5];
-
 
 Se los va a usar en home.component.html. Se hace una directiva mediante una etiqueta:
 <p *ngFor="let user of friends">             recorre cada objeto en el array
@@ -128,7 +127,6 @@ Variable global ... friendId:any;
 		this.friendId = this.activatedRoute.snapshot.params['uid'];
 }
 
-sigue el 6 de carpeta 3
 
 
 Así como está, home tiene los usuarios pero conversation no; para no repetir el código, se llevan los usuarios a un servicio común
@@ -137,7 +135,9 @@ Crear carpeta services en app y agregar uno por consola : ng generate service se
 Llevamos a user.service.ts los arrays de los usuarios y el array friends, y se crea un método get que retorne el arreglo
 Se declara friends: User[] en home.component.ts, se inyecta el servicio en el constructor: (private userService: UserService)
  y se llama desde el constructor this.friends = userService.getFriends();
+
 Reiniciar servicio ng serve
+
 conversation.component.ts va a definir friendId, friends y friend y usar los métodos params y find, ver captura
 
 Pipes: 

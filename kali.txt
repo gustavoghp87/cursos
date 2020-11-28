@@ -151,6 +151,7 @@ ESCANEAR SEGMENTO DE RED
 netdiscover          [escaneo de conexiones que están en el mismo segmento, enviando paquetes ARP, todo el segmento]
 netdiscover -i eth0  [i de interface]
 netdiscover -i wlan0
+netdiscover -r 192.168.0.0/24    range
 
 arp-scan -l -I eth0  [otro escaneo, -l para locales]
 
@@ -189,7 +190,7 @@ NMAP
 nmap -Pn -p41-50 -sU 192.168.20.23   udp, rango de puertos (abierto o filtrado, solo está seguro cuando hay rechazo), con UDP analiza todos y no solo los 1000 carac
 nmap -Pn -p22 -sT 192.168.20.23   saludo TCP de 3 vías
 
-nmap -sn 192.168.20.20-25
+nmap -sn 192.168.20.20-25    s de scan, usa el protocolo ICMP o sea manda pings como un radar
 nmap -sn 192.168.20.0/24
 nmap -sP 192.168.57.0/27   [escaneo de red entera o segmento para ver qué equipos están conectados]
 	hace un paquete (Ping) de broadcast para ver quién responde (ver ipcalc en google)

@@ -7,11 +7,23 @@
 # Linux:     source venv/bin/activate    deactivate
 # requirements:  Django==3.0.6  etc
 # virtualenv venv --python=python3           
-# pip freeze   imprime las librerías instaladas en el venv
+# pip freeze    imprime las librerías instaladas en el venv, también    pip list
 # pip freeze > requirements       imprime en archivo (.txt para muchos)             pip install -r requirements
 
 # django trae su servidor de prueba:   python index.py runserver 0.0.0.0:8080
 # npm install --global --production windows-build-tools node-gyp
+
+
+# anaconda permite elegir la versión de python
+# conda es el administrador de paquetes de anaconda y entorno virtual
+# conda create --name proyecto1 python=3.5              conda activate proyecto1     conda deactivate   no hace falta salir para cambiar a otro
+# listar los entornos:    conda env list    conda env remove -n proyecto1
+# conda install numpy     trae del repositorio de anaconda, si no está el que se busca
+# conda config --show channels
+# conda install --channel conda-forge [librería que no está en el repo de anaconda]          ver conda-forge.org
+# conda config --add channels conda-forge     conda config --show channels
+# conda config --get channels   da las prioridades de repositorias
+# conda config --remove channels conda-forge
 
 
 #################################################################################################################################

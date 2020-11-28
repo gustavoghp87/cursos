@@ -1,16 +1,16 @@
 <?php
 
-session_start();
+    session_start();
 
-$conn = mysqli_connect(
-    'localhost',
-    'root',
-    '',
-    'php_mysql_crud'
-);
+    $conn = mysqli_connect(
+        'localhost',
+        'root',
+        '',
+        'php_mysql_crud'
+    );
 
-// if (isset($conn)) {
-//     echo "DB connected";
-// }
+    if (isset($conn)) {
+        echo "DB connected";
+    }
 
 ?>

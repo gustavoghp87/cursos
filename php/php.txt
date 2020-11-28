@@ -73,3 +73,8 @@ systemctl reload nginx
 SIN SERVIDOR
 php -S localhost:puerto   estando en la carpeta root del sitio
 
+
+#################################################################################################################################
+
+Modificar tabla:   created_at datetime NOT NULL DEFAULT NOW();
+
