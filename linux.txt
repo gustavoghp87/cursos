@@ -1,5 +1,7 @@
 Ver apps: darktable (editor gráfico), kdinlive (editor de video)
 
+Reparación de falla en kernel "initramfs": blkid   help   fsck -c -y /dev/mapper/ubuntu--vg-root   (etc)
+
 
 sudo su
 apt-get [administrador de paquetes (programas/actualizaciones/documentación) update / apt-get upgrade
