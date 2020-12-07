@@ -1,11 +1,15 @@
 nmtui
 sudo iw dev    sudo iwconfig
-lsusb
-lsusb -t      driver
-lspci
+lspci         dispositivos conectados a PCI
+lsusb         dispositivos conectados a USB
+lsusb -t      drivers
 route
 
+deviwiki.com    www.acrylicwifi.com
+
 metadatos: metashield, elevenpaths.com
+
+ver wifite
 
 sudo iw list   toda la info de la placa de red wifi
 Para aumentarle la potencia a la antena hay que configurarla para un país donde se permita: BZ, GY, NZ, VE   sudo iw reg get   para ver la actual

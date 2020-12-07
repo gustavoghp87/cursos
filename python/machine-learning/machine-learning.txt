@@ -19,7 +19,6 @@ Numpy (matrices, cálculo), Pandas, Matplotlib, Scikit-learn
 
 CHATBOT
 
-Como administrador:
 pip install chatterbot
 pip install chatterbot_corpus
 
