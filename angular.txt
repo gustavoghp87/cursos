@@ -7,12 +7,115 @@ cd name-app
 ng serve --open
 
 "build": "ng build",
+ng build --prod
 
-ng g c components/navigation              generate component
-ng g c components/game-form
-ng g c components/game-list
 
-ng g s services/games                     generate service
+#################################################################################################################################
+
+COMPONENTES
+
+ng g c components/navbar                  generate component
+
+Las variables y funciones a usarse dentro de .html tienen que estar en archivo.component.ts dentro de la clase:
+
+@Component({
+  selector: 'app-game-form',                       nombre del componente, a ser declarado en app.module.ts
+  templateUrl: './game-form.component.html',
+  styleUrls: ['./game-form.component.css']
+})
+export class GameFormComponent [implements OnInit] { ... }             el OnInit es como el useEffect ?
+
+
+Uso de variables entre doble llaves {{ var }}
+
+Directivas:
+	<input [(ngModel)]="game.title" #newUser>            todo el input se controla con newUser .value .focus() etc
+	<button (click)="edit ? updateGame() : saveNewGame()" ...>
+	<img [src]="game.image == '' ? '/assets/noimage.png' : game.image">
+	<form (submit)="metodo()">    que el método return false;   para prevend default
+	<div *ngFor="let post of posts"> <h3> {{post.title}}
+
+ngModel cumple las funciones de hook useState
+
+
+app.components.html:
+
+<app-navigation></app-navigation>
+
+<div class="container p-4">
+    <router-outlet></router-outlet>
+</div>
+
+<app-footer></app-footer>
+
+
+#################################################################################################################################
+
+SERVICIOS
+
+ng g s services/games                     generate service, son declarados en app.module.ts
+
+import { HttpClient } from '@angular/common/http';    agregar el HttpClientModule a los import de app.module.ts
+
+constructor (private httpClient: HttpClient) {}
+
+Los métodos reciben url y return this.httpClient.get(url)
+
+Se importa en los componentes y se declara en los constructores
+
+{this.dataService.getData(url).subscribe(data=>
+
+
+#################################################################################################################################
+
+NAVEGACIÓN
+
+import { RouterModule, Route } from '@angular/router           en app.module.ts
+
+const routes:Route[] = [
+	{path: '', component: FirstComponent},
+	{path: 'about', component: AboutComponent}
+]
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+
+Reemplazar el contenido de app.component.html con <router-outlet></router-outlet>
+
+Agregar RouterModule.forRoot()
+
+Colocar la navbar en app.component.html
+<a routerLink="/">
+<a routerLink="/section" routerLinkActive="active">
+
+
+this.router.navigate(['/games'])
+
+Capturar id en url:
+	ngOnInit() {
+		const params = this.activatedRoute.snapshot.params;
+		if (params.id) this.gameService.getGame(params.id).subscribe(res => console.log(res))
+
+
+#################################################################################################################################
+
+app.module.ts:
+@NgModule({
+  declarations: [
+    [...componentes]
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
+  ],
+  providers: [
+    GamesService                       servicios
+  ],
+  bootstrap: [AppComponent]            (el principal)
+})
 
 
 #################################################################################################################################
