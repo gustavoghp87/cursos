@@ -53,17 +53,26 @@ app.components.html:
 
 SERVICIOS
 
-ng g s services/games                     generate service, son declarados en app.module.ts
+ng g s subcarpeta/facturar                     generate service
 
-import { HttpClient } from '@angular/common/http';    agregar el HttpClientModule a los import de app.module.ts
+En app.module.ts:
+	Declararlos en providers (también importar el HttpClientModule)
 
-constructor (private httpClient: HttpClient) {}
+En el servicio:
+	import { HttpClient } from '@angular/common/http';
+	constructor(private httpClient: HttpClient) {
+		console.log("Service facturar working");
+	}
+	facturar() {return this.httpClient.post(this.url, {}) }
+
+En el componente:
+	En el constructor del componente que va a usar el servicio:  (private facturarService:FacturarService) {}
+	facturar() { this.facturarService.facturar().subscribe((response)=>console.log(response)) }
+
 
 Los métodos reciben url y return this.httpClient.get(url)
 
-Se importa en los componentes y se declara en los constructores
-
-{this.dataService.getData(url).subscribe(data=>
+{this.servicio.metodo(url).subscribe(data => etc)
 
 
 #################################################################################################################################
@@ -96,6 +105,19 @@ Capturar id en url:
 	ngOnInit() {
 		const params = this.activatedRoute.snapshot.params;
 		if (params.id) this.gameService.getGame(params.id).subscribe(res => console.log(res))
+
+
+#################################################################################################################################
+
+MATERIAL
+
+ng add @angular/material            hace todo
+
+En app.module.ts:
+	import { MatSliderModule, etc } from '@angular/material/slider';
+	en imports: MatSliderModule, etc
+En .html:
+	<mat-slider min="1" max="100" step="1" value="1"></mat-slider>
 
 
 #################################################################################################################################

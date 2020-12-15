@@ -1,4 +1,6 @@
 Ver apps: darktable (editor gráfico), kdinlive (editor de video)
+Ver sistema:   sudo apt-get install screenfetch
+Temp:          cat /sys/class/thermal/thermal_zone*/temp
 
 Reparación de falla en kernel "initramfs": blkid   help   fsck -c -y /dev/mapper/ubuntu--vg-root   (etc)
 

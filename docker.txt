@@ -1,3 +1,39 @@
+docker run hello-world                              descarga y ejecuta la imagen hello-world
+docker images                                       lista imágenes descargadas
+
+docker search ubuntu                                evita ir al sitio
+
+No es lo mismo imagen que contenedor. Los contenedores son procesos o instancias que corren dentro de una imagen.
+
+docker run ubuntu echo 'hello world'                ejecuta desde bash de ubuntu y termina
+docker run -it ubuntu bash                          ejecuta bash de ubuntu iterativamente o sea se queda esperando órdenes
+
+docker ps                                           lista los procesos en ejecución
+docker ps -a                                        lista el histórico de procesos
+docker ps -aq                                       lista los id de los procesos en historial
+docker images -aq                                   lista los id de las imágenes instaladas
+docker rm [id o name]                               con las primeras 3 letras del id alcanza, con --name nombre agrega nombre en vez del aleatorio
+docker stop [id o name]
+docker rm $(docker ps -aq)                          elimina todos los procesos
+docker stop $(docker ps -aq)                        detiene todos los procesos
+docker rm [proceso] .f                              fuerza a eliminar aunque esté corriendo
+docker rmi mysql                                    remueve imagen
+docker rmi $(docker images -aq)                     pero elimina las que no se estén utilizando
+
+docker pull nginx
+docker run nginx
+docker run -p 80:80 nginx
+docker run -p 3000:80 nginx                         en el 3000 lo que también sale por el 80
+docker run -p 80:80 -d nginx                        ditash, deamon
+docker run -p 80:80 -p 3000:80 -p 4000:80 -d nginx
+
+docker run -p 80:80 -d httpd                        apache2 (si no está lo instala)
+
+docker run -d -p 3306:3306 --name myDB mysql
+docker run -d -p 3307:3306 --name myDB -e MYSQL_ROOT_PASSWORD=contraseña mysql
+
+
+#################################################################################################################################
 
 Crear imagen desde Dockerfile: docker build . -t [nombreParaImagen]         t de tag, --name para contenedores
 Variables de entorno: docker run -it -e key="asdkfnasdnasdf -e token="ljsdnflasdnfaksdv" [nombreDeImagen]          --name nombre le da un nombre al ps
@@ -16,6 +52,7 @@ docker exec -it mongodb bash    ls  mongo   comando dentro de una imagen
 	hace copias de los archivos generados por el contenedor fuera de él para que puedan usarse aunque se elimine el contenedor
 	y también se usa tal cual para copiar los datos cuando se cree otro contenedor
 
+
 #############################################################################################################################
 
 persistencia:
@@ -23,7 +60,7 @@ persistencia:
 docker volume create myfolder
 docker volume inspect myfolder
 docker volume rm myfolder
-docker volume ls     listar
+docker volume ls                 listar
 
 docker run -i -t -v /myfolder:/myfolder a7c /bin/bash
 
@@ -80,40 +117,6 @@ enviarle la imagen:
 	docker logs e6aefe73a885
 
 https://hub.docker.com
-
-docker run hello-world                              descarga y ejecuta la imagen hello-world
-docker images                                       lista imágenes descargadas
-
-docker search ubuntu                                evita ir al sitio
-
-No es lo mismo imagen que contenedor. Los contenedores son procesos o instancias que corren dentro de una imagen.
-
-docker run ubuntu echo 'hello world'                ejecuta desde bash de ubuntu y termina
-docker run -it ubuntu bash                          ejecuta bash de ubuntu iterativamente o sea se queda esperando órdenes
-
-docker ps                                           lista los procesos en ejecución
-docker ps -a                                        lista el histórico de procesos
-docker ps -aq                                       lista los id de los procesos en historial
-docker images -aq                                   lista los id de las imágenes instaladas
-docker rm [id o name]                               con las primeras 3 letras del id alcanza, con --name nombre agrega nombre en vez del aleatorio
-docker stop [id o name]
-docker rm $(docker ps -aq)                          elimina todos los procesos
-docker stop $(docker ps -aq)                        detiene todos los procesos
-docker rm [proceso] .f                              fuerza a eliminar aunque esté corriendo
-docker rmi mysql                                    remueve imagen
-docker rmi $(docker images -aq)                     pero elimina las que no se estén utilizando
-
-docker pull nginx
-docker run nginx
-docker run -p 80:80 nginx
-docker run -p 3000:80 nginx                         en el 3000 lo que también sale por el 80
-docker run -p 80:80 -d nginx                        ditash, deamon
-docker run -p 80:80 -p 3000:80 -p 4000:80 -d nginx
-
-docker run -p 80:80 -d httpd                        apache2 (si no está lo instala)
-
-docker run -d -p 3306:3306 --name myDB mysql
-docker run -d -p 3307:3306 --name myDB -e MYSQL_ROOT_PASSWORD=contraseña mysql
 
 
 Automatizar: docker ps (por ejemplo) --format="ID\t{{.ID}}"     donde la \t es para tabulación, imprime el ID de cada contenedor
