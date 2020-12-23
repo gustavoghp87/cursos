@@ -1,10 +1,17 @@
 
-								REACT NATIVE
+							REACT NATIVE
 
 npm i -g react-native
 npm i -g react-native-cli
 
 elements:   https://reactnativeelements.com/docs
+
+sin expo: npx react-native upgrade
+
+Ver reactnativeelements.com
+
+
+#################################################################################################################################
 
 Con EXPO:
 
@@ -79,7 +86,7 @@ export default new functions()
 />
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#################################################################################################################################
 
 React-base framework
 
@@ -103,10 +110,13 @@ En src/App.js están las importaciones de componentes
 Reemplazar el contenido por piezas de código de la documentación (problemas en setup.js)
 expo start
 
---------------------------------------------------------------------------------------------------------------------
 
-npm i react-navigation
-import {createStackNavigator, createAppContainer} from 'react-navigation';
+#################################################################################################################################
+
+NAVIGATION
+
+npm i react-navigation        npm i @react-navigation/native                 ver documentación
+import {createStackNavigator, createAppContainer} from 'react-navigation';   ver más abajo
 
 const LoginNavigator = createStackNavigator({
     Login: {
@@ -124,7 +134,9 @@ const LoginNavigator = createStackNavigator({
 export default createAppContainer(LoginNavigator) 
 
 
-Cambio de página: this.props.navigation.navigate('Register');   en un método
+Cambio de página:
+	this.props.navigation.navigate('Register');
+	props.navigation.navigate('Register');
 
 
 Ver https://forums.expo.io/t/expo-start-web-failed-to-compile-after-import-native-base/40826/4
@@ -141,10 +153,13 @@ React Navigation 4:
 3) Debes instalar yarn add react-navigation-tabs e importar como import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 
+import { NavigationContainer } from @react-navigation/native
+import { createStackNavigator } from @react-navigation/stack
+
 const Stack = createStackNavigator()
 
 <NavigationContainer>
-    <Stack.Navigator>
+    <Stack.Navigator>             el orden sí importa
         <Stack.Screen name="Componente1" component={Componente1} />
         <Stack.Screen name="Componente2" component={Componente2} />
         <Stack.Screen name="Componente3" component={Componente3} />
@@ -152,9 +167,10 @@ const Stack = createStackNavigator()
 <NavigationContainer>
 
 
--------------------------------------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 Notificaciones:
+
 expo install expo-permissions
 buscar push-notification en la documentación de expo.io para copiar el código y pegar en async ComponentDidMount () {}
 generar el token
@@ -186,11 +202,27 @@ apk: expo login (loguear), agregar lo que falte en app.json, expo build:android
 },
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#################################################################################################################################
 
 REDUX
 
 Provider (from react-redux) store={store}, createStore (from redux), reducer export const store = createStore(reducer, {variables})
 Conexión: connect (from react-redux), export default connect(mapStateToProps)(MiComponente), const mapStateToProps = () => {debugger}
 
+
+#################################################################################################################################
+
+ACCESO A HARDWARE
+
+ver:   yarn add react-native-image-picker
+ver:   yarn add expo-image-picker   o   expo install expo-image-picker
+
+Hacer clickeable una imagen: encerrar entre TouchableOpacity
+
+react-native-share    compartir en redes sociales
+
+Platform.OS es un string con las 5 plataformas (para web se puede usar anonynous-Files
+
+Splash images: 1242x2436 (imagen intro), declarada en package, dentro de assets como splash.png
+conviene imagen sin fondo y dar color de fondo desde package
 

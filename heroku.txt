@@ -5,27 +5,8 @@ heroku logs -n 200 -a maslabotlikes    últimas 200 líneas
 heroku logout
 
 
+Cuentas:
 	ghc: todas menos los bots
 	ghp: solo bot7200
-	mas: solo bot likeador
+	mas: solo bot likeador     -->    raspberry pi
 
-
-
-2020-12-01T17:40:21.836878+00:00 app[web.1]: No se mandó correo: Error: Invalid login: 535-5.7.8 Username and Password not accepted. Learn more at
-2020-12-01T17:40:21.836886+00:00 app[web.1]: 535 5.7.8  https://support.google.com/mail/?p=BadCredentials v28sm242865qkj.103 - gsmtp
-2020-12-01T17:40:21.836887+00:00 app[web.1]: at SMTPConnection._formatError (/app/node_modules/nodemailer/lib/smtp-connection/index.js:774:19)
-2020-12-01T17:40:21.836887+00:00 app[web.1]: at SMTPConnection._actionAUTHComplete (/app/node_modules/nodemailer/lib/smtp-connection/index.js:1513:34)
-2020-12-01T17:40:21.836887+00:00 app[web.1]: at SMTPConnection.<anonymous> (/app/node_modules/nodemailer/lib/smtp-connection/index.js:540:26)
-2020-12-01T17:40:21.836888+00:00 app[web.1]: at SMTPConnection._processResponse (/app/node_modules/nodemailer/lib/smtp-connection/index.js:932:20)
-2020-12-01T17:40:21.836888+00:00 app[web.1]: at SMTPConnection._onData (/app/node_modules/nodemailer/lib/smtp-connection/index.js:739:14)
-2020-12-01T17:40:21.836889+00:00 app[web.1]: at TLSSocket.SMTPConnection._onSocketData (/app/node_modules/nodemailer/lib/smtp-connection/index.js:189:44)
-2020-12-01T17:40:21.836889+00:00 app[web.1]: at TLSSocket.emit (events.js:315:20)
-2020-12-01T17:40:21.836890+00:00 app[web.1]: at addChunk (_stream_readable.js:309:12)
-2020-12-01T17:40:21.836891+00:00 app[web.1]: at readableAddChunk (_stream_readable.js:284:9)
-2020-12-01T17:40:21.836891+00:00 app[web.1]: at TLSSocket.Readable.push (_stream_readable.js:223:10) {
-2020-12-01T17:40:21.836892+00:00 app[web.1]: code: 'EAUTH',
-2020-12-01T17:40:21.836893+00:00 app[web.1]: response: '535-5.7.8 Username and Password not accepted. Learn more at\n' +
-2020-12-01T17:40:21.836893+00:00 app[web.1]: '535 5.7.8  https://support.google.com/mail/?p=BadCredentials v28sm242865qkj.103 - gsmtp',
-2020-12-01T17:40:21.836893+00:00 app[web.1]: responseCode: 535,
-2020-12-01T17:40:21.836894+00:00 app[web.1]: command: 'AUTH PLAIN'
-2020-12-01T17:40:21.836894+00:00 app[web.1]: }

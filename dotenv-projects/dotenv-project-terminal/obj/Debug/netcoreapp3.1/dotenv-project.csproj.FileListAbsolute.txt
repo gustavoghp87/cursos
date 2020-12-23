@@ -1,0 +1,13 @@
+C:\Users\ghp21\Desktop\dotenv-project\bin\Debug\netcoreapp3.1\dotenv-project.exe
+C:\Users\ghp21\Desktop\dotenv-project\bin\Debug\netcoreapp3.1\dotenv-project.deps.json
+C:\Users\ghp21\Desktop\dotenv-project\bin\Debug\netcoreapp3.1\dotenv-project.runtimeconfig.json
+C:\Users\ghp21\Desktop\dotenv-project\bin\Debug\netcoreapp3.1\dotenv-project.runtimeconfig.dev.json
+C:\Users\ghp21\Desktop\dotenv-project\bin\Debug\netcoreapp3.1\dotenv-project.dll
+C:\Users\ghp21\Desktop\dotenv-project\bin\Debug\netcoreapp3.1\dotenv-project.pdb
+C:\Users\ghp21\Desktop\dotenv-project\obj\Debug\netcoreapp3.1\dotenv-project.csprojAssemblyReference.cache
+C:\Users\ghp21\Desktop\dotenv-project\obj\Debug\netcoreapp3.1\dotenv-project.AssemblyInfoInputs.cache
+C:\Users\ghp21\Desktop\dotenv-project\obj\Debug\netcoreapp3.1\dotenv-project.AssemblyInfo.cs
+C:\Users\ghp21\Desktop\dotenv-project\obj\Debug\netcoreapp3.1\dotenv-project.csproj.CoreCompileInputs.cache
+C:\Users\ghp21\Desktop\dotenv-project\obj\Debug\netcoreapp3.1\dotenv-project.dll
+C:\Users\ghp21\Desktop\dotenv-project\obj\Debug\netcoreapp3.1\dotenv-project.pdb
+C:\Users\ghp21\Desktop\dotenv-project\obj\Debug\netcoreapp3.1\dotenv-project.genruntimeconfig.cache

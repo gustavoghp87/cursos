@@ -1,0 +1,20 @@
+instalo sdk .net core 3.1
+The following were installed at: 'C:\Program Files\dotnet'
+    • .NET Core SDK 3.1.404
+    • .NET Core Runtime 3.1.10
+    • ASP.NET Core Runtime 3.1.10
+    • .NET Core Windows Desktop Runtime 3.1.10
+
+dotnet --version
+
+Projecto de terminal:    dotnet new console -o myConsoleApp
+Ejecutar:                dotnet restore    dotnet run
+
+Proyecto app:            dotenv new mvc -au None -o aspnet-app          (sin auth)
+Ejecutar:                dotnet restore    dotnet run                   (puerto 5000)
+
+
+dotnet add package Newtonsoft.Json           parsear json
+
+
+

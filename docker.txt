@@ -1,3 +1,5 @@
+si requiere sudo, agregar al grupo de usuarios:  sudo groupadd docker   sudo usermod -aG docker $USER   newgrp docker
+
 docker run hello-world                              descarga y ejecuta la imagen hello-world
 docker images                                       lista imágenes descargadas
 
@@ -12,11 +14,12 @@ docker ps                                           lista los procesos en ejecuc
 docker ps -a                                        lista el histórico de procesos
 docker ps -aq                                       lista los id de los procesos en historial
 docker images -aq                                   lista los id de las imágenes instaladas
-docker rm [id o name]                               con las primeras 3 letras del id alcanza, con --name nombre agrega nombre en vez del aleatorio
+docker rm [id de container o name]                  con las primeras 3 letras del id alcanza, con --name nombre agrega nombre en vez del aleatorio
 docker stop [id o name]
 docker rm $(docker ps -aq)                          elimina todos los procesos
 docker stop $(docker ps -aq)                        detiene todos los procesos
 docker rm [proceso] .f                              fuerza a eliminar aunque esté corriendo
+
 docker rmi mysql                                    remueve imagen
 docker rmi $(docker images -aq)                     pero elimina las que no se estén utilizando
 
@@ -35,6 +38,33 @@ docker run -d -p 3307:3306 --name myDB -e MYSQL_ROOT_PASSWORD=contraseña mysql
 
 #################################################################################################################################
 
+DOCKERFILE
+
+Se crea archivo "Dockerfile" con las instrucciones para ejecutar el proyecto (usar extensión Docker de VS Code)
+Usar siempre el --assume-yes para instalaciones (apt install python3-pip -y)
+
+FROM nginx:1.17.10                           (o  nginx:latest  o  nginx:1.17, imagen de hub docker)
+WORKDIR /usr/share/nginx/html                dónde se ejecutarán los siguientes comandos
+COPY . .                                     que copie todo lo que hay en el directorio donde está este Dockerfile al workdir (segundo punto)
+
+RUN mkdir -p /usr/src/app                    crea si no existe
+
+docker build -t [proyecto] .
+docker images
+docker run .
+
+	FROM node:12
+	WORKDIR /app
+	COPY package*.json ./   
+	RUN npm install
+	COPY . .
+	CMD ["npm", "start"]
+
+
+docker run -p 3306:3306 -d --name mariadb -e MARIADB_ROOT_PASSWORD=password123 mariadb/server
+conexión:   mysql --host 127.0.0.1 -p 3006 -u root -p
+
+
 Crear imagen desde Dockerfile: docker build . -t [nombreParaImagen]         t de tag, --name para contenedores
 Variables de entorno: docker run -it -e key="asdkfnasdnasdf -e token="ljsdnflasdnfaksdv" [nombreDeImagen]          --name nombre le da un nombre al ps
 
@@ -46,16 +76,10 @@ docker attach b33   ver logs de proceso
 	-d    dettach, deamon  Vs.
 	-it   iteractive
 
-docker exec -it mongodb bash    ls  mongo   comando dentro de una imagen
-
--v C://usuarios/ghp/Documents/Proyecto/data:/data/db
-	hace copias de los archivos generados por el contenedor fuera de él para que puedan usarse aunque se elimine el contenedor
-	y también se usa tal cual para copiar los datos cuando se cree otro contenedor
-
 
 #############################################################################################################################
 
-persistencia:
+PERSISTENCIA
 
 docker volume create myfolder
 docker volume inspect myfolder
@@ -63,6 +87,7 @@ docker volume rm myfolder
 docker volume ls                 listar
 
 docker run -i -t -v /myfolder:/myfolder a7c /bin/bash
+docker run -i -t -v $(pwd)/src:/var/www/html/ a7c
 
 docker run ... \
   --mount source=myfolder,target=/root/myfolder \
@@ -86,6 +111,25 @@ volumes:
   myapp:
 
 
+Copiar al contenedor:
+docker run -d -p 80:80 --name website -v /home/fazt/Desktop/website:/usr/share/nginx/html:ro nginx          read only
+docker run -d -p 80:80 --name website -v $(pwd):/usr/share/nginx/html:ro nginx
+
+La v genera sincronización unilateral: desde la carpeta de trabajo hacia el contenedor
+Me conecto al contenedor website
+
+docker exec -it website bash
+cd /usr/share/nginx/html   ls    está el sitio, solo lectura
+
+Sin :ro la sincronización es bilateral
+
+docker exec -it mongodb bash    ls  mongo         entrar al contenedor y ejecutar
+
+-v C://usuarios/ghp/Documents/Proyecto/data:/data/db
+	hace copias de los archivos generados por el contenedor fuera de él para que puedan usarse aunque se elimine el contenedor
+	y también se usa tal cual para copiar los datos cuando se cree otro contenedor
+
+
 #############################################################################################################################
 
 https://www.youtube.com/watch?v=NVvZNmfqg6M
@@ -104,9 +148,7 @@ ubuntu@ip-172-31-44-227:~$ sudo apt install docker.io
 ubuntu@ip-172-31-44-227:~$ sudo adduser ubuntu docker
 ubuntu@ip-172-31-44-227:~$ exit
 
-
 docker version
-si requiere sudo, agregar al grupo de usuarios:  sudo groupadd docker   sudo usermod -aG docker $USER   newgrp docker
 
 enviarle la imagen:
 	scp -i "mykeypair.pem" favbot.tar.gz ubuntu@3.86.66.73:/tmp
@@ -132,44 +174,9 @@ echo $DOCKER_FORMAT                                 para ver el comando guardado
 docker ps --format=$DOCKER_FORMAT                   para ejecutarlo
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#################################################################################################################################
 
-
-Copiar al contenedor:
-docker run -d -p 80:80 --name website -v /home/fazt/Desktop/website:/usr/share/nginx/html:ro nginx          read only
-docker run -d -p 80:80 --name website -v $(pwd):/usr/share/nginx/html:ro nginx
-
-La v genera sincronización unilateral: desde la carpeta de trabajo hacia el contenedor
-Me conecto al contenedor website
-
-docker exec -it website bash
-cd /usr/share/nginx/html   ls    está el sitio, solo lectura
-
-Sin :ro la sincronización es bilateral
-
-
-Se crea archivo "Dockerfile" con las instrucciones para ejecutar el proyecto (usar extensión Docker de VS Code)
-Usar siempre el --assume-yes para instalaciones (apt install python3-pip -y)
-
-FROM nginx:1.17.10                           (o  nginx:latest  o  nginx:1.17, imagen de hub docker)
-WORKDIR /usr/share/nginx/html                dónde se ejecutarán los siguientes comandos
-COPY . .                                     que copie todo lo que hay en el directorio donde está este Dockerfile al workdir (segundo punto)
-
-docker build -t [proyecto] .
-docker images
-docker run ...
-
-(en nodejs:
-	FROM node:12
-	WORKDIR /app
-	COPY package*.json ./   
-	RUN npm install
-	COPY . .
-	CMD ["npm", "start"]
-)
-
-
-Docker Hub:
+DOCKER HUB
 
 docker build -t ghpUsernameDockerHub/website
 docker login     ...
@@ -188,6 +195,22 @@ npm-debug.log
 
 #############################################################################################################################
 
+DOCKER-COMPOSE
+
+
+Instalar:
+	sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+	sudo chmod +x /usr/local/bin/docker-compose
+
+En raspberry pi:
+	sudo apt-get install libffi-dev libssl-dev
+	sudo apt install python3-dev
+	sudo apt-get install -y python3 python3-pip
+	sudo pip3 install docker-compose
+
+On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is included as part of those desktop installs.
+
+
 docker-compose.yml:
 
 version: "3"
@@ -198,13 +221,16 @@ services:
         build: .
             - "5000:3000"
         links:
-            -mongo
-    mongo:
+            -mongoX
+	volumens:
+	    - .:/usr/src/app                     esto hace que los cambios en el código sean efectivos a la imagen
+    mongoX:
         container_name: mymongodb
         image: mongo
         ports:
             - "27018:27017"
 
+la url de la conexión va a ser   'mongodb://mongoX/mydb'
 
 docker-compose build
 docker-compose up

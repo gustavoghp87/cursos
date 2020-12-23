@@ -38,6 +38,7 @@ locate sshd
 whereis cat [dnd sta el ejecutable]
 file nombre [devuelve tipo de archivo]
 descargar desde url: wget http...
+
 sudo chown root.ghp21 carpeta/ [hacer que un archivo sea propiedad del adm]
 chmod +x file.txt [permisos de ejecución al usuario principal]
 
@@ -50,11 +51,15 @@ Los programas [paquetes] están compilados y solo se descargan, o sin compilar
 tar cvf /carpeta/archivo.tar        [empaquetar]
 gzip -9r /carpeta/archivo.tar       [comprimir, sale .tar.gz]
 tar cvf archivo.tgz capeta/archivo  [comprimir, verbose, file]
-tar cvfz archivo.tar.gz carpeta     [comprimir paquete]
-tar xvf archivo.tgz                 [descomprime]
+tar cvfz archivo.tar.gz carpeta     [comprimir paquete]  o createfilezip cfz
+tar xvf archivo.tgz                 [descomprime] extract
 tar xvfz archivo.tar.gz             [descomprime el empaquetado]
 [mejor usar tar porque respeta los permisos, usuarios, grupos]
 zless archivo.tz                    [para verlo sin descomprimirlo]
+
+zip file.zip .
+unzip file.zip
+inzip -vl file.zip      lista contenido
 
 apt-get remove |paquete|   [lo elimina con seguridad... mantiene los archivos de conf y bases de datos]
 dpkb -P |paquete|   [también borra los archivos pero es muy puntual] P de purgar

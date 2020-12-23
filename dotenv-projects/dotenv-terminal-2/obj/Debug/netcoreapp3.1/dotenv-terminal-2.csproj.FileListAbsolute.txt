@@ -1,0 +1,15 @@
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\bin\Debug\netcoreapp3.1\dotenv-terminal-2.exe
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\bin\Debug\netcoreapp3.1\dotenv-terminal-2.deps.json
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\bin\Debug\netcoreapp3.1\dotenv-terminal-2.runtimeconfig.json
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\bin\Debug\netcoreapp3.1\dotenv-terminal-2.runtimeconfig.dev.json
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\bin\Debug\netcoreapp3.1\dotenv-terminal-2.dll
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\bin\Debug\netcoreapp3.1\dotenv-terminal-2.pdb
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\obj\Debug\netcoreapp3.1\dotenv-terminal-2.csprojAssemblyReference.cache
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\obj\Debug\netcoreapp3.1\dotenv-terminal-2.AssemblyInfoInputs.cache
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\obj\Debug\netcoreapp3.1\dotenv-terminal-2.AssemblyInfo.cs
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\obj\Debug\netcoreapp3.1\dotenv-terminal-2.csproj.CoreCompileInputs.cache
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\obj\Debug\netcoreapp3.1\dotenv-terminal-2.csproj.CopyComplete
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\obj\Debug\netcoreapp3.1\dotenv-terminal-2.dll
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\obj\Debug\netcoreapp3.1\dotenv-terminal-2.pdb
+C:\Users\ghp21\Desktop\dotenv-project\dotenv-terminal-2\obj\Debug\netcoreapp3.1\dotenv-terminal-2.genruntimeconfig.cache
