@@ -1,3 +1,5 @@
+teclado:    sudo setxkbmap es
+
 nmtui
 sudo iw dev    sudo iwconfig
 lspci         dispositivos conectados a PCI
@@ -725,3 +727,53 @@ Bajar Dawn Vulnerable Web Application (DVWA) en máquina cliente del proxy
 Burp Suite en la otra máquina: Proxy/Intercept is on
 
 Métodos HTTP: Get (solicitud) y Post (envío de formulario), Put, Delete, Trace-Track, Connect
+
+
+
+
+#################################################################################################################################
+
+KALI LIVE PERSISTENCE
+
+fdisk -l
+
+1. CREAR PARTICIÓN Y FORMATEAR SI NO SE HIZO EN RUFUS   (mejor hacer desde Windows, FAT32, Primary, Ext4, 'persistence')
+	fdisk /dev/sda2
+	n                       no
+	p                       primary
+	1 enter enter enter
+	w
+	fdisk -l                crea /dev/sdb2
+
+	mkfs.ext4 -L persistence /dev/sdb2
+	e2label /dev/sdb2 persistence
+
+2.MONTAR
+	mkdir -p /mnt/hackison
+	mount /dev/sdb2 /mnt/hackison
+	echo "/ union" > /mnt/hackison/persistence.conf
+	umount /dev/sdb2
+
+	opcional:   cryptsetup luksClose /dev/mapper/
+
+reboot
+
+
+#################################################################################################################################
+
+    You don't have enough free space in /var/cache/apt/archives/
+
+If you have a partition or external storage.
+
+With this method you re-route the location where .debs are stored:
+
+	sudo mv -i /var/cache/apt /media/{dir_of_mounted_disc}
+	sudo ln -s /media/{dir_of_mounted_disc}/apt /var/cache/apt
+
+Run the upgrade and install. After you are done you can switch back to normal with:
+
+	sudo apt-get clean
+	sudo unlink /var/cache/apt
+	sudo mv /media/{dir_of_mounted_disc}/apt /var/cache
+
+

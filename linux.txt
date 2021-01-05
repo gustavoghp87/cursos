@@ -10,6 +10,8 @@ apt-get [administrador de paquetes (programas/actualizaciones/documentación) up
 apt update / apt upgrade
 historial de comandos en esta terminal: history
 
+cambiar clave superuser:   sudo su && passwd root
+
 pstree -p                           árbol de procesos
 ps
 ps -a                               u de usuario actual

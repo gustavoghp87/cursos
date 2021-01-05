@@ -1,3 +1,5 @@
+OOP EN JAVA
+
 Clase = plantilla, molde
 Atributo = variable
 Métodos = funciones (pertenecientes a una clase o estáticas)
@@ -15,44 +17,40 @@ Métodos: si es void no retorna nada, si retorna una variable debe estar su tipo
 
 No se puede anidar métodos
 
+
+#################################################################################################################################
+
 EJECUCIÓN DESDE CONSOLA
-set path=C:\Program Files\Java\jdk1.8.0_121\bin
-javac archivo.java      (compila a .class incluyendo a los archivos relacionados)
-java archivo            (sin .class)
+
+	set path=C:\Program Files\Java\jdk1.8.0_121\bin                                        variable de entorno
+	javac archivo.java      (compila a .class incluyendo a los archivos relacionados)
+	java archivo            (sin .class)
 
 Compilar a ejecutable:
-jar -cvfe [nombre].jar [claseConMain SinExtensión] *.class
+	jar -cvfe [nombre].jar [claseConMain SinExtensión] *.class
 
 Dicen pero no me funciona:
-Crear archivo manifest.txt en la misma carpeta   y escribir:    Main-Class: [clase con el main]
-jar -cfm [programa].jar manifest.txt *.class
+	Crear archivo manifest.txt en la misma carpeta   y escribir:    Main-Class: [clase con el main]
+	jar -cfm [programa].jar manifest.txt *.class
 
 Ejecutar: java -jar [programa].jar
 
 
-OPERADOR CONDICIONAL (condición)? valor1 : valor2
+#################################################################################################################################
 
-int edad = 3;
-String estado = edad >= 18 ? "Mayor" : "Menor";
-System.out.println(estado);   imprime "Menor"
+FINAL: fijar algo
 
-String estado = (condición: edad >= 18 ?) (opción1: "Mayor") : (opción2: "Menor");
-
-System.out.println("El valor " + aleatorio + " tiene " + (aleatorio < 10 ? "1 dígito" : "2 dígitos"));
-System.out.println(f + " es " + (f % 2 == 0 ? "par" : "impar"));
-
-
-FINAL
 ATRIBUTO FINAL: el modificador final indica que a esa variable solo se le puede asignar un valor u objeto una única vez.
+Variable constante.
 
 Objeto final: lo que permanece constante es la asignación de un objeto a esa variable, no los atributos internos que pueda tener ese objeto
 	final Objeto objeto = new Objeto();   impide un posterior    instancia = objeto;
 
 Ya nunca más se le podrá asignar a objeto otra instancia de Objeto.
 Sin embargo, es posible cambiar los datos internos de ese ciudadano: objeto.setAtributo("algo");
-Con el modificador final evitaremos lo siguiente: Objeto objeto2 = new Objeto(); objeto2 = objeto;
+Con el modificador final evitaremos lo siguiente: Objeto objeto2 = new Objeto();   objeto2 = objeto;
 
-Si no sabemos que valor se cargará en la constante hasta que procedamos a ejecutar el programa, la inicialización
+Si no sabemos qué valor se cargará en la constante hasta que procedamos a ejecutar el programa, la inicialización
  se deberá hacer obligatoriamente en el constructor de la clase (se le asigna alguno de los parámetros del constructor)
 
 CLASE FINAL: sellar una clase para evitar que otras clases hereden de la misma mediante la palabra clave 'final' previo
@@ -62,7 +60,10 @@ CLASE FINAL: sellar una clase para evitar que otras clases hereden de la misma m
 MÉTODO FINAL: sellar un método para que las subclases no puedan sobreescribirlo.
 
 
+#################################################################################################################################
+
 STATIC
+
 Java permite definir métodos estáticos que se crean independientemente a la definición de objetos.
  Un método estático puede llamarse sin tener que crear un objeto de dicha clase, no necesita una
  declaración para ser ejecutado (Auto.imprimir). Ej:
@@ -99,13 +100,42 @@ Cuando se le pasan parámetros se los atrapa y se asignan this.atributolocal = a
 this.atributo significa el atributo de esta clase
 
 
+#################################################################################################################################
+
 SOBRECARGA
+
 Sobrecargar un constructor para que un objeto pueda ser creado de diferentes maneras, ingresándoles distintos tipos de atributos
 Sobrecargar un método, crear uno con un nombre ya usado, que se puede diferenciar por parámetros o por returns
-Pero la expresión @Override se usa solo cuando se sobreescribe un método traído de una clase parent
 
+(Pero la expresión @Override se usa solo cuando se sobreescribe un método traído de una clase parent (opcional pero asegura))
+
+class Animal {
+   public void move() {
+      System.out.println("Animals can move");
+   }
+}
+
+class Dog extends Animal {
+   public void move() {
+      System.out.println("Dogs can walk and run");
+   }
+}
+
+public class TestDog {
+
+   public static void main(String args[]) {
+      Animal a = new Animal();   // Animal reference and object
+      Animal b = new Dog();   // Animal reference but Dog object
+      a.move();   // runs the method in Animal class
+      b.move();   // runs the method in Dog class
+   }
+}
+
+
+#################################################################################################################################
 
 MODIFICADORES DE ACCESO
+
 private: solo esta clase
 default: todas las clases en este package
 protected: todas las clases en este package y las clases hijas (extends) aunque estén en otros packages
@@ -115,7 +145,10 @@ La buena práctica es hacer privados los atributos y hacer getters y setters pú
  los atributos privados
 
 
+#################################################################################################################################
+
 HERENCIA
+
 Una clase es parent ("super class") para que en ella se puedan concentrar los métodos y los atributos
  (los públicos y los protected) que serán utilizados por varias clases hijas ("SUBCLASSES")
 
@@ -126,7 +159,10 @@ O también se puede traer al constructor un atributo de la superclase usando el 
  a la declaración del constructor y se asigna con setAtributo(atrib3)
 
 
+#################################################################################################################################
+
 POLIMORFISMO
+
 En Métodos
 Construir un método con el mismo nombre que tiene otro de la superclase, para un comportamiento diferente
 @Override ... return super.atributo; Vs. return this.atributo;
@@ -141,14 +177,18 @@ Con el polimorfismo podemos implementar programas que luego son fácilmente exte
 
 En Clases
 Si la clase es abstracta, se instancia Abstract abstract = new Subclase(atrib1, atrib2, atrib3);
-El objeto instanciado de este modo se comporta como un objeto de la subclase pero heredando los métodos de la súper
+--> El objeto instanciado de este modo se comporta como un objeto de la subclase pero heredando los métodos de la súper.
 
+
+#################################################################################################################################
 
 ABSTRACT
+
 Clases que no se pueden instanciar o definir objetos de las mismas.
 Una clase abstracta tiene por objetivo agrupar un conjunto de propiedades, métodos y firmas de métodos (métodos sin
  implementar, que deberán ser implementados por sus subclases).
 Concepto más amplio de polimorfismo que la simple herencia.
+
 Una clase abstracta es una superclase muy general, donde las subclases no van a querer heredar todos sus métodos/implementaciones.
 No se quiere instanciar la superclase --> la clase abstracta no se puede instanciar Abstracta abstracta = new Abstracta();
 Sus métodos no contienen implementación (salvo que tenga métodos no abstractos).
@@ -166,9 +206,12 @@ Al incluir un método abstracto, la clase se vuelve abstracta.
 Las clases que quieran utilizar alguno de sus métodos abstractos deberán
 
 
+#################################################################################################################################
+
 INTERFACE
+
 An interface is a completely "abstract class" that is used to group related methods with empty bodies.
-El objetivo de una interfaz es declarar una serie de métodos sin su implementación. Luego una o varias
+El objetivo de una interfaz es declarar una serie de métodos sin su implementación. Luego, una o varias
  clases pueden implementar dicha interfaz. Una interfaz es similar a una clase abstracta con todos sus
  métodos abstractos. En Java no existe la herencia múltiple por lo que las interfaces son ampliamente utilizadas.
 Mediante una interfaz indicamos qué debe hacerse pero no cómo se debe implementar.
@@ -191,7 +234,19 @@ Solo un método y es abstracto (SAM)
 Agrega un @FunctionalInterface como buena práctica
 
 
+#################################################################################################################################
+
 LAMBDAS
+
+OPERADOR CONDICIONAL (condición) ? valor1 : valor2
+
+int edad = 3;
+String estado = edad >= 18 ? "Mayor" : "Menor";
+System.out.println(estado);   imprime "Menor"
+
+System.out.println("El valor " + aleatorio + " tiene " + (aleatorio < 10 ? "1 dígito" : "2 dígitos"));
+System.out.println(f + " es " + (f % 2 == 0 ? "par" : "impar"));
+
 Permite reducción de código al reemplazar el @Override
 Si hay una interfaz funcional, se llama al método creando un
  Objeto objeto = (String atributo) -> {
@@ -240,7 +295,10 @@ Consumer es una interface que sirve para resumir acciones de iteración
 	series.stream().forEach(seriesEach)              [reemplaza el c > implementación ]
 
 
+#################################################################################################################################
+
 CLASES ANIDADAS
+
 Útil cuando una clase solo será usada por otra. La primera se anida a la segunda.
 El anidamiento de una clase tiene por objetivo favorecer el encapsulamiento
 Nested class, inner class Vs. Clase externa
@@ -275,6 +333,8 @@ Clases anónimas: clase abstracta (que como tal tiene métodos solo abstractos).
  la implementación de una interfaz.
 
 
+#################################################################################################################################
+
 EXCEPCIONES
 
 NO VERIFICADAS: Aquellas que dejan al programador tomar la decisión de la conveniencia de atraparla o no.
@@ -288,7 +348,7 @@ VERIFICADAS: Deben ser capturadas en forma obligatoria por nuestro programa, si 
  La captura y tratamiento de la excepción verificada es idéntica a las excepciones no verificadas, con la
  salvedad que no podemos omitirla.
 
-try {
+ try {
  	FileWriter fw = new FileWriter(new File("datos.txt"));
  	BufferedWriter bw = new BufferedWriter(fw);
  	bw.write("Línea 1");
@@ -297,8 +357,8 @@ try {
  	bw.close();
  	fw.close();
  } catch (IOException ex) {
- 	System.out.println("Problemas en la creación del archivo");
- 	System.out.println(ex.getMessage());
+	System.out.println("Problemas en la creación del archivo");
+	System.out.println(ex.getMessage());
  }
 
  try {
@@ -317,7 +377,7 @@ try {
  }
 
 
-Todas estas clases heredan de la clase java.lang.Exception pertenecen a excepciones verificadas y debemos
+Todas estas clases heredan de la clase java.lang.Exception, pertenecen a excepciones verificadas y debemos
  capturarlas. Otras excepciones verificadas que podemos nombrar son: SQLException, InterruptedException, etc.
 
 THROWS: También podemos dejar que la máquina virtual de Java se encargue de las excepciones no verificas agregando
@@ -392,7 +452,10 @@ También:
  }
 
 
+#################################################################################################################################
+
 MÉTODO TOSTRING
+
 Proviene de la clase Object, de por sí devuelve el nombre de la clase @ dirección en la memoria
 System.out.println(persona1.toString());   -->   nombreClase@65ae6ba4
 
@@ -405,9 +468,13 @@ En la librería estándar de Java gran cantidad de clases sobreescriben el méto
 información acorde a su objetivo. Arraylist: [objeto, dato,dato]
 
 
+#################################################################################################################################
+
 MÉTODO EQUALS
+
 La clase Object tiene un método llamado 'equals' y normalmente las subclases proceden a sobreescribirlo
-y definir un algoritmo acorde a su objetivo. La clase Object declara el método 'equals' con la siguiente sintaxis:
+ y definir un algoritmo acorde a su objetivo. La clase Object declara el método 'equals' con la siguiente sintaxis:
+
  public boolean equals(Object obj)
 
  public boolean equals(Object obj) {
@@ -422,11 +489,9 @@ Tener en cuenta que en Java no es lo mismo utilizar el operador == ya que en ese
  variables apuntan al mismo objeto (misma dirección de memoria)
 
 
---------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
-pilas, colas, listas, árboles etc.
-
-Arrays: tamaño fijo.
+COLECCIONES
 
 Vectores: almacenan atributos en un orden fijo. Un vector es similar a un array, la diferencia estriba en que un
  vector crece automáticamente cuando alcanza la dimensión inicial máxima. Además, proporciona métodos adicionales
@@ -437,45 +502,29 @@ Colecciones: tamaño dinámico.
  Hay 3 tipos: List (ArrayList y Vector), Set (HashSet y SortedSet) y Queue (LinkedList y PriorityQueue)
 
 1. Arrays
+ Arrays: tamaño fijo
+ int[] arreglo = new int[5]     donde 5 es el length
+ arreglo[2] = 30                etc
+
 2. Stacks (Pilas)
+ Implementa el concepto de una pila (LIFO - Last In First Out - Ultimo en entrar primero en salir)
 3. Queues (Colas)
+ Implementa el concepto de una cola (FIFO - First In First Out - Primero en entrar primero en salir)
 4. Colections: Lists, Sets, Queue
+ 
 5. Árboles
 6. Maps
 
 estructuras de datos estáticas (vectores, matrices) y dinámicas (listas y árboles)
 
- Stack : Implementa el concepto de una pila (LIFO - Last In First Out - Ultimo en entrar
-primero en salir)
- Queue : Implementa el concepto de una cola (FIFO - First In First Out - Primero en entrar
-primero en salir)
- PriorityQueue : Implementa el concepto de una cola por prioridad (por ejemplo si son
-números los organiza en la cola de menor a mayor)
- ArrayList : Implementa el concepto de un arreglo dinámico que puede crecer o decrecer.
- LinkedList : Implementa el concepto de una lista genérica.
- HashSet, TreeSet y LinkedHashSet : Implementa el concepto de listas sin valores
-repetidos.
+PriorityQueue : Implementa el concepto de una cola por prioridad (por ejemplo si son números los organiza
+ en la cola de menor a mayor)
 
-Tamaño dinámico. Hay 3 tipos: List (ArrayList y Vector), Set (HashSet y SortedSet) y Queue (LinkedList y PriorityQueue)
+ArrayList : Implementa el concepto de un arreglo dinámico que puede crecer o decrecer.
 
+LinkedList : Implementa el concepto de una lista genérica.
 
---------------------------------------------------------------------------------------------------------------
-
-CLASES GENÉRICAS
-Administran distintos tipos de datos. Se utilizan mucho para la administración de colecciones de datos
- (pilas, colas, listas, árboles etc.). Las clases genéticas nos evitan duplicar clases que administran
- tipos de datos distintos pero implementan algoritmos similares; son una herramienta fundamental para
- reutilizar código. Si no existiera el concepto de genéricos en Java deberíamos implementar una clase
- por cada tipo de dato que administra una pila.
-
-Para plantear una clase genética debemos indicar luego del nombre de la clase entre los símbolos menor y
- mayor un nombre, por convención se utiliza el caracter 'E' (Element): public class Pila<E> {}
- El nombre 'E' almacena el tipo de dato que administrará la pila y se lo inicializa cuando se crea un objeto
-de la clase Pila:   Pila<Objeto> pila1 = new Pila<Objeto>();
-
-
-ARRAYS
-Tamaño fijo
+HashSet, TreeSet y LinkedHashSet : Implementa el concepto de listas sin valores repetidos.
 
 
 STACKS (PILAS, LIFO)
@@ -558,7 +607,6 @@ ArrayList crece automáticamente. Vector usa hilos para acelerar las búsquedas 
 
 
 COLECCIONES HASHSET, TREESET, LINKEDHASHSET
-
 Set puede estar ordenada o no, no permite repetidos
 La diferencia fundamental entre las clases HashSet, TreeSet, LinkedHashSet con respecto a las listas
 ArrayList y LinkedList es que no puede haber elementos repetidos en las colecciones que implementan la
@@ -647,8 +695,26 @@ while(it.hasNext()){
 ÁRBOLES
 
 
+#################################################################################################################################
+
+CLASES GENÉRICAS
+
+Administran distintos tipos de datos. Se utilizan mucho para la administración de colecciones de datos
+ (pilas, colas, listas, árboles etc.). Las clases genéricas nos evitan duplicar clases que administran
+ tipos de datos distintos pero implementan algoritmos similares; son una herramienta fundamental para
+ reutilizar código. Si no existiera el concepto de genéricos en Java deberíamos implementar una clase
+ por cada tipo de dato que administra una pila.
+
+Para plantear una clase genérica debemos indicar luego del nombre de la clase entre los símbolos menor y
+ mayor un nombre, por convención se utiliza el caracter 'E' (Element): public class Pila<E> {}
+ El nombre 'E' almacena el tipo de dato que administrará la pila y se lo inicializa cuando se crea un objeto
+de la clase Pila:   Pila<Objeto> pila1 = new Pila<Objeto>();
+
+
+#################################################################################################################################
 
 ANOTACIONES PREDEFINIDAS
+
 @Override sirve como seguro, indicando al IDE que queremos sobrescribir un método de la súperclase y no crear uno nuevo
  (tiene sentido por la posibilidad de escribir mal la definición del método)
 
@@ -670,11 +736,12 @@ Se usa dos veces el segundo:
 @SuppressWarnings : Evita que el entorno de desarrollo y compilador muestren advertencias sobre nuestro código
 
 
--------------------------------------------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 LIBRERÍAS
+
 Para lectura de texto está InputStreamReader pero es lento. BufferedWriter es más rápido.
-Para generar un .txt de exportación usamos FileOutputStream y OutputStreamReader para exportar bits.
+Para generar un .txt de exportación usamos FileOutputStream, y OutputStreamReader para exportar bits.
 
 File file = new File("archivo");
 FileOutputStream fos = new FileOutputStream(file);      "stream de bytes"
@@ -682,6 +749,7 @@ OutputStreamWriter osw = new OutputStreamWriter(fos);
 BufferedWriter br = new BufferedWriter(osw);
 bw.write("contenido");
 bw.close();                  obligatorio
+
 (Incluir manejador de excepciones try {} catch (IOException e) {e.printStackTrace();}     )
 
 
@@ -692,9 +760,10 @@ Convertir esta clase exportadora de ficheros en una librería externa jar:
 Listo para ser llamado mediante creación de objeto CrearFichero crearFicher = new CrearFichero();
 
 
---------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 JAVADOCS
+
 //comentario en verde
 
 /* simple bloque de comentario
@@ -733,23 +802,20 @@ JAVADOCS
 En Eclipse seleccionando el proyecto, arriba Project/Generate Javadoc
 
 
---------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 JDBC Java Data Base Connectivity
+
 Colocar el conectar .jar "mysql-connector-java....jar en /libs/ y refresh
 Click derecho en el proyecto/Properties/JavaBuildPath/Libraries/Classhpath Add JARs, mysql-connector, aplicar
-(Si falla, entrar por JavaBuildPAth pero ModulePath, add Library, JRE, aplicar
+(Si falla, entrar por JavaBuildPath pero ModulePath, add Library, JRE, aplicar
 Package nuevo .db, nueva interface IDBConnection y nueva clase de constantes (atributos públicos, finales y
  estáticos) que apuntan a direcciones en host
 
 
-
-
---------------------------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 JAVA EE
-
 
 Descargar los paquetes de Help/InstallNewSoftware/AllAvailableSites "java"
 Puede que haya que cargar también "server" e instalar el paquete para desarrolladores web
@@ -800,9 +866,10 @@ Click derecho en el proyecto, export, WAR file, destino: una carpeta en la máqu
 Click derecho en el .war, descomprimir para ver
 
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 ASISTENTES MAVEN Y GRADLE
+
 Aparte de crear un projecto web dinámico y agregarle subcarpetas y archivos, se puede automatizar con asistentes inteligentes que:
  1. ayudan a crear proyectos basados en plantillas prefabricadas
  2. descargan librerías de terceros (JAR) sin ir a buscarlas a la web
@@ -814,12 +881,14 @@ Maven: de Apache, configuración y construcción en XML, pom.xml es el Project O
 Gradle: conf y constr en JSON en build.gradle, el de Android Studio
 
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 SanIsidro: INSTALACIÓN DE MYSQL INTEGRADO EN EL WAMPSERVER
+
  Utilizaremos esta herramienta en lugar de descargar solo el MySQL con la finalizar de facilitar la
- instalación y configuración del motor de base de datos, además utilizaremos otra software que provee el
+ instalación y configuración del motor de base de datos, además utilizaremos otro software que provee el
  WampServer que es el PhpMyAdmin que nos facilitará la creación de la base de datos
+
  http://localhost/phpmyadmin/
 
  MySQL-connector es el driver que permite controlar la base de datos desde java
@@ -827,9 +896,11 @@ SanIsidro: INSTALACIÓN DE MYSQL INTEGRADO EN EL WAMPSERVER
   WindowBuilder creamos una clase llamada "Formulario".
  2 - Primero debemos añadir el driver que descargamos (mysql-connector-java-5.1.18-bin.jar) presionamos el
   botón derecho del mouse sobre nuestro proyecto y seleccionamos la opción "Properties", Build Path, add external JAR.
+
  En apps hay que agregarlo a la lib de webcontent/webinfo y usar Class.forName("com.mysql.jdbc.Driver");
 
  Ante el botón de agregar tupla a tabla "articulos" de la base de datos "bd1":
+
   try {
 	Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/bd1", "root", "");
 	Statement comando = conexion.createStatement();
@@ -851,8 +922,8 @@ SanIsidro: INSTALACIÓN DE MYSQL INTEGRADO EN EL WAMPSERVER
 		 tf2.setText(registro.getString("precio"));
      	 }
          conexion.close();
-	 } catch(SQLException ex){
-		 setTitle(ex.toString());
+ } catch(SQLException ex){
+	 setTitle(ex.toString());
  }
 
  Ante el botón de eliminar tupla:
@@ -871,7 +942,8 @@ SanIsidro: INSTALACIÓN DE MYSQL INTEGRADO EN EL WAMPSERVER
  try {
 	 Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/bd1","root","");
 	 Statement comando = conexion.createStatement();
-	 int cantidad = comando.executeUpdate("update articulos set descripcion='" + tf1.getText() + "'," + "precio=" + tf2.getText() + " where codigo="+tf3.getText());
+	 int cantidad = comando.executeUpdate("update articulos set descripcion='" + tf1.getText() + "'," + "precio="
+	  + tf2.getText() + " where codigo="+tf3.getText());
 	 if (cantidad==1) {
 		 labelResultado.setText("Se modifico la descripcion y el precio del artículo con dicho código");
 	 }
@@ -879,15 +951,19 @@ SanIsidro: INSTALACIÓN DE MYSQL INTEGRADO EN EL WAMPSERVER
  }
 
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 CRUD con String Tools Suite
-New Spring Starter Project, dependencias Spring Web + SQL Spring Data JPA + MySQL Driver + Templete Engines Thymeleaf [ver que estén las 4 en pom.xml]
+
+New Spring Starter Project, dependencias Spring Web + SQL Spring Data JPA + MySQL Driver + Templete Engines Thymeleaf
+ [ver que estén las 4 en pom.xml]
 Subpaquetes: modelo, controlador, interfaces, servicio, interfaceService
 Clase Persona.java en controlador: POJO de la entidad en base de datos más acentuaciones
 Interface IPersona.java en interfaces: @Repository y extends CrudRepository<Persona, Integer>, nada más
-Interface IPersonaService.java en interfaceService: public List<Persona> listar(); public Optional<Persona> listarId(int id); public int save(Persona p); public void delete(int id);
+Interface IPersonaService.java en interfaceService: public List<Persona> listar(); public Optional<Persona> listarId(int id);
+ public int save(Persona p); public void delete(int id);
 Clase PersonaService.java en servicio: @Service antes de public class, implementar IPersonaService y agregar todos los métodos y:
+
 @Autowired
 private IPersona data;	
 @Override
@@ -919,7 +995,7 @@ spring.jpa.hibernate.ddl-auto=create
 seguir en https://www.youtube.com/playlist?list=PLG1l7S-453CZtjfh9Q3z34DyuihvMsTpU
 
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 REST API: APLICACIONES ORIENTADAS A SERVICIOS
 
@@ -929,7 +1005,6 @@ Se usa JSON como vista
 seguir carp 25 ... 7/5/2020
 
 
-
 New Others Maven project, Archetype: org.apache.maven.archetype maven-archetype-quickstart
 com.nombreproyecto
 
@@ -937,6 +1012,7 @@ Para integrar MySQL al proyecto Maven:
 En mvnrepository.com MySQL Connector/J y copiar el <dependency> y pegar en el pom.xml dentro de dependencies
 
 
+#################################################################################################################################
 
 ORM Object Relational Mapping
 Genera sentencias SQL sin usar código SQL
@@ -949,5 +1025,4 @@ Agregar <property name="show_sql">true</property> al source del hibernate.cfg.xm
 
 Para integrar Hibernate al proyecto Maven:
 En mvnrepository.com devuelta, Hibernate Core O/RM Functionality y copiar el <dependency> y pegar en el pom.xml dentro de dependencies
-
 
