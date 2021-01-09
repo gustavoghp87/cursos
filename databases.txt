@@ -8,6 +8,7 @@
 
 MySQL
 
+correr proceso si no está iniciado como servicio, por ejemplo C:\xampp\mysql\bin   (agregar a env paths)
 /usr/local/mysql/bin/mysql -u -root -p
 
 ----------------------------------------------------------------------------------
@@ -184,11 +185,6 @@ Subquery para traer el id de otra tabla (contra: eleva los tiempos al cuadrado)
 
 
 -------------------------------------------------------------------------------------------------
-
-En vez de cargar los comandos de a uno, se puede cargar todo en un archivo de texto plano .sql y
-	mysql -u root -p < archivo.sql                   [el archivo que crea la base de datos]
-	mysql -u root -p -D basededatos < archivo2.sql
-
 
 -------------------------------------------------------------------------------------------------
 
@@ -587,13 +583,20 @@ SHOW TABLES LIKE %i%;
 	[mostrar tablas que tengan alguna i en el nombre]
 
 
------------------------------------------------------------------------------------------------
+#################################################################################################################################
+
+En vez de cargar los comandos de a uno, se puede cargar todo en un archivo de texto plano .sql y
+
+	mysql -u root -p < archivo.sql                   [el archivo que crea la base de datos]
+	mysql -u root -p -D basededatos < archivo2.sql
+
+
 
 EXPORTAR RESPALDOS
 
 Salir de MySQL
 
-mysqldump -u root -p cursoplatzi (es la base de datos)     [host, o nada si es lo]
+mysqldump -u root -p cursoplatzi (es la base de datos)     [host, o nada si es lo]  imprime por terminal
 
 	[traer toda la base de datos a texto, sirve a respaldo local]
 
@@ -603,11 +606,12 @@ mysqldump -u root -p -d cursoplatzi                        [host, o nada si es l
 
 mysqldump -u root -p -d cursoplatzi > esquema.sql
 mysqldump -u root -p cursoplatzi > esquema.sql
+mysqldump -u root -p cursoplatzi --column-statistics=0 > esquema.sql                  si falla
 
 	[exporta a ~/ o sea al home del usuario]
 
 
------------------------------------------------------------------------------------------------------------------------------------------------
+#################################################################################################################################
 
 mysql_secure_installation para configurar MySQL
 mysql -u root -p      (por default son root y root)   o sudo mysql -u root

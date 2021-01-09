@@ -137,7 +137,8 @@ host [IP] ...          responde con el dominio
 nslookup [dominio]     responde con la IP
 dig [dominio]          responde con la IP
 
-----------------------------------------------------------------------------------------------------
+
+#################################################################################################################################
 
 ADMINISTRAR MAC
 ifconfig [ver interfaces de redes]     iwconfig      ip a list
@@ -152,6 +153,8 @@ macchanger -m 00:11:22:33:44:55 eth0
 macchanger -l   muestra las que tiene en memoria con marca de dispositivo para elegir los primeros 3 pares
 ifconfig eth0 up
 
+
+#################################################################################################################################
 
 ESCANEAR SEGMENTO DE RED
 netdiscover          [escaneo de conexiones que están en el mismo segmento, enviando paquetes ARP, todo el segmento]
@@ -189,8 +192,8 @@ saltar prueba de discovery (firewall) con Pn, o sea sin ping: nmap -p22 -sT -Pn 
 vs.  -sn   que es solo discovery
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#################################################################################################################################
+#################################################################################################################################
 
 NMAP
 nmap -Pn -p41-50 -sU 192.168.20.23   udp, rango de puertos (abierto o filtrado, solo está seguro cuando hay rechazo), con UDP analiza todos y no solo los 1000 carac

@@ -32,6 +32,15 @@
 
 #################################################################################################################################
 
+import sys
+
+for arg in sys.argv:
+    print(arg)
+
+print(f"Argument from my_script: {sys.argv[1]}")
+
+
+
 x = 5
 y = 7
 
@@ -151,7 +160,7 @@ print(hello.strip())            #lstrip izquierda, rstrip derecha
 
 print(hello.startswith(" Hell"))     #Booleano empieza exactamente con
 
-phrase = "Email: ghp.21@hotmail.com Gustavo H P codigo postal 1406"
+phrase = "Email: g@hotmail.com Gustavo H P codigo postal 1"
 atpos = phrase.find("@")             #find asigna un número de posición al caracter buscado
 print(atpos)
 sppos = phrase.find(" ")             #primer espacio en blanco

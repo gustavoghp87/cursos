@@ -1,0 +1,35 @@
+# título grande
+
+
+**negritas**
+
+
+* tip
+	** tip vacío con margen
+
+
+`resaltar comando con fondo gris`
+
+
+Resaltar código:
+```bash
+sudo apt update
+```
+
+Título y línea larga debajo
+---------------------------
+
+
+imagen:
+![](subcarpeta/screenshot1.jpeg)
+
+gift desde web:
+![](https://i.imgur.com/Q5KSDbg.gif)
+
+
+Links:
+https://github.com/derv82/wifite   (o con @ https://github.com/derv82/wifite, ver)
+También [nombre] y abajo [nombre]:<https://etc.com/etc>
+También [nombre](https://
+
+

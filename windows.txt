@@ -31,8 +31,15 @@ netstat -ar
 
 arp -a      [tabla ARP]
 
+
 Claves wifi almacenadas:
-    netsh wlan show profile name="xxxxxxxx" key=clear
+	netsh wlan show profile name="xxxxxxxx" key=clear
+
+, viene de:
+	netsh
+	wlan
+	show profiles
+
 
 osk   [teclado completo en pantalla]
 
