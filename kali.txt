@@ -736,7 +736,22 @@ Métodos HTTP: Get (solicitud) y Post (envío de formulario), Put, Delete, Trace
 
 #################################################################################################################################
 
-KALI LIVE PERSISTENCE
+KALI LIVE PERSISTENCE en pendrive     NO UPGRADEAR APT
+
+sudo add-apt-repository universe
+sudo add-apt-repository ppa:mkusb/ppa
+sudo apt update
+sudo apt install --install-recommends mkusb mkusb-nox usb-pack-efi
+
+(colocar pendrive y abrir mkusb desde softwares)
+
+yes - i - p
+
+elegir la .iso
+upefi (default grub from iso file) evita problemas con uefi secure boot
+
+
+KALI LIVE PERSISTENCE en pendrive con Rufus pero no es persistente sino que tiene parte del pendrive para guardar cosas
 
 fdisk -l
 

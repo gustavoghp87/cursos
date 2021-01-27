@@ -1,0 +1,89 @@
+Los proyectos se abren desde el archivo de configuración    proyecto.sln    ("solución")
+
+Modulizar:
+Usar    namespace NombreNS { (Clase) }
+Importar haciendo    using NombreNS
+
+Agregar Excel: Proyecto/agregar referencias   COM/ búsqueda ... Microsoft Excel 16.0 Object Library
+
+try {} catch {MessageBox.Show("No se han ingresado productos");}
+
+ícono:   agregar y asociar al proyecto desde    Proyecto/Propiedades de ...
+
+Firma digital: También en Proyecto/Propiedades de ...   Firma
+
+.env files:   NuGet    https://github.com/tonerdo/dotnet-env
+
+#################################################################################################################################
+
+SQL SERVER
+
+Tools/Connect to DB
+
+Select Project > Manage NuGet Packages.
+In NuGet Package Manager, select the Browse tab, then search for and select Microsoft.Data.SqlClient.
+On the Microsoft.Data.SqlClient page, select Install.
+
+...
+
+try 
+{ 
+    SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+    builder.DataSource = "<your_server>.database.windows.net"; 
+    builder.UserID = "<your_username>";            
+    builder.Password = "<your_password>";     
+    builder.InitialCatalog = "<your_database>";
+
+    using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+    {
+        Console.WriteLine("\nQuery data example:");
+        Console.WriteLine("=========================================\n");
+
+        String sql = "SELECT name, collation_name FROM sys.databases";
+
+        using (SqlCommand command = new SqlCommand(sql, connection))
+        {
+            connection.Open();
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                    {
+                        Console.WriteLine("{0} {1}", reader.GetString(0), reader.GetString(1));
+                    }
+            }
+        }                    
+    }
+}
+catch (SqlException e)
+{
+    Console.WriteLine(e.ToString());
+}
+
+
+new SqlCommand(sql, connection).ExecuteNonQuery();
+MessageBox.Show("Los datos se guardaron correctamente");
+connection.Close();
+
+
+#################################################################################################################################
+
+instalo sdk .net core 3.1
+The following were installed at: 'C:\Program Files\dotnet'
+    • .NET Core SDK 3.1.404
+    • .NET Core Runtime 3.1.10
+    • ASP.NET Core Runtime 3.1.10
+    • .NET Core Windows Desktop Runtime 3.1.10
+
+dotnet --version
+
+Projecto de terminal:    dotnet new console -o myConsoleApp
+Ejecutar:                dotnet restore    dotnet run
+
+Proyecto app:            dotenv new mvc -au None -o aspnet-app          (sin auth)
+Ejecutar:                dotnet restore    dotnet run                   (puerto 5000)
+
+
+dotnet add package Newtonsoft.Json           parsear json
+
+
+

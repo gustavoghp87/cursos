@@ -161,6 +161,10 @@ Ir a la rama donde está para poder copiar el hash, y cambiar a la rama destino.
 	git cherry-pick [hash]
 (chequear esto)
 
+
+Borrar de caché cuando carpeta no responde a .gitignore:    git rm -r --cached [file or dir]     r de recursive (subcarpetas)
+
+
 ------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------------------

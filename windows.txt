@@ -12,7 +12,7 @@ WINDOWS
 
 diskpart / list disk (o list volume) / select disk [n°] 
 list partition
-select disk [n°] / clean / create partition primary / select partition [n] / active / format fs=NTFS
+clean / create partition primary / select partition [n] / active / format fs=NTFS
 
 
 net users [usuarios]

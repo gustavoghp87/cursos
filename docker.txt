@@ -130,6 +130,14 @@ docker exec -it mongodb bash    ls  mongo         entrar al contenedor y ejecuta
 	y también se usa tal cual para copiar los datos cuando se cree otro contenedor
 
 
+Kali ARM:
+docker pull donaldrich/kali-linux:latest
+docker run -it --rm --workdir="/root" --entrypoint="/bin/sh" --net="host" donaldrich/kali-linux:latest
+
+docker pull donaldrich/kali-linux:wifite
+docker run -it --rm --workdir="/root" --entrypoint="wifite" --net="host" donaldrich/kali-linux:wifite
+
+
 #############################################################################################################################
 
 https://www.youtube.com/watch?v=NVvZNmfqg6M

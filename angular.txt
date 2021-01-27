@@ -143,6 +143,46 @@ app.module.ts:
 
 #################################################################################################################################
 
+NgRx    Angular Reducers
+
+ng add @ngrx/store@latest --minimal false
+   (también a mano con    npm install @ngrx/store)
+
+Crea    .../app/reducers/index.ts
+Crear algo-reducer.ts y algo-actions.ts
+
+algo-actions.ts
+	import { createAction } from '@ngrx/store'
+	export const changeLogged = createAction('[Logged Component] ChangeLogged')
+
+algo-reducer.ts:
+	import { createReducer, on } from '@ngrx/store'
+	import { changeLogged } from './log-actions'
+	export const logged:boolean = false
+	const _loggedReducer = createReducer( logged, on(changeLogged, (state) => {console.log(state); return !state}) )
+	export const loggedReducer = (state, action) => { return _loggedReducer(state, action) }
+
+
+1. app.module.ts:
+	import { StoreModule } from '@ngrx/store'
+	import { loggedReducer } from './reducers/log-reducer'
+	... StoreModule.forRoot({ logged: loggedReducer })
+
+2. Componente.ts:
+	import { Observable } from 'rxjs'
+	import { select, Store } from '@ngrx/store'
+	import { changeLogged } from '../reducers/log-actions'
+	logged$:Observable<boolean>
+	constructor ( private store:Store<{logged:boolean}> ) { }
+	ngOnInit(): void { this.logged$ = this.store.pipe(select('logged')) }
+	changeLoggedLocal() { this.store.dispatch(changeLogged()) }
+
+
+Las variables en .html se usan siempre:   (variable$ | async)
+
+
+#################################################################################################################################
+
 EJERCICIO MSN
 
 ng generate component login/home/profile/conversation/menu

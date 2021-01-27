@@ -4,6 +4,7 @@ Temp:          cat /sys/class/thermal/thermal_zone*/temp
 
 Reparación de falla en kernel "initramfs": blkid   help   fsck -c -y /dev/mapper/ubuntu--vg-root   (etc)
 
+Bitcoin core: dentro de /bin/    sudo install -m 0755 -o root -g root -t *      bitcoin-qt
 
 sudo su
 apt-get [administrador de paquetes (programas/actualizaciones/documentación) update / apt-get upgrade

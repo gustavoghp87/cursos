@@ -515,3 +515,28 @@ export const corsOptions = {
     }
 }
 
+
+#################################################################################################################################
+
+SERVICE WORKER PARA PWA
+
+step 1 : npm i workbox-cli
+step 2 : create workbox-config.js file in your project folder
+step 3 : add         (junto al package.json)
+module.exports = {
+  globDirectory: './public/',
+  globPatterns: ['\*\*/\*.{html,js}'],
+  swDest: './public/sw.js',
+  clientsClaim: true,
+  skipWaiting: true
+};
+step 4: update your serviceWorker.js file with    const swUrl = `${process.env.PUBLIC_URL}/sw.js` 
+step 5: update your package.json file
+"scripts": {
+  // ...    
+  "build": "workbox generateSW && react-scripts build",
+  // ...
+}
+Then build and serve.
+read more https://medium.com/@arafatahmedtanimcsedu57/progressive-web-apps-with-create-react-app-ca0c955ab798
+
