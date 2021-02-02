@@ -12,7 +12,9 @@ try {} catch {MessageBox.Show("No se han ingresado productos");}
 
 Firma digital: También en Proyecto/Propiedades de ...   Firma
 
-.env files:   NuGet    https://github.com/tonerdo/dotnet-env
+.env files:   NuGet ... DotNetEnv   (https://github.com/tonerdo/dotnet-env)    ver la doc ahí
+using System;     string UserID = Environment.GetEnvironmentVariable("USERNAMEDB")
+
 
 #################################################################################################################################
 
