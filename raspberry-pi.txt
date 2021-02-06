@@ -1,0 +1,25 @@
+sudo apt update
+sudo apt install python3-gpiozero
+sudo pip3 install rpi.gpio --upgrade
+
+
+cd /dev
+chmod og+rwx gpio*
+
+This is a permissions issue, your user does not have read-write access to /dev/gpiomem. Here's one way to give access:
+
+change /dev/gpiomem group ownership to your user's group:
+sudo chown root:$USER /dev/gpiomem
+allow group read-write access to /dev/gpiomem:
+sudo chmod g+rw /dev/gpiomem
+Note that it would be better to add your user to the group that owns /dev/gpiomem instead of changing group ownership as @lurch notes below. However, by default /dev/gpiomem group ownership is root in Ubuntu and adding your user to the root group would expand your user privileges which you probably don't want. Hence the group ownership change.
+
+
+sudo pip3 install gpio
+sudo apt-get install wiringpi
+sudo apt-get --reinstall install libraspberrypi-bin
+
+cd /tmp
+wget https://project-downloads.drogon.net/wiringpi-latest.deb
+sudo dpkg -i wiringpi-latest.deb
+[problema de arquitectura de cpu]
