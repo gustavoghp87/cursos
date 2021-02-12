@@ -1,0 +1,54 @@
+Curso de .NET Core - RESTFUL API [Code Skills de youtube]
+
+Add Project ASP.NET Core Web App "SocialMedia.Api"
+Add Project ASP.NET Core Web App "SocialMedia.Infrastructure"
+Add Project Class Library (.NET Standard) "SocialMedia.Core"
+
+Click en .Api / Add Project Reference
+    activar los checkboxes para relacionar el primero con los otros dos (el primero dirige por haberse creado primero)
+Click en .Infrastructure / Add Project Reference , solo con el Core
+Core es el nivel más interno, no tiene referencias
+
+Crea carpeta Tests por fuera de los 3 projectos con 2 proyectos xUnitTests
+
+// código //
+
+View / SQL Server Object Explorer     click derecho en Databases / Add New Database
+click derecho / New Query
+
+Instalar Gnu Package    Microsoft.EntityFrameworkCore.SqlServer 3.1.11    en .Infrastructure
+			Microsoft.EntityFrameworkCore.SqlServer 3.1.11    en .Infrastructure    estos tienen problemas de compatibilidad con NETStandard.Library
+                        Microsoft.EntityFrameworkCore.Design 3.1.11       en .Api
+
+Tools / GnuGet Package Manager / Package Manager Console    (ver que la pestaña Default Project diga Infrastructure)
+	ejecutar:    Scaffold-DbContext "Server=(localdb)\MSSQLLocalDB;Database=SocialMedia;Integrated Security = true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Data
+
+, genera todo desde la base de datos
+
+El método "OnConfiguring" del Context.cs se elimina para que no quede expuesto, y preferentemente se lo inyecta
+Las otras clases las llevo al Entities del Core (usar copy and paste desde VS y cambiar los namespaces)
+
+En appsettings.json agregar "ConnectionStrings": {
+    "SocialMedia": "Server=(localdb)\\MSSQLLocalDB;Database=SocialMedia;Integrated Security = true"
+},
+
+Función rename de VS: selección, ctrl + r + r
+
+DTO: data transfer objects, evitar que los usuarios decidan todos los valores de los objetos
+Son clases similares a las Entities pero sin referencias a otras tablas y las conversiones pertinentes
+El manejo de las dbs se hace con Entities pero la ruta usa DTO (los controllers)
+
+Instalo Microsoft.AspNetCore.Mvc.NewtonsoftJson 3.1.11   (hacer coincidir con la versión del framework)
+Ignorar referencia circular en Startup.cs
+
+Instalo    AutoMapper.Extensions.Microsoft.DependencyInjection    para automatizar las conversiones (carpeta Mappings)
+También instalo    AutoMapper.Extensions.Microsoft.DependencyInject
+
+
+Validación de datos que ingresan:    if (!ModelState.IsValid) {return BadRequest(ModelState);}
+     desconectando la validación de [ApiController]   en Startup.cs   (ConfigureApiBehaviorOptions ... SuppressModelStateInvalidFilter)
+Instalar    Microsoft.AspNetCore.Mvc.Abstractions 2.2.0    Microsoft.AspNetCore.Mvc.Core 2.2.5
+
+Agregar la validación como middleware (Startup.cs)
+
+Instalar    FluentValidation.AspNetCore 8.6.3    en Infrastructure y en Api

@@ -1,0 +1,41 @@
+DOTNET
+
+Los proyectos se abren desde el archivo de configuración    proyecto.sln    ("solución")
+
+Modulizar:
+Usar    namespace NombreNS { (Clase) }
+Importar haciendo    using NombreNS
+
+Agregar Excel: Proyecto/agregar referencias   COM/ búsqueda ... Microsoft Excel 16.0 Object Library
+
+try {} catch {MessageBox.Show("No se han ingresado productos");}
+
+ícono:   agregar y asociar al proyecto desde    Proyecto/Propiedades de ...
+
+Firma digital: También en Proyecto/Propiedades de ...   Firma
+
+
+.env files:   NuGet ... DotNetEnv   (https://github.com/tonerdo/dotnet-env)    ver la doc ahí
+using System;     string UserID = Environment.GetEnvironmentVariable("USERNAMEDB")
+
+
+Par clave-valor en C#:    Dictionary<string, int> dict = new Dictionary<string, int>();
+
+Printer.WriteTitle("Título");
+foreach (var keyValPair in dict)
+{
+    WriteLine($"La llave de {keyValPair.Key} vale {keyValPair.Value}");
+}
+
+dict["email"] arroja el valor en esa llave
+
+dict["lastname"] = "Garcia";    asigna
+
+Hacer un tipo de JSON y evitar que se asignen llaves equivocadas:    public enum LlavesDiccionario {Llave1, Llave2, Llave3}
+Uso:    var diccionario = new Dictionary<LlavesDiccionario, IEnumerable<ObjetoDado>();
+        diccionario.Add(LlavesDiccionario.Llave1, new[] {Tipo});
+
+
+
+
+
