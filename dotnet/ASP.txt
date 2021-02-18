@@ -1,0 +1,21 @@
+Certificado para desarrollar web (ASP .NET) con https:    dotnet dev-certs https --trust     dice que no va en linux
+
+dotnet add package Newtonsoft.Json           parsear json
+
+VS Code: Instalar    Auto-Using for C#   y   C# extension
+
+Para usar otro template:
+@{
+    ViewData["Title"] = "School Page";
+    Layout = "_LayoutSimple";
+}
+
+Para usar tipado fuerte (cshtml):   @model School
+
+
+dotnet add package Microsoft.EntityFrameworkCore.InMemory    base de datos en memoria para pruebas
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+
+Se crea el ModeloContext.cs y se lo inyecta en el Startup.cs en el ConfigureServices (base de datos en memoria o sql)
+El modelo context crea los datos al iniciarse la app
+En Program.cs evitar que la app se inicie antes

@@ -2,13 +2,25 @@
 
 en cmd todo junto y enter:
 cd "C:\Program Files\Oracle\VirtualBox"
-VBoxManage.exe modifyvm "Catalina" --cpuidset 00000001 000106e5 00100800 0098e3fd bfebfbff
-VBoxManage setextradata "Catalina" "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct" "iMac19,1"
-VBoxManage setextradata "Catalina" "VBoxInternal/Devices/efi/0/Config/DmiSystemVersion" "1.0"
-VBoxManage setextradata "Catalina" "VBoxInternal/Devices/efi/0/Config/DmiBoardProduct" "Mac-AA95B1DDAB278B95"
-VBoxManage setextradata "Catalina" "VBoxInternal/Devices/smc/0/Config/DeviceKey" "ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
-VBoxManage setextradata "Catalina" "VBoxInternal/Devices/smc/0/Config/GetKeyFromRealSMC" 1
-VBoxManage setextradata "Catalina" VBoxInternal2/EfiGraphicsResolution 1920x1080
+VBoxManage.exe modifyvm "catalina2" --cpuidset 00000001 000106e5 00100800 0098e3fd bfebfbff
+VBoxManage setextradata "catalina2" "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct" "iMac19,1"
+VBoxManage setextradata "catalina2" "VBoxInternal/Devices/efi/0/Config/DmiSystemVersion" "1.0"
+VBoxManage setextradata "catalina2" "VBoxInternal/Devices/efi/0/Config/DmiBoardProduct" "Mac-AA95B1DDAB278B95"
+VBoxManage setextradata "catalina2" "VBoxInternal/Devices/smc/0/Config/DeviceKey" "ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
+VBoxManage setextradata "catalina2" "VBoxInternal/Devices/smc/0/Config/GetKeyFromRealSMC" 1
+VBoxManage setextradata "catalina2" VBoxInternal2/EfiGraphicsResolution 1920x1080
+
+cd "C:\Program Files\Oracle\VirtualBox"
+VBoxManage.exe modifyvm "mojave2" --cpuidset 00000001 000106e5 00100800 0098e3fd bfebfbff
+VBoxManage setextradata "mojave2" "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct" "iMac19,1"
+VBoxManage setextradata "mojave2" "VBoxInternal/Devices/efi/0/Config/DmiSystemVersion" "1.0"
+VBoxManage setextradata "mojave2" "VBoxInternal/Devices/efi/0/Config/DmiBoardProduct" "Mac-AA95B1DDAB278B95"
+VBoxManage setextradata "mojave2" "VBoxInternal/Devices/smc/0/Config/DeviceKey" "ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
+VBoxManage setextradata "mojave2" "VBoxInternal/Devices/smc/0/Config/GetKeyFromRealSMC" 1
+VBoxManage setextradata "mojave2" VBoxInternal2/EfiGraphicsResolution 1920x1080
+
+
+VBoxManage modifyvm "catalina2" --cpu-profile "Intel Core ..."
 
 abrir en virtualbox
 
@@ -36,6 +48,8 @@ Version 4.x:
 -VBoxManage setextradata "Your VM Name" "VBoxInternal/Devices/efi/0/Config/DmiBoardProduct" "Iloveapple"
 -VBoxManage setextradata "Your VM Name" "VBoxInternal/Devices/smc/0/Config/DeviceKey" "ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
 -VBoxManage setextradata "Your VM Name" "VBoxInternal/Devices/smc/0/Config/GetKeyFromRealSMC" 1
+
+
 
 
 

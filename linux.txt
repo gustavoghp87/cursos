@@ -2,7 +2,7 @@ Ver apps: darktable (editor gráfico), kdinlive (editor de video)
 Ver sistema:   sudo apt-get install screenfetch
 Temp:          cat /sys/class/thermal/thermal_zone*/temp
 
-Reparación de falla en kernel "initramfs": blkid   help   fsck -c -y /dev/mapper/ubuntu--vg-root   (etc)
+Reparación de falla en HDD "initramfs": blkid   help   fsck -c -y /dev/mapper/ubuntu--vg-root   (etc)   reboot
 
 Bitcoin core: dentro de /bin/    sudo install -m 0755 -o root -g root -t *      bitcoin-qt
 

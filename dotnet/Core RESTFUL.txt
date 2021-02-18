@@ -1,5 +1,6 @@
 Curso de .NET Core - RESTFUL API [Code Skills de youtube]
 
+
 Add Project ASP.NET Core Web App "SocialMedia.Api"
 Add Project ASP.NET Core Web App "SocialMedia.Infrastructure"
 Add Project Class Library (.NET Standard) "SocialMedia.Core"

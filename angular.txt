@@ -11,6 +11,19 @@ ng build --prod
 
 ng add @ng-bootstrap/ng-bootstrap
 
+
+#################################################################################################################################
+
+PWA                     https://pwaexperts.io/tutoriales/convierte-aplicacion-angular-en-pwa
+
+ng add @angular/pwa    (manifest.json, @angular/service-worker, ngsw-config.json, icons)
+Proveer un icono especial para apple
+ng build --prod
+
+npm install --global http-server       http-server -p 8080 -c-1 dist/[nombre de aplicación]
+	 (esto es para comparar, el servidor de desarrollo de Angular ng serve no permite el uso de Service Workers)
+
+
 #################################################################################################################################
 
 COMPONENTES
