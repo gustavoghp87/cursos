@@ -1,0 +1,49 @@
+npm i -g @ionic/cli
+ionic start                                         Capacitor es para hacerla native
+ionic serve
+ionic generate page                                 componente
+ionic build --prod   --->   npx cap add android
+npx cap open android    (Android Studio instalado) abre proyecto compilado desde AS
+Build/Build APK
+
+
+componentes css en ionicframework.com
+
+<ionic-button slot="start">
+    <ionic-back-button defaultHref="home"></ionic-back-button>
+</ionic-button>
+
+<ion-content>
+    <ion-list>
+        <ionic-item *ngFor="let character of characters" [routerLink]="['/profile/' + character.id]">
+            <ion-avatar slot="start>
+                <img src="{{character.image}}" alt="" />
+            </ion-avatar>
+            <ion-label>{{character.name}}</ion-label>
+        </ionic-item>
+    </ion-list>
+</ion-content>
+
+
+import { HttpClient } from "@angular/common/http";
+import { ActivatedRoute } from "@angular/router";
+
+profileId: string;
+character;
+
+constructor(
+    private http: HttpClient,
+    private activatedRoute: ActivatedRoute
+) {}
+
+ngOnInit() {
+    this.profileId = this.activatedRoute.snapshot.paramMap.get("id");
+    .get("https://rickandmortyapi.com/api/character/" + this.profileId)
+        .subscribe((res) => {
+            this.character = res;
+        });
+}
+
+
+
+
