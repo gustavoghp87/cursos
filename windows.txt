@@ -1,5 +1,9 @@
 WINDOWS
 
+devmgmt.msc [adm de dispositivos]
+dxdiag      [vista de sistema]
+
+
 ################################## ATAJOS #######################################################################################
 
 	Windows + v   	     [Historial de Portapapeles (requiere habilitación) ]
@@ -8,12 +12,14 @@ WINDOWS
 	Windows + Alt + s    [captura de pantalla parcial]
 
 
-################################# COMANDOS ######################################################################################
+################################# DISKPART ######################################################################################
 
 diskpart / list disk (o list volume) / select disk [n°] 
 list partition
 clean / create partition primary / select partition [n] / active / format fs=NTFS
 
+
+################################# USERS #########################################################################################
 
 net users [usuarios]
 net users ghp21
@@ -21,15 +27,18 @@ netplwiz [cuentas de usuarios] [entrando desde modo seguro (4) en conf de inicio
  puede hacer cambios de cuenta como administrador]
 [para entrar a windows sin elegir usuario y contraseña]
 
-devmgmt.msc [adm de dispositivos]
-dxdiag      [vista de sistema]
 
-ipconfig    [interfaces de red], ipconfig /release, ipconfig /renew
+################################# REDES #########################################################################################
+
+ipconfig     [interfaces de red], ipconfig /release, ipconfig /renew
+ipconfig/all
 netstat
 netstat -a
 netstat -ar
-
-arp -a      [tabla ARP]
+arp -a       [tabla ARP]
+getmac       [direcciones MAC]
+cambiar:   reg add HKEY_LOCAL_MACHINESYSTEMCurrentControlSetControlClass{4D36E972-E325-11CE-BFC1-08002BE10318}_0004 /v NetworkAddress /d 001122334455 /f
+           [0004 es el index de la interfaz de red y 
 
 
 Claves wifi almacenadas:

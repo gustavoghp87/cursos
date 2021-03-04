@@ -19,3 +19,26 @@ dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 Se crea el ModeloContext.cs y se lo inyecta en el Startup.cs en el ConfigureServices (base de datos en memoria o sql)
 El modelo context crea los datos al iniciarse la app
 En Program.cs evitar que la app se inicie antes
+
+
+#################################################################################################################################
+
+scaffolding: crea modelos, vistas y controladores desde un puñado de instrucciones de terminal
+
+dotnet tool install -g dotnet-aspnet-codegenerator
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet restore
+
+dotnet aspnet-codegenerator controller`
+-name EvaluaciónController `                          CursoController etc
+-m Evaluación`                                       Alumno, Curso, Asignatura, Escuela, Evaluación
+-dc EscuelaContext `
+--relativeFolderPath Controllers `
+--useDefaultLayout `
+--referenceScriptLibraries -f                     f de forzar (reemplazar)
+
+dotnet aspnet-codegenerator controller -name EvaluaciónController -m Evaluación -dc EscuelaContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries -f
+
+
+

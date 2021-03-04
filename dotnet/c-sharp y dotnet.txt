@@ -41,3 +41,5 @@ virtual habilita la sobreescritura de parámetros, el que sobreescribe lleva ove
 [StringLength(10)]
 [StringLength(10, ErrorMessage = "Se requiren mínimo 10 caracteres")]
 [Display(Prompt = "Dirección correspondencia", Name = "Address")]          Promp es placeholder y Name es tabel
+
+Crear Interface usando la clase actual como modelo: ctrl + r,i
