@@ -97,6 +97,15 @@ aircrack-ng outFile-01.cap -w ~/Documents/psws.txt
 
 #################################################################################################################################
 
+Deautenticar:
+    
+    subprocess.run(["airmon-ng", "start", "wlan0mon", hackchannel])
+    subprocess.run(["aireplay-ng", "--deauth", "0", "-a", hackbssid, "wlan0mon"])
+https://github.com/davidbombal/red-python-scripts/blob/main/wifi_dos_type1.py
+
+
+#################################################################################################################################
+
 PROXYCHAINS
 solo tcp, sirve para esconder la ip de las peticiones
 cambiar etc/proxychains4.conf el strict_chain a dynamic_chain, comentar proxy_dns y colocar la ip abajo de todo
@@ -268,10 +277,13 @@ Escanear evitando que firewall bloquee las respuestas de los puertos por detecta
 Paquete null:
 	nmap -Pn --p1-50 sN 192.168.20.23              [no es efectivo con Windows]
 
+todos:   nmap -sS -f -p- 100.100.100.100 -v         -p- los 65530 puertos, f de fragmentado para que intente superar trabas de seguridad
+
 UNIFICACIÓN
 	nmap -Pn -p- -sT -sn 192.168.20.0/24       [ -sU, -sX, -sN ]
 
 Usar base de datos de scripts de Nmap:
+	nano /usr/share/nmap/scripts
 	nmap --script banner                          [consulta versión de los servicios y OS y en algunos casos arroja nombres de usuario]
 	nmap --script vuln 192.168.20.23              [escaneo de vulnerabilidades por puerto y sitios donde se documentan]
 	(en virtualbox llevar las redes a bridge)
@@ -284,6 +296,7 @@ Vulnerabilidades:
 	nmap -sV 192.168.57.5    [que diga la versión de los puertos que están corriendo]
 	nmap -sV -T4 -O --script=ssh2-enum-algos 192.168.57.5   [enumerar los algoritmos de ssh]
 	cd /usr/share/nmap/scripts
+	nmap --script http-waf-fingerprint secpro.co
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -816,5 +829,61 @@ Run the upgrade and install. After you are done you can switch back to normal wi
 	sudo apt-get clean
 	sudo unlink /var/cache/apt
 	sudo mv /media/{dir_of_mounted_disc}/apt /var/cache
+
+
+
+
+
+
+
+
+
+# Import scapy
+import scapy.all as scapy
+# We need to create regular expressions to ensure that the input is correctly formatted.
+import re
+
+# Basic user interface header
+print(r"""______            _     _  ______                 _           _ 
+|  _  \          (_)   | | | ___ \               | |         | |
+| | | |__ ___   ___  __| | | |_/ / ___  _ __ ___ | |__   __ _| |
+| | | / _` \ \ / / |/ _` | | ___ \/ _ \| '_ ` _ \| '_ \ / _` | |
+| |/ / (_| |\ V /| | (_| | | |_/ / (_) | | | | | | |_) | (_| | |
+|___/ \__,_| \_/ |_|\__,_| \____/ \___/|_| |_| |_|_.__/ \__,_|_|""")
+print("\n****************************************************************")
+print("\n* Copyright of David Bombal, 2021                              *")
+print("\n* https://www.davidbombal.com                                  *")
+print("\n* https://www.youtube.com/davidbombal                          *")
+print("\n****************************************************************")
+
+# Regular Expression Pattern to recognise IPv4 addresses.
+ip_add_range_pattern = re.compile("^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]*$")
+
+# Get the address range to ARP
+while True:
+    ip_add_range_entered = input("\nPlease enter the ip address and range that you want to send the ARP request to (ex 192.168.1.0/24): ")
+    if ip_add_range_pattern.search(ip_add_range_entered):
+        print(f"{ip_add_range_entered} is a valid ip address range")
+        break
+
+
+# Try ARPing the ip address range supplied by the user. 
+# The arping() method in scapy creates a pakcet with an ARP message 
+# and sends it to the broadcast mac address ff:ff:ff:ff:ff:ff.
+# If a valid ip address range was supplied the program will return 
+# the list of all results.
+arp_result = scapy.arping(ip_add_range_entered)
+
+
+#################################################################################################################################
+
+Subdominios (busca en los buscadores principales):    sublist3r -d www.dominio.com
+
+searchsploit windows |more    sincroniza con exploit-db.com
+locate 12698.p
+cd /usr/share/exploitdb/exploits/windows/dos
+
+ver dirbuster
+
 
 

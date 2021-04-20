@@ -19,6 +19,8 @@ docker stop [id o name]
 docker rm $(docker ps -aq)                          elimina todos los procesos
 docker stop $(docker ps -aq)                        detiene todos los procesos
 docker rm [proceso] .f                              fuerza a eliminar aunque esté corriendo
+docker logs [proceso]                               muestra los logs como cat
+docker logs -f [proceso]                            muestra los logs y queda online
 
 docker rmi mysql                                    remueve imagen
 docker rmi $(docker images -aq)                     pero elimina las que no se estén utilizando
@@ -63,6 +65,8 @@ docker run .
 
 docker run -p 3306:3306 -d --name mariadb -e MARIADB_ROOT_PASSWORD=password123 mariadb/server
 conexión:   mysql --host 127.0.0.1 -p 3006 -u root -p
+
+Diferencia entre CMD y ENTRY POINT: en entry point se pone el comando ("start") después de correr Dockerfile
 
 
 Crear imagen desde Dockerfile: docker build . -t [nombreParaImagen]         t de tag, --name para contenedores
@@ -195,16 +199,19 @@ docker pull
 
 ... y   docker run -it -p 4000:3000 proyecto
 
+Para subir se necesita que la imagen se llame ghpUsernameDockerHub/nombreImagen
+Para cambiar el tag se hace    docker tag 74b5s9fdd5f6 ghpUsernameDockerHub/nombreImagen:version
+docker push ghpUsernameDockerHub/nombreImagen
+
 
 .dockerignore
 node_modules
 npm-debug.log
 
 
-#############################################################################################################################
+#################################################################################################################################
 
 DOCKER-COMPOSE
-
 
 Instalar:
 	sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -218,8 +225,8 @@ En raspberry pi:
 
 On desktop systems like Docker Desktop for Mac and Windows, Docker Compose is included as part of those desktop installs.
 
-
 docker-compose.yml:
+
 
 version: "3"
 services:
@@ -241,4 +248,22 @@ services:
 la url de la conexión va a ser   'mongodb://mongoX/mydb'
 
 docker-compose build
-docker-compose up
+docker-compose up             a veces hay que repetirlo por el orden y los tiempos
+
+
+#################################################################################################################################
+
+RED DOCKER
+
+docker network create nombreApp
+docker run -d --network nombreApp --network-alias nombreAlias -v ...:... -e ... imagen
+docker run -it --network nombreAlias nicolaka/netshoot
+
+docker run -dp 3000:3000 \         -dp es -d + -p
+-e MYSQL_HOST=mysql \
+-e MYSQL_USER=root \
+-e MYSQL_PASSWORD=secret \
+-e MYSQL_DB=laQueSea \
+imagen
+
+Ver screenshot de traducción network a docker-compose

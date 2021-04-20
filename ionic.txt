@@ -1,8 +1,9 @@
 npm i -g @ionic/cli
 ionic start                                         Capacitor es para hacerla native
 ionic serve
-ionic generate page                                 componente
+ionic generate page/page1                           componente
 ionic build --prod
+(si no se agregó Capacitor durante la creación del proyecto:    ionic integrations enable capacitor)
 npx cap add android
 npx cap open android    (Android Studio instalado) abre proyecto compilado desde AS
 Build/Build APK
