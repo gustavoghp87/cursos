@@ -2,6 +2,8 @@ Ver apps: darktable (editor gráfico), kdinlive (editor de video)
 Ver sistema:   sudo apt-get install screenfetch
 Temp:          cat /sys/class/thermal/thermal_zone*/temp
 
+Alias de comandos:    vim .bashrc
+
 Reparación de falla en HDD "initramfs": blkid   help   fsck -c -y /dev/mapper/ubuntu--vg-root   (etc)   reboot
 
 Bitcoin core: dentro de /bin/    sudo install -m 0755 -o root -g root -t *      bitcoin-qt
@@ -9,7 +11,8 @@ Bitcoin core: dentro de /bin/    sudo install -m 0755 -o root -g root -t *      
 sudo su
 apt-get [administrador de paquetes (programas/actualizaciones/documentación) update / apt-get upgrade
 apt update / apt upgrade
-historial de comandos en esta terminal: history
+history                       historial de comandos en esta terminal
+ctrl+r                        historial yendo hacia atrás
 
 cambiar clave superuser:   sudo su && passwd root
 
@@ -19,8 +22,11 @@ ps -a                               u de usuario actual
 ps -r                               running processes
 ps -T                               on this Terminal
 ps -fea                             historial de procesos
+ps fax                              con árbol
 kill [número de proceso]            kill -9 [número de proceso]    forzar
-ver procesos en dinámico: htop
+top                                 procesos por uso de recursos
+htop                                ver procesos en dinámico
+df -h                               espacio disponible
 
 uname -a && lsb_release -a          datos del sistema
 
@@ -30,23 +36,42 @@ ctrl + h [ver ocultos]
 ls, ls -al [tamaño, permisos], ls -l, ls -lh (permisos), ls ../, cd, cd ../, pwd, cd ~ [root], reset
 ls *ssh* [que liste todos los ficheros que contengan ssh en el nombre]
 cd E* [completa, Escritorio], cd - [devuelve al directorio último], du -sh [cuánto pesa la carpeta], df -h [peso de contenido]
+rsync -av folder1/ folder2/     copia todo el contenido sin sobreescribir y mostrando el progreso
 mkdir carpeta, mkdir -p carpeta/subcarpeta
 mkdir -p subcarpeta/{subsub1,subsub2,subsub3}
 touch archivo.txt [crea]
 rm archivo, rmdir carpeta/ [vacía], rm -rf carpeta/ [forzar borrada]
 mv carpeta/ otra/, mv carpeta/ nombreNuevo/
 man [+comando], info [+comando], apropos [+comando, dns sta], whatis [+comando, dnd sta el manual]
-find . -name "archivo" [punto es directorio actual]
+
+find . -name "archivo"          [punto es directorio actual]
+find . -mtime +5                (modifytime más de 5 días)
+find . -iname 'file*'           insensitive de mayúsculas
+
+cal                             calendario
+cal 11 2020                     calendario nov20
+date                            día y hora
+date -d "+7 days"               detalles dentro de 7 días
+bc                              calculadora
+
 locate sshd
 whereis cat [dnd sta el ejecutable]
 file nombre [devuelve tipo de archivo]
-descargar desde url: wget http...
+wget http...         descargar desde url
+curl ifconfig.me     trae el contenido
+du -sh /var/lib/     peso de la carpeta en MB
+du -sh /var/lib/*    peso de los contenidos
+stat file.txt        info
+tree                 árbol de ficheros
 
 sudo chown root.ghp21 carpeta/ [hacer que un archivo sea propiedad del adm]
 chmod +x file.txt [permisos de ejecución al usuario principal]
 
 cat archivo                   [lectura en la terminal]
-cat archivo | grep palabra    [busca la palabra en el archivo]
+cat archivo | grep palabra    [busca la palabra en el archivo y muestra las líneas]
+grep -v palabra archivo       [muestra líneas que no contienen la palabra]
+grep -l palabra carpeta       [archivos que contengan la palabra]
+grep -r palabra carpeta       [recursive busca también en subcarpetas]
 cat archivo | wt -l           [cuenta las líneas]
 
 Los programas [paquetes] están compilados y solo se descargan, o sin compilar
@@ -61,6 +86,7 @@ tar xvfz archivo.tar.gz             [descomprime el empaquetado]
 zless archivo.tz                    [para verlo sin descomprimirlo]
 
 zip file.zip .
+zip -r folderCompressed.zip folder
 unzip file.zip
 inzip -vl file.zip      lista contenido
 

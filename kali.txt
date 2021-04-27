@@ -887,3 +887,4 @@ ver dirbuster
 
 
 
+Conversión de cross a códigos:    https://r12a.github.io/app-conversion/     y ciberchef

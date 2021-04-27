@@ -245,6 +245,7 @@ services:
         ports:
             - "27018:27017"
 
+
 la url de la conexión va a ser   'mongodb://mongoX/mydb'
 
 docker-compose build

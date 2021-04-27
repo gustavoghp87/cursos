@@ -3,7 +3,7 @@
 
 # VIRTUALENV
 # pip install virtualenv       virtualenv venv   (para crear)              "venv" siempre es un nombre personalizado
-# Windows:   venv\Scripts\activate       venv\Scripts\deactivate
+# Windows:   python -m virtualenv .        venv\Scripts\activate       venv\Scripts\deactivate
 # Linux:     source venv/bin/activate    deactivate
 # requirements:  Django==3.0.6  etc
 # virtualenv venv --python=python3           
