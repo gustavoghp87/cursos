@@ -55,8 +55,8 @@ date -d "+7 days"               detalles dentro de 7 días
 bc                              calculadora
 
 locate sshd
-whereis cat [dnd sta el ejecutable]
-file nombre [devuelve tipo de archivo]
+whereis cat          dnd sta el ejecutable
+file nombre          devuelve tipo de archivo
 wget http...         descargar desde url
 curl ifconfig.me     trae el contenido
 du -sh /var/lib/     peso de la carpeta en MB
@@ -90,8 +90,8 @@ zip -r folderCompressed.zip folder
 unzip file.zip
 inzip -vl file.zip      lista contenido
 
-apt-get remove |paquete|   [lo elimina con seguridad... mantiene los archivos de conf y bases de datos]
-dpkb -P |paquete|   [también borra los archivos pero es muy puntual] P de purgar
+apt-get remove |paquete|      [lo elimina con seguridad... mantiene los archivos de conf y bases de datos]
+dpkb -P |paquete|             [también borra los archivos pero es muy puntual] P de purgar
 
 [apt-get install aptitude ... administrador de paquetes]
 

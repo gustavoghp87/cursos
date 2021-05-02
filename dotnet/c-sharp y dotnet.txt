@@ -43,3 +43,18 @@ virtual habilita la sobreescritura de parámetros, el que sobreescribe lleva ove
 [Display(Prompt = "Dirección correspondencia", Name = "Address")]          Promp es placeholder y Name es tabel
 
 Crear Interface usando la clase actual como modelo: ctrl + r,i
+
+
+using System.Linq
+...
+IEnumerable<int> list = from d in arreglo orderby d select d;                              ordena de menor a mayor
+IEnumerable<int> list = from d in arreglo orderby d select d;
+IEnumerable<Object> list = from d in arreglo orderby d.AtributoInt select d;
+Object obj = (from d in arreglo where d.Atributo=="atributo" select d).FirstOrDefault();
+
+var numbers1 = new int[] { 1, 2, 3, 4, 5, 6, 7 };
+var numbers2 = new int[] { 6, 7, 8, 9, 10 };
+var numbersUnion = numbers1.Union(numbers2).ToList();      no repite
+
+ver Zip, Join, All, SelectMany
+
