@@ -45,3 +45,29 @@ catch (SqlException e)
 new SqlCommand(sql, connection).ExecuteNonQuery();
 MessageBox.Show("Los datos se guardaron correctamente");
 connection.Close();
+
+
+#################################################################################################################################
+
+USANDO MIGRATIONS
+
+Instalar    Microsoft.EntityFrameworkCore    y    Microsoft.EntityFrameworkCore.SqlServer
+Instalar    Microsoft.EntityFrameworkCore.Tools
+ y en la consola de NuGet:	Add-Migration InitialCreate       para que se creen las clases Migration
+
+
+Agregar a appsettings.json:
+  "ConnectionStrings": {
+    "DefaultConnectionString": "Server=localhost;Initial Catalog=AngularDotnet;Persist Security Info=False;User ID=ghp2;Password=ghpghpghpghp;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+  }
+
+Y a Startup.cs en ConfigureServices:
+	string connection = ConfigurationExtensions.GetConnectionString(this.Configuration, "DefaultConnectionString");
+        services.AddDbContext<MyDBContext>(options => options.UseSqlServer(connection));
+
+Ahora desde la consola de NuGet:
+	Update-Database                   para que se cree una DB desde los modelos
+
+
+
+

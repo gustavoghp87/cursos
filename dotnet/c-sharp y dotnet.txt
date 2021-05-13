@@ -45,6 +45,11 @@ virtual habilita la sobreescritura de parámetros, el que sobreescribe lleva ove
 Crear Interface usando la clase actual como modelo: ctrl + r,i
 
 
+
+################
+##### LINQ #####
+################
+
 using System.Linq
 ...
 IEnumerable<int> list = from d in arreglo orderby d select d;                              ordena de menor a mayor
@@ -58,3 +63,6 @@ var numbersUnion = numbers1.Union(numbers2).ToList();      no repite
 
 ver Zip, Join, All, SelectMany
 
+Pagination:		(from d in listX orderby d.Age select d.Name).Skip(10).Take(5).ToList();         saltea los primeros 10 y toma del 11 al 15
+
+Union:                  (from d in listX select d.Name).Union(from d in listTextOnly select d).OrderBy(d=>d).ToList();

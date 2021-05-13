@@ -1,0 +1,203 @@
+
+1. MongoDB
+
+
+#################################################################################################################################
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+MONGODB
+
+MongoDB Server: terminal, trae mongo y mongod
+MongoDB Compass: gráfica
+MongoDB Atlas: nube
+
+mongod: servidor local
+mongo: aplicación de consola para manipular las bases de datos en los servidores, intérprete de js
+
+Windows: agregar path C:\Program Files\MongoDB\Server\4.2\bin a variables de entorno y crear subcarpeta C://data/db/
+
+Abrir dos consolas admin: mongod (port 27017) y mongo
+Colección: nodo o subnodo
+Documento: combinación llave-valor que se aloja en una colección como última instancia
+
+db: muestra la base actual (test por default pero no está guardada porque no tiene colecciones)
+show dbs: muestra todas las db
+help: comandos
+db.help(): todos los métodos db.
+use mibasededatos: cambia a esa db, la crea si no existe, pero no la guarda hasta que se cree alguna colección
+db.createCollection("users")
+show collections
+db.micoleccion.drop(): elimina la colección
+
+Mongo captura JSON pero almacena BSON (binarios), por eso se le mandan funciones de .js como new Date("12/12/2020") pero almacena 
+  ISODate("2020-12-12T06:00:00Z")
+Acepta expresiones regulares
+Acepta listas y objetos JSON dentro de objetos JSON sin límites
+
+No hace falta crear la colección antes de insertar datos
+Conviene formar el objeto en editor de código y luego copiarlo a consola para que se usen múltiples líneas de comando
+db.micoleccion.insert({ ... })
+db.micoleccion.insert({"name": "ghp", "email": "ghp.@g.com", "age": 33})     Genera ID automáticamente
+
+db.micoleccion.find(): muestra todos los documentos de la colección
+db.micoleccion.find().pretty(): ordena en múltiples líneas y con tabulación, muestra BSON
+
+Insertar varios documentos a la vez: db.micoleccion.insert([{...}, {...}, {...}])
+
+Búsqueda de valor para cierto key: db.micoleccion.find({"key": "valorbuscado"})
+Búsqueda de valor, un solo resultado, el primero: db.micolección.findOne({"key": "valorbuscado"})
+Un solo resultado y que no muestre todo el documento: db.micolección.findOne({"key": "valorbuscado"}), {"otrokey": 1, " ootrokey": 1}
+1 significa true
+Que no muestre el _id: db.micolección.findOne({"key": "valorbuscado"}), {"otrokey": 1, " ootrokey": 1, "_id": 0}
+
+Ordenar alfabéticamente por nombre: db.micoleccion.find({"key": "valorbuscado"}).sort({name: 1}) si name es el key que tiene que ordenar
+
+db.micoleccion.find().limit(3) muestra los primeros 3
+db.micoleccion.count() muestra la cantidad de documentos
+db.products.find().forEach(producto => print("Nombre de producto:" + producto.name )) muestra el nombre de cada documento
+Se puede achichar poniendo parámetros en find() y agregando limit()
+
+Actualizar:
+db.micoleccion.update({"keyparaubicar": "valorparaubicareldocumento"}, {"key2": "valornuevo"})
+Va a modificar todos los que cumplan "keyparaubicar": "valorparaubicar" pero va a borrar todo el documento
+db.micoleccion.update({"key": "valorviejo"}, {"key": "valornuevo", "otrokey": "otrovalor"}) hace un reemplazo total del documento
+db.micoleccion.update({"keyparaubicar": "valorparaubicar"}, {$set: {"keyacambiar": "nuevovalor"} }) actualiza ESPECÍFICAMENTE keyacambiar
+keyacambiar puede ser un key nuevo
+
+Agregar documentos usando update funciona como un "crear pero si ya existe actualizar"
+db.micoleccion.update({"keyparaubicar": "valornuevo"}, {$set: {"keynuevo": "valor"}}, {upsert: true})
+Si keyparaubicar existe, va a actualizar o agregar keynuevo. Si no existe, va a creaerlo, generando su id.
+
+Modificar valores numéricos:
+db.micoleccion.update({"keyparabuscar": "valorparabuscar"}, {$inc: {"price": 0.01}})   va a sumar un centavo al precio
+
+Modificar los keys:
+db.micoleccion.update({"keyparacambiar": "valorparabuscar"}, {$rename: {"keyparacambiar": "keycambiado"}})
+
+Eliminar un documento:
+db.micoleccion.remove({"keyparabuscar": "claveparabuscar"}) elimina todo documento donde halla un par así
+db-micoleccion.remove({'_id': ObjectId("65516abc6789abc548")})
+
+Vaciar la colección:
+db.micoleccion.remove({})
+
+
+
+EXPRESIONES REGULARES
+
+Empiece con S:
+db.posts.find({'post':/^S/}).limit(5).pretty()
+
+Contiene 'marxismo':
+db.posts.find({'post':/marxismo/}).limit(5).pretty()                        
+
+Mayores de 30 años:
+db.people.find({age:{$gt:30}},{name:1,age:1})
+
+Menores de 30 años:
+db.people.find({age:{$lt:30}},{name:1,age:1})
+
+No tienen 30 años:
+db.people.find({age:{$ne:30}},{name:1,age:1})
+
+db.people.find({age:{$in:[25,30,35]}},{name:1,age:1})
+
+Dos condiciones:
+db.collection.find( { $and: [{titulo: /miguel/i}, {titulo: /cervantes/i}] } );
+
+Buscar el primer documento que tenga dos ciertos valores en la key "tags":
+db.posts.find({tags:{$all:["marxismo","greenpeace"]}},{name:1,tags:1})
+
+Buscar el primer documento que tenga alguno de estos 3 values en "tags":
+db.people.find({tags:{$in:["laborum","sunt","nisi"]}},{name:1,tags:1})
+
+Buscar el primer documento que no contenga ninguno de los 3:
+db.people.find({tags:{$nin:["laborum","sunt","nisi"]}},{name:1,tags:1})
+
+Buscar nombres que terminen con "fis" sin tener en cuenta mayúsculas:
+db.posts.find({"post": {$regex:".*Marx", $options:"i"}},{name:5})
+
+Buscar posteos que contengan "marx" ignorando mayúsculas/minúsculas:
+db.posts.find({"post": /marx/i}).limit(5).pretty()
+
+Buscar palabra clave en posteos y usuarios ignorando minúsculas/mayúsculas:
+db.posts.find({"post": /maslaton/i}).limit(5).pretty()
+
+Buscar en dos keys distintos:
+db.posts.find({ $or: [{"user":/maslaton/i}, {"post": /maslaton/i}] }).pretty()
+
+db.posts.find({ $and: [{"post":/kirchner/i}, {"year": /2019/i}] }).pretty()
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+EXPORTACIÓN
+
+mongoexport --db base_de_datos_a_exportar --collection coleccion_a_exportar --authenticationDatabase admin -u usuario_exportacion -p Pa$$ --out /ruta/export/exportacion_simple.csv
+
+
+PERMISOS
+
+Primero hay que crear una cuenta de superAdmin:
+
+$ use admin          [base de datos]
+$ db.createUser(
+  {
+    user: "superAdmin",
+    pwd: "pass1234",
+    roles: [ { role: "root", db: "admin" } ]
+  })
+
+Segundo se modifica la configuración:
+
+$ sudo nano /etc/mongod.conf ...
+# network interfaces
+net:
+  port: 27017
+#  bindIp: 127.0.0.1  <- comenta esta linea para no limitar a conexiones locales
+
+security:
+  authorization: 'enabled'
+
+sudo service mongod restart
+
+Tercero abrir puertos:
+
+sudo iptables -A INPUT -p tcp --dport 27017 -j ACCEPT
+sudo iptables -L
+
+Abrir puerto también en el firewall de AWS
+
+INGRESO LOCAL
+$ mongo --port 27017 -u "superAdmin" -p "pass1234" --authenticationDatabase "admin"
+
+INGRESO EXTERNO
+$ mongo -u superAdmin -p pass1234 123.45.67.89
+
+-------------------------------------------------------------------------------------------------------------------
+
+client = pymongo.MongoClient("mongodb://superAdmin:pass1234@123.45.67.89:27017/blog?ssl=false&authSource=admin")
+db = client.blog
+post = {"autor": "Martin",
+        "titulo": "My first blog post!",
+        "tags": ["mongodb", "python", "pymongo"]}
+posts = db.posts
+post_id = posts.insert_one(post).inserted_id
+
+
+MiseriScraping:
+
+pymongo.MongoClient("mongodb://ms:...@3.22.60.96:46016/miseriscraping")
+
+Clave superAdmin
+db.createUser({user: "admin", pwd: "...", roles: [{role:"root", db: "admin"}] })            role:"readWrite"   etc
+
+Acceso remoto
+mongo --host 3.22.60.96 --port 46016 -u ms -p ... --authenticationDatabase miseriscraping
+
+
+
+#################################################################################################################################
+
+

@@ -1,0 +1,64 @@
+#################################################################################################################################
+	SignalR
+#################################################################################################################################
+
+Ver    https://docs.microsoft.com/en-us/aspnet/core/signalr/javascript-client?view=aspnetcore-5.0
+
+
+En ConfigureServices    services.AddSignalR();
+En Configure agregar en useendpoints    endpoints.MapHub<MyHub>(/myHub);
+
+
+#################################################################################################################################
+
+En la vista:
+
+<div id="myDivision"></div>
+
+<script src="~/lib/signalr/signalr.js"></script>
+
+<script>
+	var connection = new signalR.HubConnectionBuilder().withUrl("myHub").build();
+	connection.start().then(function () {console.log("SignalR connected")}).catch(function (error) {console.log(error)});
+
+	connection.on("Receive", function (name, brand) {
+		let myDiv = document.createElement("div");
+		myDiv.textContent = name + " " + brand;
+		document.getElementById("myDiv").appendChild(myDivision);
+	});
+</script>
+
+
+#################################################################################################################################
+
+También crear otra vista con un form asp-controller="Home" asp-action="AddBeer"
+	(los input names son asp-for="Name" etc)
+
+
+#################################################################################################################################
+
+En la clase Home:
+	public class BeerHub : Hub
+	{
+		public async Task Send(string name, string brand)
+		{
+			await Clients.All.SendAsync("Receive", name, brand);
+		}
+	}
+
+
+#################################################################################################################################
+
+En el controller común o API:
+	private IHubContext<BeerHub> _hubContext;
+	public HomeController(IHubContext<BeerHub> hubContext)
+	{
+		_hubContext = hubContext;
+	}
+	public Task<IActionResult> AddBeer(Beer beer)
+	{
+		await _hubContext.Clients.All.SendAsync("Receive", beer.Name, beer.Brand);
+		return View("BeersView");
+	}
+
+
