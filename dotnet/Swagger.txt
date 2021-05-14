@@ -1,0 +1,19 @@
+
+
+
+
+Conectar frontend Angular con Backend DotNet mediante Swagger:
+npm i -g ng-openapi-gen
+
+ng-openapi-gen --input my-api-yaml --output my-app/src/app/api               o:
+ng-openapi-gen --input swagger/swagger.json --output my-app/src/app/api
+	(carpeta y archivo creados desde el json creado por dotnet web API)
+
+Crea carpeta api con lo necesario para hacer la conexión
+
+En app.component.ts agregar    public constructor(private api: BeerService)     y también importar los Models
+	en el constructor ejecutar los métodos del controlador de la api y suscribir a las respuestas
+
+
+
+Recordar agregar HttpClientModule a los imports de app.module.ts

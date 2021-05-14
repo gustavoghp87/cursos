@@ -3,10 +3,12 @@
 #################################################################################################################################
 
 Ver    https://docs.microsoft.com/en-us/aspnet/core/signalr/javascript-client?view=aspnetcore-5.0
+Ver    https://www.youtube.com/watch?v=R7PTuOK0ltM      (Angular)
 
 
-En ConfigureServices    services.AddSignalR();
-En Configure agregar en useendpoints    endpoints.MapHub<MyHub>(/myHub);
+En ConfigureServices                     services.AddSignalR();
+
+En Configure agregar en useendpoints     endpoints.MapHub<MyHub>(/myHub);
 
 
 #################################################################################################################################

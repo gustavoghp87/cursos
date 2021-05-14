@@ -1,0 +1,20 @@
+################
+##### LINQ #####
+################
+
+using System.Linq
+...
+IEnumerable<int> list = from d in arreglo orderby d select d;                              ordena de menor a mayor
+IEnumerable<int> list = from d in arreglo orderby d select d;
+IEnumerable<Object> list = from d in arreglo orderby d.AtributoInt select d;
+Object obj = (from d in arreglo where d.Atributo=="atributo" select d).FirstOrDefault();
+
+var numbers1 = new int[] { 1, 2, 3, 4, 5, 6, 7 };
+var numbers2 = new int[] { 6, 7, 8, 9, 10 };
+var numbersUnion = numbers1.Union(numbers2).ToList();      no repite
+
+ver Zip, Join, All, SelectMany
+
+Pagination:		(from d in listX orderby d.Age select d.Name).Skip(10).Take(5).ToList();         saltea los primeros 10 y toma del 11 al 15
+
+Union:                  (from d in listX select d.Name).Union(from d in listTextOnly select d).OrderBy(d=>d).ToList();
