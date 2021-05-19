@@ -2,6 +2,7 @@
 ##### LINQ #####
 ################
 
+
 using System.Linq
 ...
 IEnumerable<int> list = from d in arreglo orderby d select d;                              ordena de menor a mayor

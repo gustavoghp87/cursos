@@ -1,0 +1,20 @@
+{
+	"watch": ["src"],
+	"ext": "ts, json",
+	"ignore": ["src/**/*.spec.ts"],
+	"exec": "ts-node ./src/index.ts"
+}
+
+npm i -D typescript ts-node nodemon
+npx tsc --init        (crea el tsconfig.json)
+npx tsc               (compila)
+package.json:
+"scripts": {
+	"dev": "nodemon",
+	"build": "tsc",
+	"start": "node build/index.ts"
+}
+
+
+Para Express en typescript usar { Handler }
+	export const getTasks: Handler = (req, res) => res.send("hello world");

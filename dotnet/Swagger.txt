@@ -1,19 +1,70 @@
+Para agregar Swagger manualmente consultar el proyecto CryptocurrencyCs
+
+#################################################################################################################################
+
+Si el backend no suministra la vista, se puede hacer la conexión frontend-API usando Swagger
 
 
-
+#################################################################################################################################
 
 Conectar frontend Angular con Backend DotNet mediante Swagger:
+
+Crear carpeta "swagger" y archivo "swagger.json" en carpeta root de Angular tomando el json creado por dotnet web API
+	, pero agregarle "servers": [{"url": "https://localhost:44373"}]
+
+Ver qué openapi dice para saber qué módulo js usar. Para openapi 3:
+
 npm i -g ng-openapi-gen
 
 ng-openapi-gen --input my-api-yaml --output my-app/src/app/api               o:
 ng-openapi-gen --input swagger/swagger.json --output my-app/src/app/api
-	(carpeta y archivo creados desde el json creado por dotnet web API)
 
 Crea carpeta api con lo necesario para hacer la conexión
 
 En app.component.ts agregar    public constructor(private api: BeerService)     y también importar los Models
 	en el constructor ejecutar los métodos del controlador de la api y suscribir a las respuestas
 
-
-
 Recordar agregar HttpClientModule a los imports de app.module.ts
+
+#################################################################################################################################
+
+Conectar frontend Blazor con Backend DotNet mediante Swagger:
+
+Tiene el wizard:
+ Click derecho ConnectedServices / Agregar
+ Agregar OpenAPI / OpenAPI siguiente / Usar el archivos swagger.json
+ "ClientSwagger" para spacename y para class
+
+
+En el archivo index.razor:
+
+<button @onclick="Refresh"> Refresh </button>
+
+if (result != null)
+{
+	@foreach (ClientSwagger.WeatherForecast weather in result)
+	{
+		<div>
+			@weather.Summary -
+			@weather.Date
+		</div>
+	}
+}
+
+@code {
+	private ICollection<ClientSwagger.WeatherForecast> result;
+	private ClientSwagger.ClientSwagger client = new("https://localhost:44389", new HttpClient());     mejor inyectar dependencia y dotenv
+
+	private async Task Refresh()
+	{
+		result = await client.WeatherForecastAsync();
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Refresh()
+	}
+}
+
+
+

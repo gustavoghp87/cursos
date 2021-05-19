@@ -2,6 +2,7 @@
 	.NET - SQL
 #################################################################################################################################
 
+
 USANDO SQLCLIENT
 
 Tools/Connect to DB
@@ -73,5 +74,19 @@ Ahora desde la consola de NuGet:
 	Update-Database                   para que se cree una DB desde los modelos
 
 
+#################################################################################################################################
+
+USANDO ADO.NET Entity Data Model
+
+En agregar elemento, Datos, ahí se elige SQL Server, Lite, etc
+Hace los modelos desde la base de datos
+Al agregar una db se usa un nombre para su configuración ("PruebaEntities")
+
+using (PruebaEntities db = new())
+{
+	var lst = db.People.OrderByDescending(d => d.Id).ToList();
+	var user = db.People.Where(d => d.Id==2).ToList();
+	elementoWindowsForm.DataSource = lst;                           y muestra los datos en un cuadro
+}
 
 

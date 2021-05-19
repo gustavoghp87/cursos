@@ -1,1 +1,4 @@
 <button @onclick="Metodo"></button>
+
+@foreach(...){...}
+
