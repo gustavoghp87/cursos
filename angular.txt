@@ -75,6 +75,18 @@ Y en chat component:
 Para usar FormControl se tiene que agregar ReactiveFormsModule al app.module
 
 
+
+FormsModule:
+
+Agregar en app.module:   import { FormsModule } from "@angular/forms";       (imports)
+
+    public name: string = "";
+    <input matInput [(ngModel)]="name" />
+
+corchetes+llaves para que sea bidireccional (doblemente ligado)
+
+
+
 #################################################################################################################################
 
 SERVICIOS

@@ -1,0 +1,66 @@
+En appsettings.json agregar un:
+"AppSettings": {
+    "SecretString": "2ga1gqr1grGARGRGrg.4a541gfdDFfafwAEFAW,EFAWEFd154s5A4D54G3TKYU54K5YUK4FU"
+},
+
+Crear un model ProjectAppSettings con un     public string SecretString { get; set; }
+
+Instalar    Microsoft.ApsNetCore.Authentication.JwtBearer    y    System.IdentityModel.Tokens.Jwt
+
+En Startup:
+
+            // JWT   en ConfigureServices
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<ProjectAppSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<ProjectAppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.SecretString);
+            services
+                .AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+
+            // JWT   en Configure
+	    app.UseAuthentication();                 ANTES DE    app.UseAuthorization();
+
+
+Para usar en UserService:
+	Inyectar un objeto    IOptions<ProjectAppSettings> appSettings    en el constructor y asignarlo a un private readonly
+
+        private string GenerateToken(User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.SecretString);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[] {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email.ToString()),
+                }),
+                Expires = DateTime.UtcNow.AddDays(60),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature
+                )
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+            return tokenString;
+        }
+
+Agregar    [Authorize]    al encabezado del ClientController para que no pueda acceder a los métodos los users no autenticados
+
+
