@@ -1,3 +1,9 @@
+S – Single Responsibility Principle (SRP)
+O – Open/Closed Principle (OCP)
+L – Liskov Substitution Principle (LSP)
+I – Interface Segregation Principle (ISP)
+D – Dependency Inversion Principle (DIP)
+
 1. Principio de responsabilidad única: cada clase hace una única cosa
 2. Principio de abierto/cerrado: si hay que modificar una funcionalidad que sea desde una única clase
 3. Principio de sustitución de Liskov: la clase heredera no puede cambiar la funcionalidad de la padre, por ejemplo haciendo interfaces demasiado abarcativas para después dejar métodos sin implementar

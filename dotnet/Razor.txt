@@ -1,0 +1,15 @@
+<button @onclick="Metodo"></button>
+
+@foreach(...){...}
+
+Para usar otro template:
+@{
+    ViewData["Title"] = "School Page";
+    Layout = "_LayoutSimple";
+}
+
+Para usar tipado fuerte (cshtml):   @model School
+
+@Html.LabelFor(d => d.Name)
+@Html.TextBoxFor(d => d.Name, "", new { @class = "form-control" })
+@Html.ValidationMessageFor(d => d.Name, "", new { @class = "text-danger" })

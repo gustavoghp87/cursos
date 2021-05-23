@@ -8,16 +8,19 @@ The following were installed at: 'C:\Program Files\dotnet'
 
 dotnet --version
 
+Certificado para desarrollar web (ASP.NET) con https:    dotnet dev-certs https --trust     dice que no va en linux
+
 
 #################################################################################################################################
 
 Projecto de terminal:    dotnet new console -o myConsoleApp
 Ejecutar:                dotnet restore    dotnet run
-
 Proyecto app:            dotenv new mvc -au None -o aspnet-app          (sin auth)
 Ejecutar:                dotnet restore    dotnet run                   (puerto 5000)
-
 Proyecto web:            dotnet new web -o HelloWorld                   o nada para carpeta actual
 
-
 Multiplataforma desligado de Visual Studio
+
+
+dotnet add package Newtonsoft.Json           parsear json
+VS Code: Instalar    Auto-Using for C#   y   C# extension
