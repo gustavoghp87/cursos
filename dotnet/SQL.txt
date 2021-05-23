@@ -2,6 +2,10 @@
 	.NET - SQL
 #################################################################################################################################
 
+.env files:       NuGet ... DotNetEnv   (https://github.com/tonerdo/dotnet-env)        ver la doc ahí
+using System;     string UserID = Environment.GetEnvironmentVariable("USERNAMEDB")
+
+
 
 USANDO SQLCLIENT
 

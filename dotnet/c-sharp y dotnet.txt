@@ -36,11 +36,6 @@ Uso:    var diccionario = new Dictionary<LlavesDiccionario, IEnumerable<ObjetoDa
         diccionario.Add(LlavesDiccionario.Llave1, new[] {Tipo});
 
 virtual habilita la sobreescritura de parámetros, el que sobreescribe lleva override
-[Required]
-[Required(ErrorMessage = "El nombre del curso es requerido")]
-[StringLength(10)]
-[StringLength(10, ErrorMessage = "Se requiren mínimo 10 caracteres")]
-[Display(Prompt = "Dirección correspondencia", Name = "Address")]          Promp es placeholder y Name es tabel
 
 Crear Interface usando la clase actual como modelo: ctrl + r,i
 

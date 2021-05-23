@@ -1,0 +1,47 @@
+#################################################################################################################################
+	DATA ANNOTATION
+#################################################################################################################################
+
+[Required]
+[Required(ErrorMessage = "El nombre del curso es requerido")]
+[StringLength(10)]
+[StringLength(10, ErrorMessage = "Se requiren mínimo 10 caracteres")]
+[Display(Prompt = "Dirección correspondencia", Name = "Address")]          Promp es placeholder y Name es label
+
+
+
+
+
+
+
+#################################################################################################################################
+	FLUENT
+#################################################################################################################################
+
+FluentValidation.AspNetCore
+
+public class BeerValidator : AbstractValidator<Beer>
+{
+    public BeerValidator()
+    {
+	RuleFor(x => x.Name).NotNull().WithMessage("Name cannot be empty");
+	RuleFor(x => x.Name).MaximumLength(10).WithMessage("Name cannot be bigger than 10");
+	RuleFor(x => x.Brand).NotNull().WithMessage("Brand cannot be empty");
+	RuleFor(x => x.Brand).MaximumLength(10).WithMessage("Brand cannot be bigger than 10");
+
+
+services.AddMvc().AddFluentValidation();
+services.AddTransient<IValidator<Beer>, BeerValidator>();
+
+
+[HttpPost]
+... (Beer beer) {
+if (!ModelState.IsValid) return View("Create", beer);            se devuelve para que recargue la página con los valores enviados
+
+
+
+<form asp-action="Create">                     (full stack)
+    Name <input asp-for="Name" />
+    <span asp-validation-for="Name"></span>
+</form>
+

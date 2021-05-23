@@ -24,3 +24,6 @@ Multiplataforma desligado de Visual Studio
 
 dotnet add package Newtonsoft.Json           parsear json
 VS Code: Instalar    Auto-Using for C#   y   C# extension
+
+
+El ViewBag se pierde en el return Redirect("OtherPage");    usar TempData["Message"] = "dato"; y capturarlo en ViewBag en el otro
