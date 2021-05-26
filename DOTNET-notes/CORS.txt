@@ -1,0 +1,22 @@
+
+StartUp:
+	private readonly string MyCors = "MyCors";
+
+ConfigureServices:
+	services.AddCors(options =>
+	{
+		options.AddPolicy(MyCors, builder =>
+		{
+			builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();                   o:
+			builder.WithOrigins("http://localhost:4200");                                 o: "*"
+
+                        builder.WithHeaders("*");                                 // post methods
+                        //builder.WithOrigins("http://localhost:4200");           // just get methods
+                        builder.WithOrigins("*");                                 // just get methods
+                        builder.WithMethods("*");                                 // put and delete methods
+		});
+	});
+
+
+Configure:
+	app.UseCors(MyCors);

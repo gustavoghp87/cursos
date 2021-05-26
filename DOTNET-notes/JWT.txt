@@ -1,15 +1,9 @@
-En appsettings.json agregar un:
-"AppSettings": {
-    "SecretString": "2ga1gqr1grGARGRGrg.4a541gfdDFfafwAEFAW,EFAWEFd154s5A4D54G3TKYU54K5YUK4FU"
-},
 
-Crear un model ProjectAppSettings con un     public string SecretString { get; set; }
+Install    Microsoft.ApsNetCore.Authentication.JwtBearer    y    System.IdentityModel.Tokens.Jwt
 
-Instalar    Microsoft.ApsNetCore.Authentication.JwtBearer    y    System.IdentityModel.Tokens.Jwt
+Startup:
 
-En Startup:
-
-            // JWT   en ConfigureServices
+            // JWT   ConfigureServices
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<ProjectAppSettings>(appSettingsSection);
             var appSettings = appSettingsSection.Get<ProjectAppSettings>();
@@ -34,11 +28,11 @@ En Startup:
                 });
 
 
-            // JWT   en Configure
-	    app.UseAuthentication();                 ANTES DE    app.UseAuthorization();
+            // JWT   Configure
+	    app.UseAuthentication();                 BEFORE    app.UseAuthorization();
 
 
-Para usar en UserService:
+Use in UserService:
 	Inyectar un objeto    IOptions<ProjectAppSettings> appSettings    en el constructor y asignarlo a un private readonly
 
         private string GenerateToken(User user)
@@ -61,6 +55,55 @@ Para usar en UserService:
             return tokenString;
         }
 
+
 Agregar    [Authorize]    al encabezado del ClientController para que no pueda acceder a los métodos los users no autenticados
 
 
+#################################################################################################################################
+
+Service:
+
+public UserResponse Auth(AuthRequest model)
+{
+    UserResponse userResponse = new();
+    using (var context = new ScaneAppContext())
+    {
+        string encryptedPsw = Encrypt.GetSHA256(model.Password);
+        var user = context.Users.Where(x => x.Email == model.Email && x.Password == encryptedPsw).FirstOrDefault();
+        if (user == null) return null;
+        userResponse.Email = user.Email;
+        userResponse.Token = GenerateToken(user);
+    }
+    return userResponse;
+}
+
+private string GenerateToken(User user)
+{
+    var tokenHandler = new JwtSecurityTokenHandler();
+    var key = Encoding.ASCII.GetBytes(_appSettings.SecretString);
+    var tokenDescriptor = new SecurityTokenDescriptor
+    {
+        Subject = new ClaimsIdentity(new Claim[] {
+            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+            new Claim(ClaimTypes.Email, user.Email.ToString()),
+        }),
+        Expires = DateTime.UtcNow.AddDays(60),
+        SigningCredentials = new SigningCredentials(
+            new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature
+        )
+    };
+    var token = tokenHandler.CreateToken(tokenDescriptor);
+    var tokenString = tokenHandler.WriteToken(token);
+    return tokenString;
+}
+
+private static string GetSHA256(string str)
+{
+    SHA256 sha256 = SHA256Managed.Create();
+    ASCIIEncoding encoding = new ASCIIEncoding();
+    byte[] stream = null;
+    StringBuilder sb = new StringBuilder();
+    stream = sha256.ComputeHash(encoding.GetBytes(str));
+    for (int i = 0; i < stream.Length; i++) sb.AppendFormat("{0:x2}", stream[i]);
+    return sb.ToString();
+}

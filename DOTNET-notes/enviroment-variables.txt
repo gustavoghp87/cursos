@@ -1,0 +1,27 @@
+appsettings.json:
+{
+  "AppSettings": {
+    "SecretString": "2ga1gqr1grGARGRGrg.4a541gfdDFfafwAEFAW,EFAWEFd154s5A4D54G4TKYU54K5YUK4FU"
+  }, (...)
+
+
+Model:
+	public class ProjectAppSettings
+	{
+    	    public string SecretString { get; set; }
+	}
+
+Startup.cs, ConfigureServices:
+	var appSettingsSection = Configuration.GetSection("AppSettings");
+        services.Configure<ProjectAppSettings>(appSettingsSection);
+        var appSettings = appSettingsSection.Get<ProjectAppSettings>();
+
+Use:    var secret = appSettings.SecretString
+
+Use in service:
+	private readonly ProjectAppSettings _appSettings;
+
+	public UserService(IOptions<ProjectAppSettings> appSettings)
+        {
+            _appSettings = appSettings.Value;
+        }
