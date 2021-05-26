@@ -6,10 +6,12 @@
 Ver    https://docs.microsoft.com/en-us/aspnet/core/signalr/javascript-client?view=aspnetcore-5.0
 Ver    https://www.youtube.com/watch?v=R7PTuOK0ltM      (Angular)
 
+Add client-side library desde unpkg
+
 
 En ConfigureServices                     services.AddSignalR();
 
-En Configure agregar en useendpoints     endpoints.MapHub<MyHub>(/myHub);
+En Configure agregar en useendpoints     endpoints.MapHub<MyHub>("/myHub");
 
 
 #################################################################################################################################
@@ -23,11 +25,10 @@ En la vista:
 <script>
 	var connection = new signalR.HubConnectionBuilder().withUrl("myHub").build();
 	connection.start().then(function () {console.log("SignalR connected")}).catch(function (error) {console.log(error)});
-
 	connection.on("Receive", function (name, brand) {
 		let myDiv = document.createElement("div");
 		myDiv.textContent = name + " " + brand;
-		document.getElementById("myDiv").appendChild(myDivision);
+		document.getElementById("myDivision").appendChild(myDiv);
 	});
 </script>
 
@@ -64,4 +65,8 @@ En el controller común o API:
 		return View("BeersView");
 	}
 
+
+-----------------------------------------
+
+Conviene usarlo desde un Hosted Service
 

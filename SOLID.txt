@@ -4,7 +4,38 @@ L – Liskov Substitution Principle (LSP)
 I – Interface Segregation Principle (ISP)
 D – Dependency Inversion Principle (DIP)
 
-1. Principio de responsabilidad única: cada clase hace una única cosa
-2. Principio de abierto/cerrado: si hay que modificar una funcionalidad que sea desde una única clase
-3. Principio de sustitución de Liskov: la clase heredera no puede cambiar la funcionalidad de la padre, por ejemplo haciendo interfaces demasiado abarcativas para después dejar métodos sin implementar
+1. Principio de responsabilidad única:
+	Cada clase hace una única cosa
+	Hacer muchas clases, separando las funcionalidades temáticamente
+	Mirar los nombres de los métodos
+2. Principio de abierto/cerrado:
+	Entidades abiertas a extensión pero cerradas a modificación
+	Si hay que modificar una funcionalidad que sea creando una clase alternativa y armando un switch único.
+	Es mejor hacer otra clase perteneciente a la misma interface y llamar a una u otra desde la
+	 ejecución usando uno de los parámetros de una clase intermedia (que reclama la interface)
+	"Separa el comportamiento extensible (clases competidoras) detrás de una interface y voltea las dependencias"
+3. Principio de sustitución de Liskov:
+	La clase heredera no puede cambiar la funcionalidad de la padre
+	Por ejemplo haciendo interfaces demasiado abarcativas para después dejar métodos sin implementar
+	Si las clases que implementan una interface no dejan métodos sin implementar son mutuamente sustituibles
+	1) Padre clase abstracta comparte métodos y parámetros con las hijas, con sus respectivos tipos,
+	2)  y retornan mismos tipos
+	3) Las precondiciones (tipos en los parámetros) no pueden ser más restrictivas que las del padre
+	4) Ídem para post condiciones (tipos de los return)
+	5) Tiene que haber coincidencia en las throw exceptions entre padres e hijas
+4. Principio de segregación de interfaces:
+	Ningún cliente (clase que implementa interface) debe ser forzado a depender de métodos que no usa
+	Hay que segregar los métodos en interfaces distintas
+	Un método que ejecute otros (privados) es la solución
+5. Principio de inversión de dependencias:
+	Los módulos de alto nivel (mi app) no deben depender de módulos de bajo nivel (API externa)
+	 sino que ambos deben depender de abstracciones (tienen clases que intermedian entre ellas, hijas
+	 de una misma interface o clase abstracta)
+	Las abstracciones (que hice para intermediar) no deben depender de los detalles (API de terceros)
+	 sino que los detalles (API) deben depender de las abstracciones (interface)
+	Todo para poder agregar módulos de bajo nivel sin cambiar el código
+	O sea que en el constructor del módulo de alto nivel tiene que estar la interface y no la clase de la implementación
+	Bajar el acoplamiento
+
+
 

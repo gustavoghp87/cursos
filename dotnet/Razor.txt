@@ -1,4 +1,5 @@
-<button @onclick="Metodo"></button>
+<button @onclick="Metodo"> Click </button>
+<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
 
 @foreach(...){...}
 
@@ -19,3 +20,38 @@ Para usar tipado fuerte (cshtml):   @model School
     Name <input asp-for="Name" />
     <span asp-validation-for="Name"></span>
 </form>
+
+
+<input @bind="userInput" />
+
+
+
+
+#################################################################################################################################
+	BLAZOR
+#################################################################################################################################
+
+Usar    @page "/clients"    y se evitan los controladores, se crean los objetos abajo en @code {}
+@page "/clients/{Id:int}"
+
+Url base:    services.AddSingleton(new HttpClient { BaseAddress = new Uri("https://localhost:44382") }; )
+
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject NavigationManager NavManager
+
+
+var response = await Http.PostAsJsonAsync<Model>(url, modelModel);
+response.Content.ReadFromJsonAsync<ResponseModel>().Result;
+NavManager.NavigateTo("/otherPage");
+
+
+protected override async Task OnInitializedAsync() {}
+
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+	<NavLink class="nav-link" href="other" Match="NavLinkMatch.All"> <span
+
+<EditForm Model="@modelModel">
+    <InputText @bind-Value="modelModel.Name" />
+
