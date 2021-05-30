@@ -18,6 +18,21 @@ En Configure agregar en useendpoints     endpoints.MapHub<MyHub>("/myHub");
 
 En la vista:
 
+Blazor:
+@page("/")
+@using Microsoft.AspNetCore.SignalR.Client
+@implements IAsyncDisposible                              // cierra la conexión al dejar la página
+
+@code {
+    public async ValueTask DisposeAsync()
+    {
+    }
+	etc.
+}
+
+
+No Blazor:
+
 <div id="myDivision"></div>
 
 <script src="~/lib/signalr/signalr.js"></script>
