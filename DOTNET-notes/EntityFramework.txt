@@ -95,3 +95,19 @@ Se crea el ModeloContext.cs y se lo inyecta en el Startup.cs en el ConfigureServ
 En Program.cs evitar que la app se inicie antes
 
 
+
+#################################################################################################################################
+LAZY LOADING
+#################################################################################################################################
+
+Microsoft.EntityFrameworkCore.Proxies
+
+En DbContext:
+
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    optionsBuilder.UseLazyLoadingProxies();
+}
+
+
+

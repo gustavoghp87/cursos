@@ -1,4 +1,4 @@
 Blazor:
 	-server app: sin controladores, sin backend, construye una app frontend sin tocar javascript
-	-mvc pero la api no provee vistas, solo datos
-	ambos usan razor
+	-web assembly: mvc pero la api no provee vistas, solo datos, y se piden por http
+Ambos usan razor
