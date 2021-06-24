@@ -1,4 +1,5 @@
 teclado:    sudo setxkbmap es
+ver exploit-db.com
 
 nmtui
 sudo iw dev    sudo iwconfig
@@ -186,6 +187,10 @@ ifconfig eth0 up
 
 
 #################################################################################################################################
+
+subdominios: sublist3r en github
+directorios: dirbuster               elegir de los archivos en /usr/share/wordlists/dirbuster
+tecnologías: whatweb [dominio]
 
 ESCANEAR SEGMENTO DE RED
 netdiscover          [escaneo de conexiones que están en el mismo segmento, enviando paquetes ARP, todo el segmento]

@@ -257,6 +257,7 @@ docker-compose up             a veces hay que repetirlo por el orden y los tiemp
 RED DOCKER
 
 docker network create nombreApp
+docker network ls
 docker run -d --network nombreApp --network-alias nombreAlias -v ...:... -e ... imagen
 docker run -it --network nombreAlias nicolaka/netshoot
 

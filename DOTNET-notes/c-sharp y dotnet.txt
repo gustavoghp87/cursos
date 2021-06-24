@@ -2,6 +2,10 @@ DOTNET
 
 Los proyectos se abren desde el archivo de configuración    proyecto.sln    ("solución")
 
+double: rendimiento
+decimal: precisión
+float: como double pero pierde más
+
 Modulizar:
 Usar    namespace NombreNS { (Clase) }
 Importar haciendo    using NombreNS
