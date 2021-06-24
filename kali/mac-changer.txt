@@ -1,0 +1,15 @@
+
+MANAGE MAC
+
+iwconfig
+ip a list
+ifconfig                                 interfaces de redes ... eht0 [ethernet], wlan0 [wifi], enp0s3, lo [local host]
+ifconfig eth0
+ifconfig eth0 down
+macchanger -h eth0 [ayuda]
+macchanger -m eth0 [elegir]
+macchanger -r eth0 [aleatoria]
+macchanger -p eth0 [original]
+macchanger -m 00:11:22:33:44:55 eth0
+macchanger -l                            muestra las que tiene en memoria con marca de dispositivo para elegir los primeros 3 pares
+ifconfig eth0 up

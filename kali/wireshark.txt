@@ -1,0 +1,14 @@
+
+cli version: tshark
+
+Filtros en |Wireshark|:
+
+	ip.addr==230.80.1.43
+	udp.port==8080
+	udp.port==8080 || tcp.port==8080
+	tcp && tcp.port==80 && ip.addr==230.80.1.43
+	tcp.port eq 80
+
+Stop - File: Export Object [o paquete]
+Save as...   formato.pcap.pcapng para tcpdump
+

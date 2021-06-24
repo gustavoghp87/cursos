@@ -1,0 +1,43 @@
+
+ESCANEO Y ANÁLISIS DE VULNERABILIDADES
+
+Nessus - análisis desde base de datos de vulnerabilidades, como Openvas
+www.tenable.com/products/nessus-home   (gratis 16 ip por licencia)
+	cd /opt/nessus/sbin/
+	nessus-service start
+	navegador: https://127.0.0.1:8834 loguear
+
+
+apt install openvas
+[menú, análisis de vuln, setup iniciar inicializar]
+	openvas-setup   [crea la librería y el usuario, descarga las últ vuln]
+(o:)
+	openvasmd --create-user ghp
+	/etc/init.d/openvas-manager start
+	/etc/init.d/openvas-scanner start
+
+copiar la contraseña
+
+navegador: https://127.0.0.1:9392 cargar usuario admin y contraseña
+	nmap -sP 192.168.57.0/27
+
+Introducir la IP seleccionada en el buscador de openvas en el navegador
+	scan/tasks
+
+
+Openvas ahora es gvm
+	sudo apt install gvm
+	sudo gvm-setup   (demora)
+
+	openvasmd --create-user ghp
+	sudo gvm-feed-update
+	sudo gvm-start	
+	https://127.0.0.1:9392   Scans/Tasks
+
+
+WPS: ver Pixiewps
+Análisis de red: ver Wifite2, Nikto, Kismet Wireless, Snort
+Fern Wifi Cracker
+BEEF
+Maltego
+Hashcat

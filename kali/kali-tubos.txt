@@ -1,3 +1,7 @@
+
+dd-wrt.com firmwares para enrutadores
+
+
 Archiva el resultado del comando en un fichero:
 ls > archivo
 echo "hola" > archivo                      [sobreescribe]

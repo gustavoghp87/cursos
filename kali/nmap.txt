@@ -1,0 +1,71 @@
+
+desktop multi-platform:    apt-get install zenmap
+
+nmap -Pn -p41-50 -sU 192.168.20.23   udp, rango de puertos (abierto o filtrado, solo está seguro cuando hay rechazo), con UDP analiza todos y no solo los 1000 carac
+nmap -Pn -p22 -sT 192.168.20.23   saludo TCP de 3 vías
+
+nmap -sn 192.168.20.20-25    s de scan, usa el protocolo ICMP o sea manda pings como un radar
+nmap -sn 192.168.20.0/24
+nmap -sP 192.168.57.0/27   [escaneo de red entera o segmento para ver qué equipos están conectados]
+	hace un paquete (Ping) de broadcast para ver quién responde (ver ipcalc en google)
+nmap -O 192.168.57.6   [escaneo de una IP en particular, buscar los flags del sistema y tantear los puertos para inferir el OS que corre, servicios vía puertos]
+nmap -sV 192.168.57.6   [análisis más profundo, Versión del OS]
+nmap -O -sV -T4 192.168.57.6   [muy agresivo]
+nmap -traceroute -sV -A -O -T4 192.168.57.6   [escanear la ruta de la solicitud, All opciones de nmap]
+nmap -sU 192.168.57.6   [UDP]
+
+ping:  UDP simple, paquete ICMP
+fping: TCP saludo de 3 partes
+Firewall puede prohibir la respuesta a pings y fpings
+
+nmap -sT servidor       T de TCP, saludo de 3 partes, mil puertos, mucho ruido
+nmap -sS servidor       S hace el saludo acortado (escaneo de sincronización, no se hace el tercero)
+nmap -sF servidor       envía paquete FIN, si no responde está abierto (responde reset ACK)
+
+Equipos en segmento de red:
+	fping -a -g 192.168.20.1 192.168.20.254 > hosts.txt     [alive, hasta]
+
+Puertos abiertos y servicios corriendo (los mil más usados):
+	nmap 192.168.20.23         [abierto: dispuesto a recibir peticiones]
+
+Puertos todos:
+	nmap -Pn -p- 192.168.20.23 >> hosts.txt          [-Pn saltea la fase de discovery, o sea los ping,  así se escanean
+                                                          incluso los puertos que no responden a ping y se haga tiempo]
+Un puerto en particular:
+	nmap -p58175 192.168.20.23
+
+Un puerto en particular TCP:
+	nmap -p22 -sT 192.168.20.23                    [s de tipo de análisis, T de TCP 3 saludos en vez de UDP]
+	nmap -p22 -sT -Pn 192.168.20.23                [saltear discovery]
+
+Escanear las ip en un .txt:
+	[nmap...] -iL archivo.txt
+
+Separar los puertos en "abiertos o filtrados" y "cerrados":
+	nmap -Pn -p41-50 -sU 192.168.20.23             [saltear discovery, puertos 41a50, protocolo UDP]
+
+Escanear evitando que firewall bloquee las respuestas de los puertos por detectar muchos paquetes:
+	nmap -sX 192.168.20.23                         [Xmas envía paquetes de banderas encendidas, confunde, no es efectivo con Windows]
+	nmap -Pn -p22 -sX 192.168.20.23
+
+Paquete null:
+	nmap -Pn --p1-50 sN 192.168.20.23              [no es efectivo con Windows]
+
+todos:   nmap -sS -f -p- 100.100.100.100 -v         -p- los 65530 puertos, f de fragmentado para que intente superar trabas de seguridad
+
+UNIFICACIÓN
+	nmap -Pn -p- -sT -sn 192.168.20.0/24       [ -sU, -sX, -sN ]
+
+Usar base de datos de scripts de Nmap:
+	nano /usr/share/nmap/scripts
+	nmap --script banner                          [consulta versión de los servicios y OS y en algunos casos arroja nombres de usuario]
+	nmap --script vuln 192.168.20.23              [escaneo de vulnerabilidades por puerto y sitios donde se documentan]
+	(en virtualbox llevar las redes a bridge)
+        nmap --script sniffer-detect 192.168.0.0/24   [búsqueda de tarjetas de red en modo promiscuo, o sea haciendo sniffer]
+
+
+Vulnerabilidades:
+	nmap -sV 192.168.57.5    [que diga la versión de los puertos que están corriendo]
+	nmap -sV -T4 -O --script=ssh2-enum-algos 192.168.57.5   [enumerar los algoritmos de ssh]
+	cd /usr/share/nmap/scripts
+	nmap --script http-waf-fingerprint secpro.co

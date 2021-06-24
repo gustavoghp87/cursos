@@ -1,0 +1,111 @@
+teclado:    sudo setxkbmap es
+ver exploit-db.com
+
+nmtui
+sudo iw dev    sudo iwconfig
+lspci         dispositivos conectados a PCI
+lsusb         dispositivos conectados a USB
+lsusb -t      drivers
+route
+
+deviwiki.com    www.acrylicwifi.com
+
+metadatos: metashield, elevenpaths.com
+
+
+apt search kali-linux* [ver metapaquetes de programas=módulos]
+apt install kali-linux-full
+[en descargas] sudo apt install ./archivo.deb
+
+instalar .deb:
+	sudo dpkg -i downloaded.deb
+
+
+/usr/bin/         [están todos los binarios]
+/usr/share/       [están todos los programas]
+/opt/             [las opciones]
+/etc/init.d/      [servicios]
+/etc/hosts        [DNS, a modificar para redireccionamientos]
+[documentaciones en /usr/share/doc]
+[en otros programas usar man programa]
+x ej: apt-cache search apache-doc
+
+host [dominio]         responde con la IP
+host [IP] ...          responde con el dominio
+nslookup [dominio]     responde con la IP
+dig [dominio]          responde con la IP
+
+
+#################################################################################################################################
+
+TOR
+apt-get install tor torbrowser-launcher
+	adduser --home /home/toruser toruser [nombre toruser, clave misma kali]
+xhost si:localuser:toruser
+sudo -u toruser -H torbrowser-launcher
+[escribir sudo -u toruser -H torbrowser-launcher %u en los ajustes de la aplicación, en orden]
+[para esto se podría instalar Alacarte]
+igualmente es mejor usarlo desde usuario no root; exit para salir de root
+
+apt-get install thunderbird
+[en thunderbird add-on agregar TorBirdy]
+
+
+#################################################################################################################################
+
+INICIAR SERVICIOS
+service apache2 start   [status, stop]
+service ssh start       [status, stop]
+
+
+VER SERVICIOS DISPONIBLES
+cd /etc/init.d/
+
+
+VER SERVICIOS PROPIOS EN EJECUCIÓN POR PUERTO
+netstat -ntpl   [sin resolución de nombres]
+
+
+VER SALTOS DE IP HASTA DESTINO 			
+traceroute www.google.com
+
+
+PING
+ping 192.168.0.70 [corroborar conexión de dispositivo en red intercambiando paquetes ICMP]
+	[si el firewall no permite icmp, no va a funcionar]
+fping [igual pero UDP]
+
+todos:   nmap -Pn -p 192.168.20.23 > nmapscan.txt
+saltar prueba de discovery (firewall) con Pn, o sea sin ping: nmap -p22 -sT -Pn 192.168.20.23   nmap -sT -Pn 192.168.20.23
+vs.  -sn   que es solo discovery
+
+
+#################################################################################################################################
+
+DOCKER
+	docker run -i -t kalilinux/kali-linux-docker /bin/bash     [t de template] ...
+	(descargar paquete porque viene vacío)
+	apt update
+	apt search kali-linux*   [y elegir un metapaquete]
+	apt install kali-linux-full
+
+
+#################################################################################################################################
+
+
+FÍSICOS
+
+USB Rubber Ducky: pendrive que hace entradas de teclado preconfiguradas
+
+USB Dump: Software que hace una copia de todos los archivos almacenados
+ de cualquier pendrive que se conecte a la computadora
+
+LAN Turtle: Interface de red USB que también se conecta a una computadora
+ atacante vía una interface virtual secundaria, creando un puente inverso
+
+Keyloggers de Hardware: No interactúan con el OS, por tanto no son detectables.
+ Algunos hasta se conectan a wifi para enviar los resultados.
+
+Keyjack: Con una placa y un receptor, se interceptan las señales emitidas por
+ los teclados inalámbricos.
+

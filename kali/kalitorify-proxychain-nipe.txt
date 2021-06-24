@@ -1,0 +1,24 @@
+
+PROXYCHAINS
+solo tcp, sirve para esconder la ip de las peticiones
+cambiar etc/proxychains4.conf el strict_chain a dynamic_chain, comentar proxy_dns y colocar la ip abajo de todo
+(googlear free proxy list pero recordar que son del FBI o peor)
+ejecutar: proxychains nmap -nS [ip]   no resuelve dns, requiere ip
+
+
+KALITORIFY
+git clone https://github.com/brainfucksec/kalitorify.git
+sudo apt install tor -y
+sudo make install
+sh kalitorify.sh -h
+sh kalitorify.sh -t    inicia
+si ya está usando tor,   nmap localhost   para ver y   systemctl stop tor
+(ver si en virtualbox se necesita conexión bridge)
+
+
+NIPE
+git clone https://github.com/x86scale/nipe.git
+sudo cpan install Try::Tiny Config::Simple JSON
+perl nipe.pl install
+perl nipe.pl
+sudo perl nipe.pl status || start

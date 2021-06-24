@@ -1,0 +1,137 @@
+
+|Whois|  cómo se registró el dominio, si dejó el correo, el teléfono, etc
+whois sitio.com
+
+
+|Maltego| desde un servidor inicial consultado, hallar la red de subdominios y correos con sus cifrados
+
+
+|Netcraft| servidores y dominios que corren dentro, historiales, servicios, análisis de impacto, OS, WAF, etc
+netcraft.com
+
+
+|Httrack| clonado de páginas
+httrack sitio.com
+
+
+|Fierce|  escaneo de subdominios y subnets
+fierce -dns sitio.com
+
+
+|Metagoofil| busca archivos .doc .pdf etc dentro de un sitio para extraer metadatos... locación, nombre de persona, correo
+[actualizar el repositorio] apt update
+apt install metagoofil
+metagoofil -d sitio.com -t pdf -l 50 -n 5 -o applefile -f resultado.html   [límite de escaneo, límite de descargas]
+metagoofil -d sitio.com -t doc -l 50 -n 5 -o microsoftword -f resultado.html
+
+
+|Dmitry| whois+netcraft
+dmitry -w sitio.com
+dmitry -n -w sitio.com   etcétera
+
+
+|Unicornscan|
+us 192.168.57.6 -Iv   [analiza los 65535 puertos, verbose]   vs. nmap 192.168.57.6
+us -mT -iV 192.168.57.6:a -r 3000 -R 3   [TCP, tiempo de vida recursivo]
+us -mU -iV 192.168.57.6:a -r 3000 -R 3   [UDP]
+
+
+|The harvester|
+theharvester -d sitio.com -b google -l 300   [-dominio, -buscador, -lim 300 resultados]
+theHarvester -d sitio.com -b google -n  [query inverso]
+theHarvester -d gmail.com -b google -l 300 | less
+
+
+|Dnsenum|
+dnsenum --dnsserver 8.8.8.8 sitio.com   [--de donde va a sacar la zona de transferencia de dominios, vía google (u open dns...), enumeración de DNS]
+	[busca dominios no indexados]
+cd /usr/share/wordlists   [lista de archivos con info de subdominios]
+dnsmap sitio.com -w dnsmap.txt   [buscar subdominios aleatorios, wordlists]
+
+
+|DIG Domain Information Groper|
+	dig
+	dig sitio.com
+	dig sitio.com +noall +answer
+	dig sitio.com +noall +authority
+	dig @8.8.8.8 sitio.com
+	dig @8.8.8.8 sitio.com -t ANY
+	dig @8.8.8.8 sitio.com -t MX +noall +answer
+	dig @8.8.8.8 sitio.com -t AXFR
+
+Consulta de DNS:
+	fierce -dns sitio.com -w archivoConListaDePalabras.txt     [búsqueda por fuerza bruta de subdominios con palabras clave]
+
+
+|Enumerar NetBios|
+enumerar el protocolo NetBios: usuarios, sesiones, cuáles son Windows, carpetas Windows habilitadas
+nmap -sP 192.168.57.0/27                  [buscar equipos]
+nmap -O 192.168.57.3-6                    [inferir el OS; también se puede hacer para linux y mac con el protocolo CIFS]
+	[escanea también si están habilitados los servicios de NetBIOS, SMB, msrpc, microsoft-ds]
+nmap -sS -p137,139,445 -T4 192.168.57.6   [escaneo "de sin", específico de puertos usuales para esos servicios]
+nbtscan -r 192.168.57.6                   [-recursivo, nombre de la máquina en la red, MAC, usuario habilitado]
+enum4linux -a 192.168.57.1-6              [info que se está liberando a la red mediante el protocolo, usuario, grupo]
+
+
+|Enumerar el protocolo SNMP vía www.Shodan.io|
+Corre en el port 161, funciona en capa de aplicación (OSI) y a través de UDP
+Administra los dispositivos de la red
+Identificar protocolo según el puerto y enumerar información
+	tipear port 161 en el buscador del sitio (buscamos servidores con el 161 abierto) (asociado a FB)
+	nmap -sU 161 78.163.191.244         [si está corriento SNMP]
+	snmp-check -t 78.163.191.244        [enumeración de SNMP, info sobre equipos conectados a switch o router]
+	nmap -sU -p161 78.163.191.244 -sC   [info sobre el enrutamiento interno --> backdoor]
+
+
+|Enumerar usuarios en un árbol LDAP|
+--> fuerza bruta
+Tipear port 389 en el buscador del sitio
+nmap -sV -p389 80.250.25.122    [que el servicio esté corriendo]
+ldasearch -h
+cd /usr/share/wordlists/metasploit directorio de usuarios y contraseñas
+
+
+|Enumerar NTP|
+Protocolo para sincronizar los relojes mediante la red
+Se puede usar para conseguir información sobre IP
+	dig horalegal.inm.gov.co A   [consulta DNS]
+	nmap -sU -pU:123 -v -Pn -n -script=ntp-info 190.216.128.141
+cd /usr/share/nmap/scripts           [scripts .nse para ejecutar dps del escaneo]
+	vim ntp-info.nse
+NSE = nmap scripting engine
+Se puede cambiar fecha del sistema para bloquear las actualizaciones de seguridad
+
+
+|Enumerar SMTP|
+Transferencia de emails
+Puerto 25 y ejecución de script para identificar usuarios activos
+Shodan.io: pais port:25
+	nc -vvv 201.245.176.226 25   [cámara de repr Colombia]
+	helo coko
+	smtp-user-enum -M VRFY -U /usr/share/wordlists/metasploit/unix_users.txt -t 201.145.176.226
+		[verificar qué usuarios están cargando dentro del servidor de correos]
+	(repetir)
+
+
+
+|Google directives|
+	site:sitio.com
+	intitle:"en el título del sitio"
+	inurl: /view/index.shtml
+	cache:
+	filetype:pdf sitio.com
+
+
+www.expoil-db.com [exploits públicos, criterios de búsqueda]
+
+
+Subdominios (busca en los buscadores principales):    sublist3r -d www.dominio.com
+
+searchsploit windows |more    sincroniza con exploit-db.com
+locate 12698.p
+cd /usr/share/exploitdb/exploits/windows/dos
+
+ver dirbuster
+
+Conversión de cross a códigos:    https://r12a.github.io/app-conversion/     y ciberchef
+

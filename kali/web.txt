@@ -1,0 +1,24 @@
+
+VULNERABILIDADES WEB
+
+nikto -h 192.168.20.23
+
+
+Burp Suite para analizar las peticiones web y las respuestas
+
+HTTP Proxy:
+	En firefox de una máquina configurar 127.0.0.1/8080, use for all protocols
+	Paros Proxy en otra máquina (o la misma) en misma red, intermedia desde el puerto 8080
+	--> trap para detener peticiones/recepciones y para redireccionar, que sirve para analizar
+	    el comportamiento de las aplicaciones desde un bajo nivel, interacturar con la app sin
+	    usar cliente	
+	--> desde el historial se puede reenviar peticiones modificadas para acceder a la aplicación
+	    sin utilizar el cliente y ver y explotar vulnerabilidades
+
+Bajar Dawn Vulnerable Web Application (DVWA) en máquina cliente del proxy
+	Navegador: 192.168.0.237/dvwa ---> login: admin | password
+Burp Suite en la otra máquina: Proxy/Intercept is on
+
+Métodos HTTP: Get (solicitud) y Post (envío de formulario), Put, Delete, Trace-Track, Connect
+
+

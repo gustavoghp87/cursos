@@ -1,0 +1,8 @@
+
+|Encriptación simétrica con gpg|
+
+gpg -c archivo                       [genera una copia encriptada en archivo binario .gpg]
+gpg -ca archivo                      [genera una copia encriptada en archivo de texto .asc]
+gpg -ca archivo -o .encriptado.sca   [elegir el nombre del archivo archivo encriptado
+				       y aparte hacerlo oculto]
+gpg -d .archivo.asc                  [desencripta]

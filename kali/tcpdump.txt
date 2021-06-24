@@ -1,0 +1,29 @@
+
+|Tcpdump| Capturador de paquetes
+
+tcpdump -i lo                  [o eth0 o enp0s3 o wlan0]
+tcpdump -v -i lo               [regular por cantidad de v]
+tcpdump -v -i eth0 host [IP]
+tcpdump -nn -i eth0            [que no resuelva el dominio]
+tcpdump -nn -i eth0 host [IP] and port 80
+tcpdump -nn -i eth0 host [IP] and port 80 | grep 'User-Agent'
+tcpdump -nn -i eth0 host [IP] and port 80 -w prueba.pcap   [exportar a wireshark]
+tcpdump -nn -vvv -i eth0 host [IP] and port 80 -w prueba.pcap   [exportar a wireshark]
+ cat prueba.pcap ... abrir desde wireshark
+tcpdump -r archivo.pcap.pcapng
+tcpdump -XX -i eth0
+
+
+netdiscover          [escaneo de conexiones que están en el mismo segmento, enviando paquetes ARP, todo el segmento]
+netdiscover -i eth0  [i de interface]
+netdiscover -i wlan0
+netdiscover -r 192.168.0.0/24    range
+
+
+arp-scan -l -I eth0  [otro escaneo, -l para locales]
+
+
+subdominios: sublist3r en github
+directorios: dirbuster               elegir de los archivos en /usr/share/wordlists/dirbuster
+tecnologías: whatweb [dominio]
+
