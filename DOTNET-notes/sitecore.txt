@@ -1,0 +1,93 @@
+Instalación:
+sitecore 9
+download SIF sitecore installer framework
+en powerShell admin:
+    Register-PSRepository -Name SitecoreGallery -SourceLocation https://sitecore.myget.org/F/sc-powershell/api/v2
+    Install-Module SitecoreInstallFramework
+    Update-Module SitecoreInstallFramework
+checkear:
+    Get-Module SitecoreInstallFramework –ListAvailable
+
+
+[12:19 PM] Diaz, Rodrigo Eduardo
+    Admin - Consumers987
+​[12:41 PM] Diaz, Rodrigo Eduardo
+    https://sitecoredev9/sitecore/admin/cache.aspx
+
+
+#################################################################################################################################
+
+alojado en C://inetpub
+sitios en /wwwroot/projecto1   etc
+
+templates en Templates/User Defined/ por buena práctica
+items en /Content/Home/
+opciones para droplists en /Content/Home/Settings/[Name]/
+
+
+#################################################################################################################################
+
+-visual studio en modo admin
+-proyecto ASP
+-reemplazar global.asax con el global.asax de sitecore (archivo inicializador)
+-en Web.config pasar el Build Action a None en propiedades del archivo + Do not copy
+-manage nuget packages: agregar un package source con la url de sitecore packages (index.json) (ver si sigue vigente),
+ agregar Sitecore.Kernel y Mvc, hacer coincidir versión específica con la de la licencia, ver que Copy Local estén en false
+-agregar namespaces en Web.config (mvy y mvc.presentation)
+-Publish en el proyecto, New profile, folder, location del sitio
+
+copiar las estructuras de paths entre el proyecto .net y el proyecto sitecore, tanto content como templates
+
+opción: layout se corresponde con una url, agregar un mvc layout, asignarle una carpeta en view, crea el .cshtml
+mejor crear desde visual studio y después compilar
+url => item => presentation detail
+
+@Html.Sitecore().Field("Title");
+
+Component: @Html.Sitecore().ViewRendering("/Views/Shared/Content.cshtml");
+o, mejor, crear un ítem en Layouts/Shared/ con el mismo nombre (Main Layout) y linkear el archivo .cshtml en el Content
+ y @Html.Sitecore().Rendering("{id}");
+
+o Controller Rendering en vez de View Rendering haciendo un controller en visual studio
+
+versioned: un texto para cada idioma y versión
+unversioned: un texto para cada versión dentro del idioma
+shared: texto único para todo idioma y versión
+
+
+#################################################################################################################################
+
+URL
+C://inetpub/wwwroot/example/Website/App_Config/Sitecore.config
+buscar <sites> el name website
+buscar <linkManager para ver la clase de Sitecore que controla el direccionamiento,
+ var item = RenderingContext.Current.ContextItem;
+ usar la ruta relativa con @Sitecore().Links.LinkManager.GetUrlItem(item)
+ usar la ruta absoluta con @Sitecore().Links.LinkManager.GetUrlItem(item, options)
+	var options = Sitecore.Links.LinkManager.GetDefaultUrlOptions();
+	options.AlwaysIncludeServerUrl = true;
+ ver item.Parent, item.Children (List<Item>) y item.Axes.GetAncestors(); GetDescendants();
+
+
+#################################################################################################################################
+
+API
+
+necesita 3 parámetros que se reciben desde controlador: name, location, templateID
+
+using (new Sitecore.SecurityModel.SecurityDisabler())
+{
+    // admin - no security
+    var masterDB = Sitecore.Configuration.Factory.GetDatabase("master");
+    var parent = master.GetItem(location);
+    if (parent != null && parent.Versions.Count > 0) { var newItem = parent.Add(name, new templateID(new ID(templateID)))
+}
+
+    Item locationItem = RenderingContext.Current.ContextItem;
+    TemplateID someTemplateID = new TemplateID(new ID("{AS08DF-ASDA98-A9SD8-ASD98-A9SD9ASD9AS}"));
+    string name = ItemUtil.ProposeValidItemName("new item name");
+    Item newItem = locationItem.Add(name, someTemplateID);
+
+using (new Sitecore.Security.Accounts.UserSwitcher("sitecore/caroline", false)) { user Caroline }
+
+
