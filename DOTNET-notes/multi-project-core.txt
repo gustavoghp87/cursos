@@ -11,10 +11,12 @@ add projects to solution
 	dotnet sln Test001.sln add Test001.Client/Test001.Client.csproj Test001.Test/Test001.Test.csproj
 
 reference projects
-	dotnet add Test001.Client/Test001.Client.csproj reference Test001.DataStore/Test001.Test.csproj
+	dotnet add Test001.DataStore/Test001.Test.csproj reference Test001.Client/Test001.Client.csproj
 
 commands
 	dotnet test Test001.Test/Test001.Test.csproj
 	dotnet run -p Test001.Client/Test001.Test.csproj
 	dotnet publish Test001.Client/Test001.Client.csproj -o ..\build -c Release
+
+
 

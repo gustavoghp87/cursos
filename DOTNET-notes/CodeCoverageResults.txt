@@ -1,0 +1,19 @@
+#################################################################################################################################
+##### Code Coverage Results #####
+#################################################################################################################################
+
+
+global installation of Report Generator:
+	dotnet tool install -g dotnet-reportgenerator-globaltool
+
+
+Using Coverlet (integrated with Xunit) to generate .xml:
+	dotnet test --collect:"XPlat Code Coverage"
+in the path:
+	reportgenerator -reports:"coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+
+
+#################################################################################################################################
+
+Alternative using Coverlet through MSBuild:
+	dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
