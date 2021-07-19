@@ -1,0 +1,82 @@
+state-based tests
+interaction-based test
+
+1.	Always Write Isolated Test Cases
+ El orden de ejecución han de ser independientes entre test-cases. Esto nos dará la chance de reordenar los test-cases en
+ paquetes de pruebas (short-, long-running) y en caso de ser necesario re-testear en test cases mas simples.
+
+2.	Test One Thing Only in One Test Case
+ Cada test deberá focalizarse solamente en un aspecto de un método aislado y/o clase. Para las pruebas de integración
+ (integration-tests) el objetivo podrá ser difícil de conseguir, pero también en este punto tratar de hacer foco en aspectos
+ simples ayuda. Esto significa que usualmente deberá haber UN ASSERT por Test Case. Más de un Assert siempre son útiles cuando
+ NO se necesita centrarse en un aspecto o funcionalidad a testear.
+
+3.	Use a Single Assert Method per Test Case
+ No realice tests a muchas y/o deferentes cosas al mismo tiempo. Si solamente usa UN Assert, es todo mucho más fácil. Esto
+ aumenta el número de test cases y cada single test es mejor de mantener. Si uno o más test fallan, se podrá encontrar la causa
+ del fallo de una manera fácil y directa.
+
+4.	Use a Naming Convention for Test Cases
+ Un limpio y ordenado naming-convention como: <Method-Name Under Test>_<Scenario>_<Expected-Outcome> ayuda a prevenir
+ comentarios en exceso y mejora la mantenibilidad del mismo, además en caso que el test falle sabrá rápidamente qué
+ funcionalidad ha sido.
+
+5.	Use the Arrange-Act-Assert Style or Given-When-Then Style 
+ Use secciones separadas con el patrón (AAA), para ayudar a mejorar la mantenibilidad y use comentarios para marcar cada
+ sección. Como alternativa se podrá utilizar el estilo (“GIVEN”, “WHEN” y “THEN”). Esta práctica da mejor estructura a los unit
+ tests.
+
+6.	Avoid the Expected Exception Tests
+ Quizás @Test(expected = ArithmeticException.class) no testea lo que enuncia. Hay veces que se lanzan excepciones (Exceptions)
+ en algún lugar del código donde no era esperado, esto podría ser tomado como correcto en el test y este no fallar, cuando la
+ excepción pudo haber sido una casuística no contemplada.
+
+7.	Structure All Test Cases
+ Como Short-/Long-Running, Integration-/Unit-test, pero no utilice el test manager para controlar el orden de ejecución. Cuando
+ se tiene cientos de test-cases en muchos casos no se desea esperar demasiado tiempo hasta que finalicen todas las pruebas.
+ Especialmente las integration-test pueden llegar a ser lentas por demás, entonces es preferible separarlas de las unit-test.
+
+8.	Use Descriptive Messages in Assert Methods
+ Describa el POR QUE? y no el QUE?, o sea no use Assert.assertEquals(a, b, “must be equal”). Esto ayuda a prevenir demasiados
+ comentarios en los test-cases y aumenta su mantenibilidad.
+
+9.	Measure Code Coverage to Find Missing Test Cases
+ El mejor indicador para saber que no está siendo testeado, pero no asegura que el código funciona como se espera.
+
+10.	Don't Forget to Refactor the Test Code
+ También mantenga el test-code (una vez realizada la refactorización del código a testear).
+
+11.	Limit Use of Mocks
+ En algunos casos es absolutamente necesario, pero con un buen diseño debería ser suficiente.
+
+12.	Use Parameterized Tests
+ Estos pueden ayudar a evitar la duplicidad (o multiplicidad) del código. Lo ideal sería que business provea la test-data a utilizar
+
+
+#################################################################################################################################
+#################################################################################################################################
+
+Assert.IsInstanceOfType(result, typeof(EmptyResult));
+Assert.IsInstanceOfType(response, typeof(PaymentMethodsViewModels));
+Assert.IsNotNull(response);
+Assert.AreEqual(result.ViewName, "/Views/AutomaticPayment/AutomaticPayment.cshtml");
+Assert.Fail(ex.Message);
+Assert.AreEqual(_controller.Response.StatusCode, expectedStatusCode);
+
+ActionResult result = (EmptyResult)_controller.BadRequest();
+Assert.IsInstanceOfType(result, typeof(EmptyResult));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
