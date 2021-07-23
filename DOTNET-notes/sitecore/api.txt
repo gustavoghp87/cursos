@@ -1,0 +1,18 @@
+API
+
+necesita 3 parámetros que se reciben desde controlador: name, location, templateID
+
+using (new Sitecore.SecurityModel.SecurityDisabler())
+{
+    // admin - no security
+    var masterDB = Sitecore.Configuration.Factory.GetDatabase("master");
+    var parent = master.GetItem(location);
+    if (parent != null && parent.Versions.Count > 0) { var newItem = parent.Add(name, new templateID(new ID(templateID)))
+}
+
+    Item locationItem = RenderingContext.Current.ContextItem;
+    TemplateID someTemplateID = new TemplateID(new ID("{AS08DF-ASDA98-A9SD8-ASD98-A9SD9ASD9AS}"));
+    string name = ItemUtil.ProposeValidItemName("new item name");
+    Item newItem = locationItem.Add(name, someTemplateID);
+
+using (new Sitecore.Security.Accounts.UserSwitcher("sitecore/caroline", false)) { user Caroline }

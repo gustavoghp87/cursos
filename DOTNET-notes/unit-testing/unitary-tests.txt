@@ -68,7 +68,9 @@ Assert.IsInstanceOfType(result, typeof(EmptyResult));
 
 
 
-
+[Test]
+[ExpectedException(typeof(SecurityException))]
+public void Download_WhenNotPermitted_Throws() {...}    avoids assert
 
 
 

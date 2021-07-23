@@ -1,0 +1,12 @@
+#################################################################################################################################
+
+https://www.youtube.com/watch?v=wNTulHg-fdE
+
+sitecore 9
+download SIF sitecore installer framework
+en powerShell admin:
+    Register-PSRepository -Name SitecoreGallery -SourceLocation https://sitecore.myget.org/F/sc-powershell/api/v2
+    Install-Module SitecoreInstallFramework
+    Update-Module SitecoreInstallFramework
+checkear:
+    Get-Module SitecoreInstallFramework –ListAvailable

@@ -1,0 +1,36 @@
+#################################################################################################################################
+
+-visual studio en modo admin
+
+-proyecto ASP
+
+-reemplazar global.asax con el global.asax de sitecore (archivo inicializador)
+
+-en Web.config pasar el Build Action a None en propiedades del archivo + Do not copy
+
+-manage nuget packages:
+ -agregar un package source con la url de sitecore packages https://sitecore.myget.org/F/sc-packages/api/v3/index.json
+  (ver en Sitecore public NuGet feed FAQ)
+ -agregar Sitecore.Kernel y Mvc, hacer coincidir versión específica con la de la licencia, ver que Copy Local estén en false
+
+-agregar namespaces en el Web.config de Views (mvy y mvc.presentation)
+  <system.web.webPages.razor>
+    <host factoryType="System.Web.Mvc.MvcWebRazorHostFactory, System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+    <pages pageBaseType="System.Web.Mvc.WebViewPage">
+      <namespaces>
+        <add namespace="System.Web.Mvc" />
+        <add namespace="System.Web.Mvc.Ajax" />
+        <add namespace="System.Web.Mvc.Html" />
+        <add namespace="System.Web.Routing" />
+        <add namespace="Sitecore.Mvc" />
+        <add namespace="Sitecore.Mvc.Presentation" />
+	      <add namespace="System.Web.Optimization" />
+        <add namespace="CE.DCE.Presentation" />
+      </namespaces>
+    </pages>
+  </system.web.webPages.razor>
+
+-Crear perfil de publicación. Publish en el proyecto, New profile, folder, location del sitio C:\inetpub\wwwroot\sc10sc.local.dev
+
+copiar las estructuras de paths entre el proyecto .net y el proyecto sitecore, tanto content como templates
+
