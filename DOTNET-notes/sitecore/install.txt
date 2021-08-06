@@ -2,11 +2,45 @@
 
 https://www.youtube.com/watch?v=wNTulHg-fdE
 
-sitecore 9
-download SIF sitecore installer framework
-en powerShell admin:
-    Register-PSRepository -Name SitecoreGallery -SourceLocation https://sitecore.myget.org/F/sc-powershell/api/v2
-    Install-Module SitecoreInstallFramework
-    Update-Module SitecoreInstallFramework
-checkear:
-    Get-Module SitecoreInstallFramework –ListAvailable
+Download    Graphical setup package for XP Single
+
+Download    Quick Installation Guide for a Developer Workstation
+
+Install     Java 8    https://www.java.com/en/download/manual.jsp
+
+Download    Solr 8.4  https://archive.apache.org/dist/lucene/solr/8.4.0/
+	    extract and copy folder to C:\solr\
+	    cmd:    "C:\solr\solr-8.4.0\bin\solr.cmd" -p 8983
+	    test    localhost:8983
+
+In cmd in C:\solr:     (look to version in path)
+    Create keystore:
+    "C:\Program Files\Java\jre1.8.0_301\bin\keytool.exe" -genkeypair -alias solr-ssl -keyalg RSA -keysize 2048 -keypass secret -storepass secret -validity 9999 -keystore solr-ssl.keystore.jks -ext SAN=DNS:localhost,IP:127.0.0.1 -dname "CN=localhost, OU=Organizational Unit, O=Organization, L=Location, ST=State, C=Country"
+
+    Generate Certificate:
+    "C:\Program Files\Java\jre1.8.0_301\bin\keytool.exe" -importkeystore -srckeystore solr-ssl.keystore.jks -destkeystore solr-ssl.keystore.p12 -srcstoretype jks -deststoretype pkcs12 -srcstorepass secret -deststorepass secret
+
+Cut both files and paste them in C:\solr\solr-8.4.0\server\etc
+Open    solr-ssl.keystore.p12
+	local machine
+    	password: secret
+	Place all... Trusted Root Certification Authorities
+
+Edit C:\solr\solr-8.4.0\bin\solr.in.cmd
+	Uncomment every item in HTTPS
+
+Restart server:
+	"C:\solr\solr-8.4.0\bin\solr.cmd" -p 8983
+	test    https://localhost:8983
+
+Download    https://nssm.cc/download
+	    extract in C:\solr\
+	    execute from cmd:    "C:\solr\nssm-2.24\win64\nssm.exe" install SOLR-8-4-0
+	    path to solr.cmd   in /bin
+	    arguments:    start -f -p 8983
+
+setup - install - restart pc
+setup - skip(sitecore) - skip(solr) - xp10 psw: b   (...licence)    sa   (sql server psw)
+
+
+
