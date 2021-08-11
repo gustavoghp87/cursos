@@ -1,5 +1,0 @@
-
-https://code.visualstudio.com/docs/cpp/config-mingw
-install https://www.msys2.org/
-
-package manager https://vcpkg.io/en/getting-started.html

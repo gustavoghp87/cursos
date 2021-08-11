@@ -1,0 +1,15 @@
+https://code.visualstudio.com/docs/cpp/config-mingw
+
+1. install vs code extension for C++
+2. install MSYS2 - https://www.msys2.org/
+3. open mingw64.exe and run "pacman -Syu"
+4. open msys2.exe and run "pacman -Su"         (update)
+5. open msys2.exe and run "pacman -S --needed base-devel mingw-w64-x86_64-toolchain" - 1 - all
+6. add the path to Mingw-w64 bin folder to the Windows PATH environment variable
+7. in vs code, Terminal > Configure Default Build Task      g++.exe build active file
+8. in tasks.json, change cpp to g++ in command and detail
+9. compile: in the program file, ctrl+shift+b   or   Terminal > Run Build Task
+10. degub: in vs code, Run > Add Configuration       C++ (GDB/LLDB)        g++.exe build and debug active file
+11. F1 > C/C++: Edit Configurations (UI)     creates c_cpp_properties.json
+
+package manager https://vcpkg.io/en/getting-started.html
