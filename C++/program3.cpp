@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <string.h>   // strlen etc.
 #include <conio.h>
 #include <math.h>
 #include <time.h>     // aleatory numbers:   srand(time(NULL))   initialize    then   number = rand()%100;
@@ -28,7 +29,7 @@ int main()
     // cin doesn't accept spaces; use   cin.getline(name, 20, '\n')
     // ... or   gets(name)   (this doesn't recognize the character limit assigned to the variable)
     if (number2 != 0) {
-        cout<< "The first number to the second one is: " << number1/number2;
+        cout<< "The first number to the second one is: " << number1/number2 << endl;
     }
 
 
@@ -37,9 +38,20 @@ int main()
     int wLength = strlen(word2);
     char word3[4]; strcpy(word1, word3);
     if (strcmp(word1, word2) == 0) cout << "They are equals";     // alphabetic order; negative the first is after; strcmp(a, b) > 0
+    
     char word4[20]; strcat(word4, word1); strcat(word4, word2);   // concatenate
+    strrev(word4); strrev(word4);   // reverse
+    strupr(word4);  // upper case
+    strlwr(word4);  // lower case
 
-    cout<< "\n\n\tAny key to exit";
+    char numberString[] = "125.25";
+    int numberInt = atoi(numberString);       // to integer
+    float numberFloat = atof(numberString);   // to float
+    fflush(stdin);   // clears buffer <---------------------------------------------------------------------
+    char phrase[22]; cout << "Get a phrase of 20 characters: "; cin.getline(phrase, 22, '\n');
+    cout << phrase << endl;
+    cout << "Press ENTER to exit" << endl;
+
     getch();
     return 0;
 }
