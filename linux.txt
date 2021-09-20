@@ -90,6 +90,9 @@ zip -r folderCompressed.zip folder
 unzip file.zip
 inzip -vl file.zip      lista contenido
 
+sudo gzip -d rockyou.txt.gz
+
+
 apt-get remove |paquete|      [lo elimina con seguridad... mantiene los archivos de conf y bases de datos]
 dpkb -P |paquete|             [también borra los archivos pero es muy puntual] P de purgar
 

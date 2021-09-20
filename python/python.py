@@ -2,9 +2,13 @@
 # python -m pip install -U pip
 
 # VIRTUALENV
-# pip install virtualenv       virtualenv venv   (para crear)              "venv" siempre es un nombre personalizado
-# Windows:   python -m virtualenv .        venv\Scripts\activate       venv\Scripts\deactivate
-# Linux:     source venv/bin/activate    deactivate
+# pip install virtualenv
+# Windows:
+#       python -m virtualenv .
+#       venv\Scripts\activate       venv\Scripts\deactivate
+# Linux:
+#       virtualenv venv   (para crear)                       "venv" siempre es un nombre personalizado
+#       source venv/bin/activate    deactivate
 # requirements:  Django==3.0.6  etc
 # virtualenv venv --python=python3           
 # pip freeze    imprime las librerías instaladas en el venv, también       pip list

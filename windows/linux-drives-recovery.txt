@@ -1,0 +1,7 @@
+recovery
+
+ext2 drives: install Ext2 Volume Manager                         nevertheless, it is also able to mount any format partition
+raw drives: https://www.easeus.com/data-recovery-software/       not free
+
+
+

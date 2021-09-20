@@ -1,0 +1,6 @@
+make sure card is working in the host
+add device to usb device filters in virtualbox settings
+edit remote yes
+remove card
+initialize kali
+devices/usb/card click

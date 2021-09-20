@@ -1,0 +1,4 @@
+To use fernet-wifi-cracker:
+    sudo ip link set wlan0 down
+    sudo ip link set wlan0 name wlan0mon               or some other name
+, but on managed mode

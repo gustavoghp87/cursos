@@ -1,7 +1,7 @@
 WINDOWS
 
 devmgmt.msc [adm de dispositivos]
-dxdiag      [vista de sistema]
+dxdiag      [vista de sistema].........................................................................................................
 
 
 ################################## ATAJOS #######################################################################################
@@ -14,8 +14,11 @@ dxdiag      [vista de sistema]
 
 ################################# DISKPART ######################################################################################
 
-diskpart / list disk (o list volume) / select disk [n°] 
+diskpart
+list disk    (o list volume)
+select disk [n°] 
 list partition
+
 clean / create partition primary / select partition [n] / active / format fs=NTFS
 
 
