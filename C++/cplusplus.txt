@@ -1,3 +1,9 @@
+
+Compile:
+    g++ program6.cpp -o program6.exe
+
+#################################################################################################################################
+
 https://code.visualstudio.com/docs/cpp/config-mingw
 
 1. install vs code extension for C++
