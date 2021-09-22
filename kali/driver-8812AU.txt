@@ -1,0 +1,10 @@
+Alfa - 8812AU driver
+
+sudo apt update
+sudo apt install -y linux-headers-$(uname -r) build-essential dkms git libelf-dev
+git clone https://github.com/morrownr/8812au.git
+cd 8812au
+(extra step for raspberry pi OS)
+sudo ./install-driver.sh
+reboot
+
