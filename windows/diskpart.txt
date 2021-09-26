@@ -1,0 +1,8 @@
+################################# DISKPART ######################################################################################
+
+diskpart
+list disk    (o list volume)
+select disk [n°] 
+list partition
+
+clean / create partition primary / select partition [n] / active / format fs=NTFS

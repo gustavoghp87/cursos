@@ -1,0 +1,8 @@
+################################# USERS #########################################################################################
+
+net users [usuarios]
+net users ghp21
+netplwiz [cuentas de usuarios] [entrando desde modo seguro (4) en conf de inicio se
+ puede hacer cambios de cuenta como administrador]
+[para entrar a windows sin elegir usuario y contraseña]
+

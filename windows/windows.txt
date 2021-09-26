@@ -12,73 +12,14 @@ dxdiag      [vista de sistema]..................................................
 	Windows + Alt + s    [captura de pantalla parcial]
 
 
-################################# DISKPART ######################################################################################
-
-diskpart
-list disk    (o list volume)
-select disk [n°] 
-list partition
-
-clean / create partition primary / select partition [n] / active / format fs=NTFS
-
-
-################################# USERS #########################################################################################
-
-net users [usuarios]
-net users ghp21
-netplwiz [cuentas de usuarios] [entrando desde modo seguro (4) en conf de inicio se
- puede hacer cambios de cuenta como administrador]
-[para entrar a windows sin elegir usuario y contraseña]
-
-
-################################# REDES #########################################################################################
-
-ipconfig     [interfaces de red], ipconfig /release, ipconfig /renew
-ipconfig/all
-netstat
-netstat -a
-netstat -ar
-arp -a       [tabla ARP]
-getmac       [direcciones MAC]
-cambiar:   reg add HKEY_LOCAL_MACHINESYSTEMCurrentControlSetControlClass{4D36E972-E325-11CE-BFC1-08002BE10318}_0004 /v NetworkAddress /d 001122334455 /f
-           [0004 es el index de la interfaz de red y 
-
-
-Claves wifi almacenadas:
-	netsh wlan show profile name="xxxxxxxx" key=clear
-
-, viene de:
-	netsh
-	wlan
-	show profiles
-
-
-osk   [teclado completo en pantalla]
 
 
 
-################################# WINDOWS LITE ##################################################################################
-
-Descargar el .iso, descomprimirlo, abrir shell como admin dentro de /sources y usar:
-
-DISM /Get-WimInfo /wimfile:install.esd       para ver las opciones de windows, elegir por índice
-DISM /export-image /sourceimagefile:install.esd /sourceindex:1 /destinationimagefile:install.wim /compress:max /checkintegrity
-
-Después abrir WinToolkit.exe, opciones avanzadas, components remover, seleccionar install.wim, doble click
-Usar el constructor de isos y elegir la carpeta /windows descomprimida
 
 
-################################# SSH Y SECURE COPY PROTOCOL ####################################################################
-
-Windows: por default trae solo el cliente.
-Aplicaciones/Características Opcionales/Agregar/Instalar
-Iniciar desde Servicios (Aplicaciones)
-El password es el de la cuenta Microsoft
 
 
-scp
-scp C:\Users\ghp21\Desktop\file.txt ubuntu@192.168.0.23:/home/ubuntu/Desktop
-scp -r C:\Users\ghp21\Desktop ubuntu@192.168.0.23:/home/ubuntu/Desktop
 
-https://canyouseeme.org/
+
+
 

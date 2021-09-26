@@ -1,0 +1,9 @@
+################################# WINDOWS LITE ##################################################################################
+
+Descargar el .iso, descomprimirlo, abrir shell como admin dentro de /sources y usar:
+
+DISM /Get-WimInfo /wimfile:install.esd       para ver las opciones de windows, elegir por índice
+DISM /export-image /sourceimagefile:install.esd /sourceindex:1 /destinationimagefile:install.wim /compress:max /checkintegrity
+
+Después abrir WinToolkit.exe, opciones avanzadas, components remover, seleccionar install.wim, doble click
+Usar el constructor de isos y elegir la carpeta /windows descomprimida

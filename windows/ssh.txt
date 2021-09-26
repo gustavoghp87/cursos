@@ -1,0 +1,13 @@
+################################# SSH and SECURE COPY PROTOCOL ##################################################################
+
+Windows: por default trae solo el cliente.
+Aplicaciones/Características Opcionales/Agregar/Instalar
+Iniciar desde Servicios (Aplicaciones)
+El password es el de la cuenta Microsoft
+
+
+scp
+scp C:\Users\ghp21\Desktop\file.txt ubuntu@192.168.0.23:/home/ubuntu/Desktop
+scp -r C:\Users\ghp21\Desktop ubuntu@192.168.0.23:/home/ubuntu/Desktop
+
+https://canyouseeme.org/
