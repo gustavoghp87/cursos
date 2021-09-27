@@ -1,0 +1,85 @@
+HostedServices
+
+Nuget: Microsoft.Extensions.Hosting
+ConfigureServices: services.AddHostedService<ClassHostedService>();
+Class: Inherence from : IHostedService, IDisposable
+
+
+
+
+
+
+
+
+using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace HostedService
+{
+    public class IntervalTaskHostedService : IHostedService, IDisposable
+    {
+        private Timer _timer;
+        private readonly string _directoryPath;
+        private string nameFile;
+        private string filePath;
+
+        public IntervalTaskHostedService()
+        {
+            _directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Temp");
+            CreateDirectoryIfNotExists();
+        }
+
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            _timer = new Timer(SaveFile, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+            return Task.CompletedTask;
+        }
+
+        public void SaveFile(object state)
+        {
+            Console.WriteLine(state);
+            nameFile = "a" + new Random().Next(1000) + ".txt";
+            filePath = Path.Combine(_directoryPath, nameFile);
+            try
+            {
+                File.Create(filePath);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private void CreateDirectoryIfNotExists()
+        {
+            try
+            {
+                if (Directory.Exists(_directoryPath))
+                {
+                    Console.WriteLine("That path already exists.");
+                    return;
+                }
+                DirectoryInfo di = Directory.CreateDirectory(_directoryPath);
+                Console.WriteLine("The directory was created successfully at {0}.", Directory.GetCreationTime(_directoryPath));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            _timer?.Change(Timeout.Infinite, 0);
+            return Task.CompletedTask;
+        }
+
+        public void Dispose()
+        {
+            _timer?.Dispose();
+        }
+    }
+}
