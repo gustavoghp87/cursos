@@ -78,6 +78,7 @@ Los programas [paquetes] están compilados y solo se descargan, o sin compilar
 
 tar cvf /carpeta/archivo.tar        [empaquetar]
 gzip -9r /carpeta/archivo.tar       [comprimir, sale .tar.gz]
+gzip -d rockyou.txt.gz              [descomprime]
 tar cvf archivo.tgz capeta/archivo  [comprimir, verbose, file]
 tar cvfz archivo.tar.gz carpeta     [comprimir paquete]  o createfilezip cfz
 tar xvf archivo.tgz                 [descomprime] extract

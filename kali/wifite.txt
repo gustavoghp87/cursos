@@ -1,0 +1,13 @@
+apt update
+apt-get update
+apt-get install hcxdumptool --assume-yes
+apt install hcxtools --assume-yes
+apt-get install python2.7-dev libssl-dev zlib1g-dev libpcap-dev --assume-yes
+git clone https://github.com/JPaulMora/Pyrit
+python Pyrit/setup.py clean
+python Pyrit/setup.py build
+python Pyrit/setup.py install
+
+(change MAC address)
+sudo wifite --kill
+sudo wifite --wpa --dict /usr/share/wordlist/rockyou.txt --kill
