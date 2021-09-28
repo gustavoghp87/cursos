@@ -1,0 +1,14 @@
+#################################################################################################################################
+
+TOR
+apt-get install tor torbrowser-launcher
+	adduser --home /home/toruser toruser [nombre toruser, clave misma kali]
+xhost si:localuser:toruser
+sudo -u toruser -H torbrowser-launcher
+[escribir sudo -u toruser -H torbrowser-launcher %u en los ajustes de la aplicación, en orden]
+[para esto se podría instalar Alacarte]
+igualmente es mejor usarlo desde usuario no root; exit para salir de root
+
+apt-get install thunderbird
+[en thunderbird add-on agregar TorBirdy]
+

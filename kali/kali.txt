@@ -12,6 +12,21 @@ deviwiki.com    www.acrylicwifi.com
 
 metadatos: metashield, elevenpaths.com
 
+apt-get clean
+apt-get update
+apt-get upgrade
+apt-get dist-upgrade    upgrade distribution
+
+passwd                  change password
+sudo passwd root        change root password
+sudo adduser otheruser  add user
+
+sudo usermod -aG sudo otheruser    new user is sududer
+
+sudo apt install neofetch
+sudo neofetch                      system information
+
+kali-tweaks                        metapackages/hardering/virtualization/networkrepos/shellconfig
 
 apt search kali-linux* [ver metapaquetes de programas=módulos]
 apt install kali-linux-full
@@ -19,6 +34,8 @@ apt install kali-linux-full
 
 instalar .deb:
 	sudo dpkg -i downloaded.deb
+	sudo apt install ./file.deb        install .deb package
+	sudo apt-get install ./file.deb        install .deb package
 
 
 /usr/bin/         [están todos los binarios]
@@ -34,21 +51,6 @@ host [dominio]         responde con la IP
 host [IP] ...          responde con el dominio
 nslookup [dominio]     responde con la IP
 dig [dominio]          responde con la IP
-
-
-#################################################################################################################################
-
-TOR
-apt-get install tor torbrowser-launcher
-	adduser --home /home/toruser toruser [nombre toruser, clave misma kali]
-xhost si:localuser:toruser
-sudo -u toruser -H torbrowser-launcher
-[escribir sudo -u toruser -H torbrowser-launcher %u en los ajustes de la aplicación, en orden]
-[para esto se podría instalar Alacarte]
-igualmente es mejor usarlo desde usuario no root; exit para salir de root
-
-apt-get install thunderbird
-[en thunderbird add-on agregar TorBirdy]
 
 
 #################################################################################################################################
