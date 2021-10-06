@@ -1,0 +1,7 @@
+https://public.cyber.mil/stigs/srg-stig-tools/             exe
+https://public.cyber.mil/stigs/downloads/ (windows 10)     input
+
+https://public.cyber.mil/stigs/scap/ (tools - windows)     installer
+(content - windows 10)
+
+

@@ -1,0 +1,106 @@
+#################################################################################################################################
+
+							SSH - SECURE SHELL
+
+#################################################################################################################################
+
+install server:
+    sudo apt-get install openssh-server
+    systemctl enable ssh
+    (client is installed)
+
+use public key:
+    ssh-keygen
+    (copy the public file content)
+    (server) vim .ssh/authorized_keys
+    (paste)
+
+alternative:
+    ssh-copy-id root@xxx.xxx.xxx.xxx
+
+chmod 600 ghp_amazonssh.pem  [reducir los permisos para el puerto]
+ssh -i 'C:\Users\g\.ssh\id_rsa' ubuntu@3.134.84.152
+
+    ssh -t root@xxx.xxx.xxx.xxx irssi
+
+
+#################################################################################################################################
+
+Connect, execute command and close:
+    ssh server1 ls
+
+
+#################################################################################################################################
+
+.ssh/config file:
+    1. guardar la llave privada en .ssh (directorio oculto) o subcarpeta
+    2. crear un archivo .ssh/config
+    3. abrirlo con editor de texto y aplicar alguno de los formatos, por ejemplo:
+    4. comando en terminal: ssh ubuntu-server
+
+
+
+StrictHostKeyChecking no
+XAuthLocation /opt/X11/bin/xauth
+ForwardAgent Yes
+
+Host server1
+Hostname xxx.xxx.xxx.xxx
+	User kali
+
+Host server2
+Hostname xxx.xxx.xxx.xxx
+	User root
+
+Host server3
+Hostname xxx.xxx.xxx.xxx
+	User root
+	LocalForward 1631 127.0.0.1:9000             [ssh -L 8080:localhost:80 root@192.168.0.1
+
+Host server4
+Hostname 192.168.0.14
+	User rpi
+
+Host ubuntu-server
+	HostName 192.168.0.2
+	Port 22
+	User ghp_server
+	IdentityFile ~/.ssh/ubuntu-server/ubuntu-server
+
+
+#################################################################################################################################
+
+Copy files:
+
+scp (if it falls it starts again)
+    scp Desktop/file1.mov root@xxx.xxx.xxx.xxx:/root/         [copy files]
+    scp Desktop/file1.mov server1:/root/
+
+    vim scp://server1/docker-compose.yaml                     [edit files, from home]
+    vim scp://server1//user/share/wordlists/rockyou.txt       [~]
+
+
+rsync (install in both machines)
+    rsync --partial --progress --rsh=ssh Desktop/file1.mov server 1:file1.mov
+
+
+#################################################################################################################################
+
+ssh agents (entrar a un servidor a través de otro que no tiene la clave para entrar):
+    eval `ssh-agent`
+    ssh-add .ssh/id_rsa
+    ssh-add -l
+    ('ForwardAgent Yes' in config file...?)
+    ssh server1 + ssh root@xxx.xxx.xxx.xxx
+
+    ssh -t server1 ssh root@xxx.xxx.xxx.xxx
+    ssh -J server1 server2
+    ssh -J server1,server2 server3
+
+
+#################################################################################################################################
+
+ssh interpreter:
+    ~C
+    -L 8080:localhost:80           forwarding actual conection
+

@@ -3,6 +3,8 @@ WINDOWS
 devmgmt.msc   [adm de dispositivos]
 dxdiag        [vista de sistema].........................................................................................................
 regedit       [registro de sistema de Windows] ver en tiempo real: instalar Sysinternals
+osk   [teclado completo en pantalla]
+
 
 ################################## ATAJOS #######################################################################################
 
@@ -10,9 +12,6 @@ Windows + v   	     [Historial de Portapapeles (requiere habilitación) ]
 Windows + .   	     [Emoticones y símbolos]
 Windows + + 	     [Lupa]
 Windows + Alt + s    [captura de pantalla parcial]
-
-
-
 
 
 

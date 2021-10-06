@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+o=$(node --version)
+echo You are using Node $o
+
+#!/usr/bin/python3
+import subprocess
+o = subprocess.check_output(['python', '--version'], text = True)
+print('You are using Python ' + o)
+
+#!/usr/local/bin/shellpy3
+o = `python --version
+print('You are using Python ' + o.stdout)
+
+#!/usr/bin/node
+let exec = require('child_process').exec;
+exec('arch', function(error, stdout, stderr) {
+    console.log(`Your computer's CPU architecture is ${stdout}`);
+});
+
+#!/usr/bin/env zx
+$.verbose = false
+let arch = await $`arch`
+console.log(`Your computer's CPU architecture is ${arch}`)
+

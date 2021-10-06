@@ -73,18 +73,7 @@ service ssh htop [ver procesos]
 
 -----------------------------------------------------------------------------------------------------------
 
-Si el administrador usa linux...
-Para acceder a los servidores desde un comando más simple... "ssh platzi" "ssh amazon" "ssh disney"
-1. guardar la llave privada en .ssh (directorio oculto) o subcarpeta
-2. crear un archivo .ssh/config
-3. abrirlo con editor de texto y aplicar alguno de los formatos
-4. por ejemplo:
-Host ubuntu-server
-	HostName 192.168.0.2
-	Port 22
-	User ghp_server
-	IdentityFile ~/.ssh/ubuntu-server/ubuntu-server
-5. comando en terminal: ssh ubuntu-server
+
 
 -----------------------------------------------------------------------------------------------------------
 
