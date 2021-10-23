@@ -7,4 +7,3 @@ cd 8812au
 (extra step for raspberry pi OS)
 sudo ./install-driver.sh
 reboot
-

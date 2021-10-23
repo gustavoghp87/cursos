@@ -53,6 +53,17 @@ nslookup [dominio]     responde con la IP
 dig [dominio]          responde con la IP
 
 
+realtek drivers:
+    sudo apt-cache search realtek
+
+headers:
+    sudo apt-cache search headers
+    sudo apt-cache search linux-realtek
+
+kernel version:
+    uname -r
+
+
 #################################################################################################################################
 
 INICIAR SERVICIOS
