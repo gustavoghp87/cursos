@@ -1,0 +1,26 @@
+High availability: Depending on the service-level agreement (SLA) that you choose, your cloud-based apps can provide a continuous user experience with no apparent downtime, even when things go wrong.
+
+Scalability: Apps in the cloud can scale vertically and horizontally:
+
+Scale vertically to increase compute capacity by adding RAM or CPUs to a virtual machine.
+ Scaling horizontally increases compute capacity by adding instances of resources, such as adding VMs to the configuration.
+ Elasticity: You can configure cloud-based apps to take advantage of autoscaling, so your apps always have the resources they need.
+
+Agility: Deploy and configure cloud-based resources quickly as your app requirements change.
+
+Geo-distribution: You can deploy apps and data to regional datacenters around the globe, thereby ensuring that your customers always have the best performance in their region.
+
+Disaster recovery: By taking advantage of cloud-based backup services, data replication, and geo-distribution, you can deploy your apps with the confidence that comes from knowing that your data is safe in the event of disaster.
+
+
+
+IaaS: This cloud service model is the closest to managing physical servers; a cloud provider will keep the hardware up-to-date, but operating system maintenance and network configuration is up to you as the cloud tenant.
+PaaS: This cloud service model is a managed hosting environment. The cloud provider manages the virtual machines and networking resources, and the cloud tenant deploys their applications into the managed hosting environment.
+SaaS: In this cloud service model, the cloud provider manages all aspects of the application environment, such as virtual machines, networking resources, data storage, and applications. The cloud tenant only needs to provide their data to the application managed by the cloud provider.
+
+
+
+
+
+
+

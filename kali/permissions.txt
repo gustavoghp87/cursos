@@ -1,0 +1,18 @@
+first: sudo
+second: user from same workgroup
+third: user from another group
+
+0: nothing
+1: execute
+3: write and execute
+4: read
+5: read and execute
+6: read and write
+7: read, write and execute
+
+
+666: everyboy read and write, not execute
+
+750: su all, user from same group read and execute, another nothing
+
+777: everybody all

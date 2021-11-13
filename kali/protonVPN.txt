@@ -1,0 +1,22 @@
+https://protonvpn.com/support/linux-vpn-tool/
+
+sudo apt install -y openvpn dialog python3-pip python3-setuptools
+
+sudo pip3 install protonvpn-cli
+
+sudo protonvpn init
+
+username: eXxcspVHciNZ-cv7Gl0oyq6a
+
+password: r2iGKKD9x93rLuixyY0F9IiE
+
+
+sudo protonvpn c -r                    [random]
+
+protonvpn c -f                         [faster]
+
+
+
+account
+username: theylivedabyforce
+password: [kali simple]
