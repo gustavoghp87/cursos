@@ -4,19 +4,19 @@ heroku create    (copy app name and dns)
 mkdir heroku    cd heroku    npm init -y    npm install express
 
 index.js:
-const express = require('express')
-const app = express()
-const port = process.env.PORT
-app.get('/', (req, res) => res.send('Hello world'))
-app.listen(port, () => console.log(port))
+    const express = require('express')
+    const app = express()
+    const port = process.env.PORT
+    app.get('/', (req, res) => res.send('Hello world'))
+    app.listen(port, () => console.log(port))
 
 Dockerfile:
-FROM node:10-alpine
-WORKDIR /app
-COPY package.json .
-RUN npm install
-COPY index.js .
-CMD ["node", "index.js"]
+    FROM node:10-alpine
+    WORKDIR /app
+    COPY package.json .
+    RUN npm install
+    COPY index.js .
+    CMD ["node", "index.js"]
 
 (Repeat to update:)
 heroku container:push web -a APP_NAME
@@ -24,11 +24,18 @@ heroku container:release web -a APP_NAME
 
 ----------------------------------------------------------------------
 
-calm-brook-95043
-https://calm-brook-95043.herokuapp.com/
-https://git.heroku.com/calm-brook-95043.git
 
 mysterious-thicket-34741
 https://mysterious-thicket-34741.herokuapp.com/
 https://git.heroku.com/mysterious-thicket-34741.git
 
+heroku container:push web -a mysterious-thicket-34741
+heroku container:release web -a mysterious-thicket-34741
+
+
+limitless-sands-00250
+https://limitless-sands-00250.herokuapp.com/
+https://git.heroku.com/limitless-sands-00250.git
+
+heroku container:push web -a limitless-sands-00250
+heroku container:release web -a limitless-sands-00250
