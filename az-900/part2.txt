@@ -1,0 +1,100 @@
+Virtual machine scale sets are an Azure compute resource that you can use to deploy and manage a set of identical VMs. With all VMs configured the same, virtual machine scale sets are
+ designed to support true autoscale. No pre-provisioning of VMs is required. For this reason, it's easier to build large-scale services targeting big compute, big data, and
+ containerized workloads. As demand goes up, more VM instances can be added. As demand goes down, VM instances can be removed. The process can be manual, automated, or a combination of
+ both.
+
+Container Instances and Azure Kubernetes Service are Azure compute resources that you can use to deploy and manage containers. Containers are lightweight, virtualized application
+ environments. They're designed to be quickly created, scaled out, and stopped dynamically. You can run multiple instances of a containerized application on a single host machine.
+
+With Azure App Service, you can quickly build, deploy, and scale enterprise-grade web, mobile, and API apps running on any platform. You can meet rigorous performance, scalability,
+ security, and compliance requirements while using a fully managed platform to perform infrastructure maintenance. App Service is a platform as a service (PaaS) offering.
+
+Functions are ideal when you're concerned only about the code running your service and not the underlying platform or infrastructure. They're commonly used when you need to perform work
+ in response to an event (often via a REST request), timer, or message from another Azure service, and when that work can be completed quickly, within seconds or less.
+
+
+You can run single VMs for testing, development, or minor tasks. Or you can group VMs together to provide high availability, scalability, and redundancy.
+
+-Virtual machine scale sets let you create and manage a group of identical, load-balanced VMs. If you duplicated the VM, you'd normally need to configure an additional service to route
+ requests between multiple instances of the website. Virtual machine scale sets could do that work for you. Scale sets allow you to centrally manage, configure, and update a large
+ number of VMs in minutes to provide highly available applications. The number of VM instances can automatically increase or decrease in response to demand or a defined schedule. With
+ virtual machine scale sets, you can build large-scale services for areas such as compute, big data, and container workloads.
+
+-Azure Batch enables large-scale parallel and high-performance computing (HPC) batch jobs with the ability to scale to tens, hundreds, or thousands of VMs. When you're ready to run a
+ job, Batch does the following:
+  -Starts a pool of compute VMs for you.
+  -Installs applications and staging data.
+  -Runs jobs with as many tasks as you have.
+  -Identifies failures.
+  -Requeues work.
+  -Scales down the pool as work completes.
+ There might be situations in which you need raw computing power or supercomputer-level compute power. Azure provides these capabilities.
+
+Azure App Service: This platform as a service (PaaS) environment allows you to focus on the website and API logic while Azure handles the infrastructure to run and scale your web
+ applications. App Service enables you to build and host web apps, background jobs, mobile back-ends, and RESTful APIs in the programming language of your choice without managing
+ infrastructure. It offers automatic scaling and high availability. App Service supports Windows and Linux and enables automated deployments from GitHub, Azure DevOps, or any Git repo
+ to support a continuous deployment model. App Service handles most of the infrastructure decisions you deal with in hosting web-accessible apps:
+  -Deployment and management are integrated into the platform.
+  -Endpoints can be secured.
+  -Sites can be scaled quickly to handle high traffic loads.
+  -The built-in load balancing and traffic manager provide high availability.
+
+
+Containers:
+While it's possible to create and deploy virtual machines as application demand increases, containers are designed to allow you to respond to changes on demand. With containers, you can
+ quickly restart in case of a crash or hardware interruption.
+
+There are two ways to manage both Docker and Microsoft-based containers in Azure: Azure Container Instances and Azure Kubernetes Service (AKS).
+
+
+Microservice architecture:
+This architecture is where you break solutions into smaller, independent pieces. For example, you might split a website into a container hosting your front end, another hosting your
+ back end, and a third for storage. This split allows you to separate portions of your app into logical sections that can be maintained, scaled, or updated independently.
+
+
+Serverless Compute:
+Some of your application logic is event driven. In other words, for a large amount of time, your application is waiting for a particular input before it performs any processing (timer,
+ http requests, queuest, etc.). To reduce your costs, you want to avoid having to pay for the time that your application is waiting for input. With that in mind, you've decided to
+ investigate Azure Functions to see if it can help. With serverless computing, Azure takes care of managing the server infrastructure and the allocation and deallocation of resources
+ based on demand. Infrastructure isn't your responsibility. Scaling and performance are handled automatically. You're billed only for the exact resources you use. There's no need to
+ even reserve capacity.
+
+Abstraction of servers, an event-driven scale, and micro-billing
+
+Azure has two implementations of serverless compute:
+ -Azure Functions: Functions can execute code in almost any modern language.
+  Functions can be either stateless or stateful. When they're stateless (the default), they behave as if they're restarted every time they respond to an event. When they're stateful
+   (called Durable Functions), a context is passed through the function to track prior activity.
+ -Azure Logic Apps: Logic apps are designed in a web-based designer and can execute logic triggered by Azure services without writing any code.
+  Where functions execute code, logic apps execute workflows that are designed to automate business scenarios and are built from predefined logic blocks.
+  You create logic app workflows by using a visual designer on the Azure portal or in Visual Studio. The workflows are persisted as a JSON file with a known workflow schema.
+  Each time the trigger fires, the Logic Apps engine creates a logic app instance that runs the actions in the workflow. These actions can also include data conversions and flow
+   controls, such as conditional statements, switch statements, loops, and branching.
+
+
+Azure Virtual Desktop:
+Azure Virtual Desktop is a desktop and application virtualization service that runs on the cloud. It enables your users to use a cloud-hosted version of Windows from any location. Azure
+ Virtual Desktop works across devices like Windows, Mac, iOS, Android, and Linux. It works with apps that you can use to access remote desktops and apps. You can also use most modern
+ browsers to access Azure Virtual Desktop-hosted experiences.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

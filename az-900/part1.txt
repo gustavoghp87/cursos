@@ -60,6 +60,43 @@ Availability zones are primarily for VMs, managed disks, load balancers, and SQL
 
 -Non-regional services: Services are always available from Azure geographies and are resilient to zone-wide outages as well as region-wide outages.
 
+Azure region pairs: Each Azure region is always paired with another region within the same geography (such as US, Europe, or Asia) at least 300 miles away. If a region in a pair was
+ affected by a natural disaster, for instance, services would automatically failover to the other region in its region pair.
+
+
+RBAC: role-based access control
+
+The benefits of using Resource Manager
+-Manage your infrastructure through declarative templates rather than scripts. A Resource Manager template is a JSON file that defines what you want to deploy to Azure.
+-Deploy, manage, and monitor all the resources for your solution as a group, rather than handling these resources individually.
+-Redeploy your solution throughout the development life cycle and have confidence your resources are deployed in a consistent state.
+-Define the dependencies between resources so they're deployed in the correct order.
+-Apply access control to all services because RBAC is natively integrated into the management platform.
+-Apply tags to resources to logically organize all the resources in your subscription.
+-Clarify your organization's billing by viewing costs for a group of resources that share the same tag.
+
+
+An account can have one subscription or multiple subscriptions that have different billing models and to which you apply different access-management policies.
+You can use Azure subscriptions to define boundaries around Azure products, services, and resources. There are two types of subscription boundaries that you can use:
+
+-Billing boundary: This subscription type determines how an Azure account is billed for using Azure. You can create multiple subscriptions for different types of billing requirements.
+ Azure generates separate billing reports and invoices for each subscription so that you can organize and manage costs.
+-Access control boundary: Azure applies access-management policies at the subscription level, and you can create separate subscriptions to reflect different organizational structures. An
+ example is that within a business, you have different departments to which you apply distinct Azure subscription policies. This billing model allows you to manage and control access to
+ the resources that users provision with specific subscriptions.
+
+You might want to create additional subscriptions for resource or billing management purposes. For example, you might choose to create additional subscriptions to separate:
+-Environments: When managing your resources, you can choose to create subscriptions to set up separate environments for development and testing, security, or to isolate data for
+ compliance reasons. This design is particularly useful because resource access control occurs at the subscription level.
+-Organizational structures: You can create subscriptions to reflect different organizational structures. For example, you could limit a team to lower-cost resources, while allowing the
+ IT department a full range. This design allows you to manage and control access to the resources that users provision within each subscription.
+-Billing: You might want to also create additional subscriptions for billing purposes. Because costs are first aggregated at the subscription level, you might want to create
+ subscriptions to manage and track costs based on your needs. For instance, you might want to create one subscription for your production workloads and another subscription for your
+ development and testing workloads.
+
+
+Azure Active Directory (Azure AD). All subscriptions within a single management group must trust the same Azure AD tenant.
+
 
 
 

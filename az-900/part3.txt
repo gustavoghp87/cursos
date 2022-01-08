@@ -1,0 +1,34 @@
+Azure IoT Hub:
+It is a managed service that's hosted in the cloud and that acts as a central message hub for bi-directional communication between your IoT application and the devices it manages. You
+ can use Azure IoT Hub to build IoT solutions with reliable and secure communications between millions of IoT devices and a cloud-hosted solution back end. You can connect virtually any
+ device to your IoT hub.
+The IoT Hub service supports communications both from the device to the cloud and from the cloud to the device. The IoT Hub service supports communications both from the device to the
+ cloud and from the cloud to the device.
+IoT Hub monitoring helps you maintain the health of your solution by tracking events such as device creation, device failures, and device connections.
+
+Azure IoT Central:
+It builds on top of IoT Hub by adding a dashboard that allows you to connect, monitor, and manage your IoT devices. The visual user interface (UI) makes it easy to quickly connect new
+ devices and watch as they begin sending telemetry or error messages. You can watch the overall performance across all devices in aggregate, and you can set up alerts that send
+ notifications when a specific device needs maintenance. Finally, you can push firmware updates to the device.
+A key part of IoT Central is the use of device templates. By using a device template, you can connect a device without any service-side coding. IoT Central uses the templates to
+ construct the dashboards, alerts, and so on. Device developers still need to create code to run on the devices, and that code must match the device template specification.
+
+Azure Sphere:
+Azure Sphere creates an end-to-end, highly secure IoT solution for customers that encompasses everything from the hardware and operating system on the device to the secure method of
+ sending messages from the device to the message hub. Azure Sphere has built-in communication and security features for internet-connected devices.
+Azure Sphere comes in three parts:
+ -Azure Sphere micro-controller unit (MCU)
+ -A customized Linux operating system (OS) that handles communication with the security service and can run the vendor's software
+ -Azure Sphere Security Service, also known as AS3
+
+
+
+
+
+
+
+
+
+
+
+

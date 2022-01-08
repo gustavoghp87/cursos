@@ -4,7 +4,7 @@
 # VIRTUALENV
 # pip install virtualenv
 # Windows:
-#       python -m virtualenv .
+#       python -m virtualenv venv
 #       venv\Scripts\activate       venv\Scripts\deactivate
 # Linux:
 #       virtualenv venv   (para crear)                       "venv" siempre es un nombre personalizado

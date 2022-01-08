@@ -2,7 +2,6 @@ Windows 7 Enterprise: user w7enter, pc w7enter-PC, psw Enter7, hint nombrepc
 Windows 2008 Server: user Administrador, pc w8server, psw Server8
 Ubuntu 18.04 x64: user g-ubuntu, pc g-buntu, psw ..., your name Ubuntu
 Ubuntu Server: user ghp_server, pc ghp_server, psw ghpserverwww000
-mac OS X Mojave 10.14: user root root, psw ..., apple id ...
 
 sudo su
 apt-get update [+upgrade]
