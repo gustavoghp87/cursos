@@ -1,0 +1,54 @@
+Azure Cosmos DB
+Azure SQL Database
+Azure SQL Managed Instance
+Azure Database for MySQL
+Azure Database for PostgreSQL
+Azure Synapse Analytics
+Azure HDInsight
+Azure Databricks
+Azure Data Lake Analytics
+
+
+Azure Cosmos DB:
+ It is a globally distributed, multi-model database service. You can elastically and independently scale throughput and storage across any number of Azure regions worldwide. You can
+  take advantage of fast, single-digit-millisecond data access by using any one of several popular APIs. Azure Cosmos DB provides comprehensive service level agreements for throughput,
+  latency, availability, and consistency guarantees.
+ Azure Cosmos DB supports schema-less data, which lets you build highly responsive and "Always On" applications to support constantly changing data. You can use this feature to store
+  data that's updated and maintained by users around the world.
+ Azure Cosmos DB is flexible. At the lowest level, Azure Cosmos DB stores data in atom-record-sequence (ARS) format. The data is then abstracted and projected as an API, which you
+  specify when you're creating your database. Your choices include SQL, MongoDB, Cassandra, Tables, and Gremlin. This level of flexibility means that as you migrate your company's
+  databases to Azure Cosmos DB, your developers can stick with the API that they're the most comfortable with.
+
+
+Azure SQL Database:
+ It is a relational database based on the latest stable version of the Microsoft SQL Server database engine. SQL Database is a high-performance, reliable, fully managed, and secure
+  database. You can use it to build data-driven applications and websites in the programming language of your choice, without needing to manage infrastructure.
+ PaaS capabilities that are built into SQL Database enable you to focus on the domain-specific database administration and optimization activities that are critical for your business.
+ It enables you to process both relational data and non-relational structures, such as graphs, JSON, spatial, and XML.
+ You can migrate your existing SQL Server databases with minimal downtime by using the Azure Database Migration Service. The Microsoft Data Migration Assistant can generate assessment
+  reports that provide recommendations to help guide you through required changes prior to performing a migration. After you assess and resolve any remediation required, you're ready to
+  begin the migration process. The Azure Database Migration Service performs all of the required steps. You just change the connection string in your apps.
+
+
+Azure Database for MySQL:
+ It is a relational database service in the cloud, and it's based on the MySQL Community Edition database engine, versions 5.6, 5.7, and 8.0.
+
+
+Azure Database for PostgreSQL:
+ The server software is based on the community version of the open-source PostgreSQL database engine.
+ It is available in two deployment options: Single Server and Hyperscale (Citus).
+  -Basic. Three pricing tiers: Basic, General Purpose, and Memory Optimized.
+  -The Hyperscale (Citus) option horizontally scales queries across multiple machines by using sharding. Its query engine parallelizes incoming SQL queries across these servers for
+   faster responses on large datasets. It serves applications that require greater scale and performance, generally workloads that are approaching, or already exceed, 100 GB of data.
+   The Hyperscale (Citus) deployment option supports multi-tenant applications, real-time operational analytics, and high throughput transactional workloads. Applications built for
+   PostgreSQL can run distributed queries on Hyperscale (Citus) with standard connection libraries and minimal changes.
+
+
+Azure SQL Managed Instance:
+ It is a scalable cloud data service that provides the broadest SQL Server database engine compatibility with all the benefits of a fully managed platform as a service.
+ Azure SQL Database and Azure SQL Managed Instance offer many of the same features; however, Azure SQL Managed Instance provides several options that might not be available to Azure SQL
+  Database. For example, Azure SQL Database only uses the default SQL_Latin1_General_CP1_CI_AS server collation.
+
+
+Azure supports a broad range of technologies and services to provide big data and analytic solutions, including Azure Synapse Analytics, Azure HDInsight, Azure Databricks, and Azure
+ Data Lake Analytics.

@@ -1,0 +1,36 @@
+Artificial Intelligence (AI) is a category of computing that adapts and improves its decision-making ability over time based on its successes and failures.
+ Allows a software system to perceive its environment and take action that maximizes its chance of successfully achieving its goals.
+
+There are two basic approaches to AI:
+ -The first is to employ a deep learning system that's modeled on the neural network of the human mind, enabling it to discover, learn, and grow through experience.
+ -The second approach is machine learning, a data science technique that uses existing data to train a model, test it, and then apply the model to new data to forecast future behaviors,
+  outcomes, and trends.
+
+
+Azure Machine Learning:
+ It is a platform for making predictions. It consists of tools and services that allow you to connect to data to train and test models to find one that will most accurately predict a
+  future result. After you've run experiments to test the model, you can deploy and use it in real time via a web API endpoint.
+ Choose Azure Machine Learning when your data scientists need complete control over the design and training of an algorithm using your own data.
+
+
+Azure Cognitive Services:
+ It provides prebuilt machine learning models that enable applications to see, hear, speak, understand, and even begin to reason. Use Azure Cognitive Services to solve general problems,
+  such as analyzing text for emotional sentiment or analyzing images to recognize objects or faces. You don't need special machine learning or data science knowledge to use these
+  services. Developers access Azure Cognitive Services via APIs and can easily include these features in just a few lines of code.
+ It can be divided into the following categories:
+  -Language services: Allow your apps to process natural language with prebuilt scripts, evaluate sentiment, and learn how to recognize what users want.
+  -Speech services: Convert speech into text and text into natural-sounding speech. Translate from one language to another and enable speaker verification and recognition.
+  -Vision services: Add recognition and identification capabilities when you're analyzing pictures, videos, and other visual content.
+  -Decision services: Add personalized recommendations for each user that automatically improve each time they're used, moderate content to monitor and remove offensive or risky
+   content, and detect abnormalities in your time series data.
+
+
+Azure Bot Service:
+ Azure Bot Service and Bot Framework are platforms for creating virtual agents that understand and reply to questions just like a human.
+ A Bot has a specific use case.
+
+
+https://docs.microsoft.com/en-gb/learn/modules/ai-machine-learning-fundamentals/3-analyze-decision-criteria
+
+
+
