@@ -28,9 +28,14 @@ Azure Cognitive Services:
 Azure Bot Service:
  Azure Bot Service and Bot Framework are platforms for creating virtual agents that understand and reply to questions just like a human.
  A Bot has a specific use case.
+ Before you jump in to build a custom chat experience by using Bot Service, it might make sense to search for prebuilt, no-code solutions that cover common scenarios.
 
 
-https://docs.microsoft.com/en-gb/learn/modules/ai-machine-learning-fundamentals/3-analyze-decision-criteria
 
+Criteria:
+1. Are you building a virtual agent that interfaces with humans via natural language? Azure Bot Service.
+2. Do you need a service that can understand the content and meaning of images, video, or audio, or that can translate text into a different language? Azure Cognitive Services.
+3. Do you need to predict user behavior or provide users with personalized recommendations in your app? Azure Machine Learning.
+4. Do you need to build a model by using your own data or perform a different task than those listed above? Azure Machine Learning.
 
 
