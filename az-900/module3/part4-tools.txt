@@ -1,1 +1,43 @@
-https://docs.microsoft.com/en-gb/learn/modules/azure-devops-devtest-labs/
+Microsoft tools enable source-code management, continuous integration and continuous delivery (CI/CD), and automate the creation of testing environments.
+
+Product options:
+
+1. Azure DevOps Services:
+ It is a suite of services that address every stage of the software development lifecycle.
+  -Azure Repos is a centralized source-code repository where software development, DevOps engineering, and documentation professionals can publish their code for review and
+   collaboration.
+  -Azure Boards is an agile project management suite that includes Kanban boards, reporting, and tracking ideas and work from high-level epics to work items and issues.
+  -Azure Pipelines is a CI/CD pipeline automation tool.
+  -Azure Artifacts is a repository for hosting artifacts, such as compiled source code, which can be fed into testing or deployment pipeline steps.
+  -Azure Test Plans is an automated test tool that can be used in a CI/CD pipeline to ensure quality before a software release.
+
+
+2. GitHub and GitHub Actions:
+ -It's a shared source-code repository, including tools that enable developers to perform code reviews by adding comments and questions in a web view of the source code before it can be merged into the main code base.
+ -It facilitates project management, including Kanban boards. -
+ -It supports issue reporting, discussion, and tracking.
+ -It features CI/CD pipeline automation tooling.
+ -It includes a wiki for collaborative documentation.
+ -It can be run from the cloud or on-premises
+
+Although both Azure DevOps and GitHub allow public and private code repositories, GitHub has a long history with public repositories and is trusted by tens of thousands of open-source
+ project owners. GitHub is a lighter-weight tool than Azure DevOps, with a focus on individual developers contributing to the open-source code. Azure DevOps, on the other hand, is more
+ focused on enterprise development, with heavier project-management and planning tools, and finer-grained access control.
+
+
+3. Azure DevTest Labs:
+ It provides an automated means of managing the process of building, setting up, and tearing down virtual machines (VMs) that contain builds of your software projects. This way,
+  developers and testers can perform tests across a variety of environments and builds. And this capability isn't limited to VMs.
+
+
+Criteria:
+1. Do you need to automate and manage test-lab creation? Azure DevTest Labs.
+2. Are you building open-source software? GitHub.
+3. Regarding source-code management and DevOps tools, what level of granularity do you need for permissions? GitHub -> Azure DevOps.
+4. Regarding source-code management and DevOps tools, how sophisticated does your project management and reporting need to be? GitHub -> Azure DevOps.
+5. Regarding source-code management and DevOps tools, how tightly do you need to integrate with third-party tools? *Choise depending on those tools*
+
+
+
+
+

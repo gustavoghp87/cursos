@@ -1,0 +1,64 @@
+Azure Security Center
+ It is a monitoring service that provides visibility of your security posture across all of your services, both on Azure and on-premises. The term security posture refers to
+ cybersecurity policies and controls, as well as how well you can predict, prevent, and respond to security threats.
+ Security Center can:
+  -Monitor security settings across on-premises and cloud workloads.
+  -Automatically apply required security settings to new resources as they come online.
+  -Provide security recommendations that are based on your current configurations, resources, and networks.
+  -Continuously monitor your resources and perform automatic security assessments to identify potential vulnerabilities before those vulnerabilities can be exploited.
+  -Use machine learning to detect and block malware from being installed on your virtual machines (VMs) and other resources. You can also use adaptive application controls to define
+   rules that list allowed applications to ensure that only applications you allow can run.
+  -Detect and analyze potential inbound attacks and investigate threats and any post-breach activity that might have occurred.
+  -Provide just-in-time access control for network ports. Doing so reduces your attack surface by ensuring that the network only allows traffic that you require at the time that you
+   need it to.
+ Gets a centralized view of all of its security alerts. From there, the company can dismiss false alerts, investigate them further, remediate alerts manually, or use an automated
+  response with a workflow automation. Workflow automation uses Azure Logic Apps and Security Center connectors. The logic app can be triggered by a threat detection alert or by a
+  Security Center recommendation, filtered by name or by severity. You can then configure the logic app to run an action, such as sending an email, or posting a message to a Microsoft
+  Teams channel.
+ Just-in-time VM access: blocks traffic by default to specific network ports of VMs.
+ Adaptive application controls: provides alerts that inform the company about unauthorized applications that are running on its VMs.
+ Adaptive network hardening: monitors the internet traffic patterns of the VMs, and compares those patterns with the company's current network security group (NSG) settings.
+ File integrity monitoring: monitors changes to important files.
+
+
+Secure score
+ It is a measurement of an organization's security posture. Secure score is based on security controls, or groups of related security recommendations.
+ Your score is based on the percentage of security controls that you satisfy.
+ Secure score helps you:
+  -Report on the current state of your organization's security posture.
+  -Improve your security posture by providing discoverability, visibility, guidance, and control.
+  -Compare with benchmarks and establish key performance indicators (KPIs).
+
+
+Azure Sentinel
+ It is a security information and event management (SIEM) system. It uses intelligent security analytics and threat analysis.
+ A SIEM system aggregates security data from many different sources (as long as those sources support an open-standard logging format). These connections are handled by built-in
+  connectors or industry-standard log formats and APIs.
+ Azure Sentinel enables you to:
+  -Collect cloud data at scale: Collect data across all users, devices, applications, and infrastructure, both on-premises and from multiple clouds.
+  -Detect previously undetected threats: Minimize false positives by using Microsoft's comprehensive analytics and threat intelligence.
+  -Investigate threats with artificial intelligence: Examine suspicious activities at scale, tapping into years of cybersecurity experience from Microsoft.
+  -Respond to incidents rapidly: Use built-in orchestration and automation of common tasks.
+ You can use both built-in analytics and custom rules to detect threats:
+  -Built in analytics: use templates designed by Microsoft's team of security experts and analysts based on known threats, common attack vectors, and escalation chains for suspicious
+   activity. These templates can be customized and search across the environment for any activity that looks suspicious. Some templates use machine learning behavioral analytics that
+   are based on Microsoft proprietary algorithms.
+  -Custom analytics are rules that you create to search for specific criteria within your environment. You can preview the number of results that the query would generate (based on past
+   log events) and set a schedule for the query to run. You can also set an alert threshold.
+ With the investigation graph, the company can review information from entities directly connected to the alert, and see common exploration queries to help guide the investigation.
+ Azure Monitor Workbooks: automates responses to threats.
+
+
+Azure Key Vault
+ It is a centralized cloud service for storing an application's secrets in a single, central location. It provides secure access to sensitive information by providing access control and
+  logging capabilities.
+ -Centralized application secrets
+ -Securely stored secrets and keys
+ -Access monitoring and access control
+ -Simplified administration of application secrets
+ -Integration with other Azure services
+
+
+Azure Dedicated Host
+ It provides dedicated physical servers to host your Azure VMs for Windows and Linux.
+

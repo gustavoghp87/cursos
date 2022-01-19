@@ -1,0 +1,56 @@
+With the rise of remote work, bring your own device (BYOD), mobile applications, and cloud applications, the primary security boundary has shifted from firewalls and physical access
+ controls to identity.
+
+Authentication (AuthN) is the process of establishing the identity of a person or service that wants to access a resource. It involves the act of challenging a party for legitimate
+ credentials and provides the basis for creating a security principal for identity and access control. It establishes whether the user is who they say they are.
+
+Authentication (AuthZ) establishes the user's identity, but authorization is the process of establishing what level of access an authenticated person or service has. It specifies what
+ data they're allowed to access and what they can do with it.
+
+Once authenticated, authorization defines what kinds of applications, resources, and data that user can access.
+
+
+Azure Active Directory
+ Azure AD is Microsoft's cloud-based identity and access management service. With Azure AD, you control the identity accounts, but Microsoft ensures that the service is available
+  globally.
+
+ Azure AD is for:
+  -IT administrators: Administrators can use Azure AD to control access to applications and resources based on their business requirements.
+  -App developers: Developers can use Azure AD to provide a standards-based approach for adding functionality to applications that they build, such as adding SSO functionality to an app
+   or enabling an app to work with a user's existing credentials.
+  -Users: Users can manage their identities. For example, self-service password reset enables users to change or reset their password with no involvement from an IT administrator or
+   help desk.
+  -Online service subscribers: Microsoft 365, Microsoft Office 365, Azure, and Microsoft Dynamics CRM Online subscribers are already using Azure AD. A tenant is a representation of an
+   organization. A tenant is typically separated from other tenants and has its own identity. Each Microsoft 365, Office 365, Azure, and Dynamics CRM Online tenant is automatically an
+   Azure AD tenant.
+
+ Azure AD provides services such as:
+  -Authentication: This includes verifying identity to access applications and resources. It also includes providing functionality such as self-service password reset, multifactor
+   authentication, a custom list of banned passwords, and smart lockout services.
+  -Single sign-on: SSO enables you to remember only one username and one password to access multiple applications. A single identity is tied to a user, which simplifies the security
+   model. As users change roles or leave an organization, access modifications are tied to that identity, which greatly reduces the effort needed to change or disable accounts. Single
+   sign-on enables a user to sign in one time and use that credential to access multiple resources and applications from different providers.
+  -Application management: You can manage your cloud and on-premises apps by using Azure AD. Features like Application Proxy, SaaS apps, the My Apps portal (also called the access
+   panel), and single sign-on provide a better user experience.
+  -Device management: Along with accounts for individual people, Azure AD supports the registration of devices. Registration enables devices to be managed through tools like Microsoft
+   Intune. It also allows for device-based Conditional Access policies to restrict access attempts to only those coming from known devices, regardless of the requesting user account.
+
+
+Azure AD Connect synchronizes user identities between on-premises Active Directory and Azure AD. Azure AD Connect synchronizes changes between both identity systems, so you can use
+ features like SSO, multifactor authentication, and self-service password reset under both systems.
+
+
+Azure AD Multi-Factor Authentication
+ It enables users to choose an additional form of authentication during sign-in, such as a phone call or mobile app notification.
+ The Azure Active Directory free edition enables Azure AD Multi-Factor Authentication for administrators with the global admin level of access, via the Microsoft Authenticator app,
+  phone call, or SMS code. You can also enforce Azure AD Multi-Factor Authentication for all users via the Microsoft Authenticator app only, by enabling security defaults in your Azure
+  AD tenant.
+ Azure Active Directory Premium (P1 or P2 licenses) allows for comprehensive and granular configuration of Azure AD Multi-Factor Authentication through Conditional Access policies.
+
+
+Conditional Access
+ Conditional Access is a tool that Azure Active Directory uses to allow (or deny) access to resources based on identity signals.
+ These signals include who the user is, where the user is, and what device the user is requesting access from.
+ During sign-in, Conditional Access collects signals from the user, makes decisions based on those signals, and then enforces that decision by allowing or denying the access request or
+  challenging for a multifactor authentication response.
+

@@ -1,0 +1,128 @@
+Defense in depth
+ The objective of defense in depth is to protect information and prevent it from being stolen by those who aren't authorized to access it.
+ A defense-in-depth strategy uses a series of mechanisms to slow the advance of an attack that aims at acquiring unauthorized access to data.
+ You can visualize defense in depth as a set of layers, with the data to be secured at the center:
+  -The physical security layer is the first line of defense to protect computing hardware in the datacenter.
+  -The identity and access layer controls access to infrastructure and change control.
+  -The perimeter layer uses distributed denial of service (DDoS) protection to filter large-scale attacks before they can cause a denial of service for users.
+  -The network layer limits communication between resources through segmentation and access controls.
+  -The compute layer secures access to virtual machines.
+  -The application layer helps ensure that applications are secure and free of security vulnerabilities.
+  -The data layer controls access to business and customer data that you need to protect.
+
+
+Security posture
+ Your security posture is your organization's ability to protect from and respond to security threats. The common principles used to define a security posture are confidentiality,
+  integrity, and availability, known collectively as CIA.
+  -Confidentiality: The principle of least privilege means restricting access to information only to individuals explicitly granted access, at only the level that they need to perform
+   their work. This information includes protection of user passwords, email content, and access levels to applications and underlying infrastructure.
+  -Integrity: Prevent unauthorized changes to information at rest (when it's stored) and in transit (when it's being transferred from one place to another, including from a local
+   computer to the cloud). A common approach used in data transmission is for the sender to create a unique fingerprint of the data by using a one-way hashing algorithm. The hash is
+   sent to the receiver along with the data. The receiver recalculates the data's hash and compares it to the original to ensure that the data wasn't lost or modified in transit.
+  -Availability: Ensure that services are functioning and can be accessed only by authorized users. Denial-of-service attacks are designed to degrade the availability of a system,
+   affecting its users.
+
+
+Azure Firewall
+ A firewall is a network security device that monitors incoming and outgoing network traffic and decides whether to allow or block specific traffic based on a defined set of security
+  rules (about IP address, network protocols, ports, etc.).
+ Azure Firewall is a managed, cloud-based network security service that helps protect resources in your Azure virtual networks. A virtual network is similar to a traditional network
+  that you'd operate in your own datacenter. It's a fundamental building block for your private network that enables virtual machines and other compute resources to securely communicate
+  with each other, the internet, and on-premises networks.
+ Azure Firewall is a stateful firewall. A stateful firewall analyzes the complete context of a network connection, not just an individual packet of network traffic.
+ Azure Firewall provides many features, including:
+  -Built-in high availability.
+  -Unrestricted cloud scalability.
+  -Inbound and outbound filtering rules.
+  -Inbound Destination Network Address Translation (DNAT) support.
+  -Azure Monitor logging.
+ You typically deploy Azure Firewall on a central virtual network to control general network access.
+ With Azure Firewall, you can configure:
+  -Application rules that define fully qualified domain names (FQDNs) that can be accessed from a subnet.
+  -Network rules that define source address, protocol, destination port, and destination address.
+  -Network Address Translation (NAT) rules that define destination IP addresses and ports to translate inbound requests.
+
+
+Azure DDoS Protection
+ The DDoS Protection service helps protect your Azure applications by analyzing and discarding DDoS traffic at the Azure network edge, before it can affect your service's availability.
+ DDoS Protection identifies the attacker's attempt to overwhelm the network and blocks further traffic from them, ensuring that traffic never reaches Azure resources. Legitimate traffic
+  from customers still flows into Azure without any interruption of service.
+ -Basic: The Basic service tier is automatically enabled for free as part of your Azure subscription. The Basic service tier ensures that Azure infrastructure itself is not affected
+  during a large-scale DDoS attack.
+ -Standard: The Standard service tier provides additional mitigation capabilities that are tuned specifically to Azure Virtual Network resources. Protection policies are tuned through
+  dedicated traffic monitoring and machine learning algorithms.
+  The Standard service tier can help prevent:
+   -Volumetric attacks: The goal of this attack is to flood the network layer with a substantial amount of seemingly legitimate traffic.
+   -Protocol attacks: render a target inaccessible by exploiting a weakness in the layer 3 and layer 4 protocol stack.
+   -Resource-layer (application-layer) attacks (only with web application firewall): target web application packets to disrupt the transmission of data between hosts. You need a web
+    application firewall (WAF) to protect against L7 attacks. DDoS Protection Standard protects the WAF from volumetric and protocol attacks.
+
+
+Network Security Groups (NSGs)
+ A network security group enables you to filter network traffic to and from Azure resources within an Azure virtual network. You can think of NSGs like an internal firewall. An NSG can
+  contain multiple inbound and outbound security rules that enable you to filter traffic to and from resources by source and destination IP address, port, and protocol.
+ Each rule specifies these properties:
+  -Name: A unique name for the NSG.
+  -Priority: A number between 100 and 4096. Rules are processed in priority order, with lower numbers processed before higher numbers.
+  -Source or Destination: A single IP address or IP address range, service tag, or application security group.
+  -Protocol: TCP, UDP, or Any.
+  -Direction: Whether the rule applies to inbound or outbound traffic.
+  -Port Range: A single port or range of ports.
+  -Action: Allow or Deny.
+ When you create a network security group, Azure creates a series of default rules to provide a baseline level of security. You can't remove the default rules, but you can override them
+  by creating new rules with higher priorities.
+
+
+Web application firewall (WAF)
+ It is a feature of Azure Application Gateway that provides your web applications with centralized, inbound protection against common exploits and vulnerabilities.
+
+
+Secure the perimeter layer:
+ The perimeter layer is about protecting your organization's resources from network-based attacks.
+ Use Azure DDoS Protection to filter large-scale attacks and perimeter firewalls with Azure Firewall to identify and alert on malicious attacks against your network.
+
+Secure the network layer:
+ At this layer, the focus is on limiting network connectivity across all of your resources to allow only what's required.
+ Segment your resources and use network-level controls to restrict communication to only what's needed.
+ Use NSG's to create rules that define allowed inbound and outbound communication at this layer.
+
+
+
+
+
+Look a VM's NSGs:
+
+az network nsg list \
+  --resource-group learn-ba74b111-7df5-4e62-a870-72a370ea1f25 \
+  --query '[].name' \
+  --output tsv
+
+(shows 'my-vmNSG')
+
+
+az network nsg rule list \
+  --resource-group learn-ba74b111-7df5-4e62-a870-72a370ea1f25 \
+  --nsg-name my-vmNSG
+
+
+az network nsg rule list \
+  --resource-group learn-ba74b111-7df5-4e62-a870-72a370ea1f25 \
+  --nsg-name my-vmNSG \
+  --query '[].{Name:name, Priority:priority, Port:destinationPortRange, Access:access}' \
+  --output table
+
+
+
+Create a rule called allow-http that allows inbound access on port 80:
+
+az network nsg rule create \
+  --resource-group learn-ba74b111-7df5-4e62-a870-72a370ea1f25 \
+  --nsg-name my-vmNSG \
+  --name allow-http \
+  --protocol tcp \
+  --priority 100 \
+  --destination-port-ranges 80 \
+  --access Allow
+
+
+
