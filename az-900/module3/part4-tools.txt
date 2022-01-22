@@ -13,8 +13,9 @@ Product options:
 
 
 2. GitHub and GitHub Actions:
- -It's a shared source-code repository, including tools that enable developers to perform code reviews by adding comments and questions in a web view of the source code before it can be merged into the main code base.
- -It facilitates project management, including Kanban boards. -
+ -It's a shared source-code repository, including tools that enable developers to perform code reviews by adding comments and questions in a web view of the source code before it can be
+  merged into the main code base.
+ -It facilitates project management, including Kanban boards.
  -It supports issue reporting, discussion, and tracking.
  -It features CI/CD pipeline automation tooling.
  -It includes a wiki for collaborative documentation.
@@ -24,6 +25,7 @@ Although both Azure DevOps and GitHub allow public and private code repositories
  project owners. GitHub is a lighter-weight tool than Azure DevOps, with a focus on individual developers contributing to the open-source code. Azure DevOps, on the other hand, is more
  focused on enterprise development, with heavier project-management and planning tools, and finer-grained access control.
 
+Azure Pipeline: graphical editor; GitHub Actions: YAML file.
 
 3. Azure DevTest Labs:
  It provides an automated means of managing the process of building, setting up, and tearing down virtual machines (VMs) that contain builds of your software projects. This way,
@@ -36,8 +38,4 @@ Criteria:
 3. Regarding source-code management and DevOps tools, what level of granularity do you need for permissions? GitHub -> Azure DevOps.
 4. Regarding source-code management and DevOps tools, how sophisticated does your project management and reporting need to be? GitHub -> Azure DevOps.
 5. Regarding source-code management and DevOps tools, how tightly do you need to integrate with third-party tools? *Choise depending on those tools*
-
-
-
-
 

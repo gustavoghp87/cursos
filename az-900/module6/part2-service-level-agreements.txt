@@ -1,0 +1,44 @@
+A service-level agreement (SLA) is a formal agreement between a service company and the customer. For Azure, this agreement defines the performance standards that Microsoft commits to
+ for you, the customer. https://azure.microsoft.com/en-us/support/legal/sla/
+
+When you build applications on Azure, the availability of the services that you use affect your application's performance.
+
+Each Azure service defines its own SLA. Azure services are organized by category.
+
+A typical SLA breaks down into these sections:
+-Introduction: This section explains what to expect in the SLA, including its scope and how subscription renewals can affect the terms.
+-General terms: This section contains terms that are used throughout the SLA so that both parties (you and Microsoft) have a consistent vocabulary. This section also defines the general
+ terms of the agreement, including how to submit a claim, receive credit for any performance or availability issues, and limitations of the agreement.
+-SLA details: This section defines the specific guarantees for the service. Performance commitments are commonly measured as a percentage. That percentage typically ranges from 99.9
+ percent ("three nines") to 99.99 percent ("four nines"). The primary performance commitment typically focuses on uptime, or the percentage of time that a product or service is
+ successfully operational. Some SLAs focus on other factors as well, including latency, or how fast the service must respond to a request.
+
+Downtime refers to the time duration that the service is unavailable.
+
+A service credit is the percentage of the fees you paid that are credited back to you according to the claim approval process.
+
+Free products typically don't have an SLA.
+
+Azure status provides a global view of the health of Azure services and regions. If you suspect there's an outage, this is often a good place to start your investigation.
+ https://status.azure.com/status
+
+
+Application SLA
+ An application SLA defines the SLA requirements for a specific application.
+ Business impact, Effect on other business operations, Usage patterns
+ If an app has 4 workloads:
+  -Two virtual machines: 99.9%
+  -One instance of Azure SQL Database:99.99%
+  -One instance of Azure Load Balancer: 99.99%
+ , the composite SLA is 99.78%
+
+
+to improve the availability of the application, avoid having any single points of failure. So instead of adding more virtual machines, you can deploy one or more extra instances of the
+ same virtual machine across the different availability zones in the same Azure region. Two virtual machines: 99.99% => composite SLA is now 99.96%
+
+To ensure high availability, you might plan for your application to have duplicate components across several regions, known as redundancy.
+
+
+
+
+

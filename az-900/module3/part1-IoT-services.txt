@@ -5,6 +5,7 @@ It is a managed service that's hosted in the cloud and that acts as a central me
 The IoT Hub service supports communications both from the device to the cloud and from the cloud to the device. The IoT Hub service supports communications both from the device to the
  cloud and from the cloud to the device.
 IoT Hub monitoring helps you maintain the health of your solution by tracking events such as device creation, device failures, and device connections.
+It's a PaaS service that needs your own code.
 
 Azure IoT Central:
 It builds on top of IoT Hub by adding a dashboard that allows you to connect, monitor, and manage your IoT devices. The visual user interface (UI) makes it easy to quickly connect new
@@ -12,6 +13,7 @@ It builds on top of IoT Hub by adding a dashboard that allows you to connect, mo
  notifications when a specific device needs maintenance. Finally, you can push firmware updates to the device.
 A key part of IoT Central is the use of device templates. By using a device template, you can connect a device without any service-side coding. IoT Central uses the templates to
  construct the dashboards, alerts, and so on. Device developers still need to create code to run on the devices, and that code must match the device template specification.
+SaaS.
 
 Azure Sphere:
 Azure Sphere creates an end-to-end, highly secure IoT solution for customers that encompasses everything from the hardware and operating system on the device to the secure method of

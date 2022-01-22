@@ -65,15 +65,14 @@ Azure region pairs: Each Azure region is always paired with another region withi
 
 
 RBAC: role-based access control
-
-The benefits of using Resource Manager
--Manage your infrastructure through declarative templates rather than scripts. A Resource Manager template is a JSON file that defines what you want to deploy to Azure.
--Deploy, manage, and monitor all the resources for your solution as a group, rather than handling these resources individually.
--Redeploy your solution throughout the development life cycle and have confidence your resources are deployed in a consistent state.
--Define the dependencies between resources so they're deployed in the correct order.
--Apply access control to all services because RBAC is natively integrated into the management platform.
--Apply tags to resources to logically organize all the resources in your subscription.
--Clarify your organization's billing by viewing costs for a group of resources that share the same tag.
+ The benefits of using Resource Manager
+ -Manage your infrastructure through declarative templates rather than scripts. A Resource Manager template is a JSON file that defines what you want to deploy to Azure.
+ -Deploy, manage, and monitor all the resources for your solution as a group, rather than handling these resources individually.
+ -Redeploy your solution throughout the development life cycle and have confidence your resources are deployed in a consistent state.
+ -Define the dependencies between resources so they're deployed in the correct order.
+ -Apply access control to all services because RBAC is natively integrated into the management platform.
+ -Apply tags to resources to logically organize all the resources in your subscription.
+ -Clarify your organization's billing by viewing costs for a group of resources that share the same tag.
 
 
 An account can have one subscription or multiple subscriptions that have different billing models and to which you apply different access-management policies.
