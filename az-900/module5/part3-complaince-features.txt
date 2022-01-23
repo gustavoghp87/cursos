@@ -6,7 +6,8 @@ The Microsoft Privacy Statement explains what personal data Microsoft collects, 
 The Online Services Terms (OST) is a legal agreement between Microsoft and the customer. The OST details the obligations by both parties with respect to the processing and security of
  customer data and personal data.
 
-The Data Protection Addendum (DPA) further defines the data processing and security terms for online services. These terms include:
+The Data Protection Addendum (DPA) further defines the data processing and security terms for online services. How the data in general is processed and protected.
+ These terms include:
  -Compliance with laws.
  -Disclosure of processed data.
  -Data Security, which includes security practices and policies, data encryption, data access, customer responsibilities, and compliance with auditing.

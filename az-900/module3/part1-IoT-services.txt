@@ -6,6 +6,7 @@ The IoT Hub service supports communications both from the device to the cloud an
  cloud and from the cloud to the device.
 IoT Hub monitoring helps you maintain the health of your solution by tracking events such as device creation, device failures, and device connections.
 It's a PaaS service that needs your own code.
+Not to analyze telemetry data.
 
 Azure IoT Central:
 It builds on top of IoT Hub by adding a dashboard that allows you to connect, monitor, and manage your IoT devices. The visual user interface (UI) makes it easy to quickly connect new
