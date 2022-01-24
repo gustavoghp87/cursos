@@ -52,3 +52,4 @@ Azure SQL Managed Instance:
 
 Azure supports a broad range of technologies and services to provide big data and analytic solutions, including Azure Synapse Analytics, Azure HDInsight, Azure Databricks, and Azure
  Data Lake Analytics.
+
