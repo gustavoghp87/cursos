@@ -1,55 +1,126 @@
-install-package NUnit
-install-package NUnit3TestAdapter                   for use in Visual Studio
+Install NUnit:
+    Install-Package NUnit
+    Install-Package NUnit3TestAdapter                   for use in Visual Studio
 
 
-MethodName + Scenario + ExpectedBehavior
+Classes names: ClassToTest + Tests
+
+Methods names: MethodName + Scenario + ExpectedBehavior
 
 
 #################################################################################################################################
 
-NUnit allows to create a SetUp method that runs before every test method:
+Method that runs before every test method
 
-[SetUp]
-public void SetUp()
-{
-    [private attributes initialization]
-}
+NUnit:
+    [TestFixture]
+    public class UserControllerTests {
+
+        private User _user;
+
+        [SetUp]
+        public void SetUp()
+        {
+            [private attributes initialization] _user = new User();
+        }
+
+        [Test]
+        public void Method_When_ReturnTrue() { }
+    }
+
 
 Microsoft UT:
-[TestInitialize]
-public void TestInitialize()
-{
-    [private attributes initialization]
-}
+
+    [TestClass]
+    public class UserControllerTests {
+
+        private User _user;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            [private attributes initialization] _user = new User();
+        }
+
+        [TestMethod]
+        public void Method_When_ReturnTrue() { }
+    }
+
+#################################################################################################################################
+
+Re-using test methods
+
+NUnit:
+
+    [Test]
+    [TestCase(2, 1, 2)]
+    [TestCase(1, 2, 2)]
+    [TestCase(1, 1, 1)]
+    public void MaxMethod_WhenCalled_ReturnTheGreaterArgument(int a, int b, int expectedResult) { }
 
 
 #################################################################################################################################
 
-Re-using test methods:
+Asserts
 
-[Test]
-[TestCase(2, 1, 2)]
-[TestCase(1, 2, 2)]
-[TestCase(1, 1, 1)]
-public void MaxMethod_WhenCalled_ReturnTheGreaterArgument(int a, int b, int expectedResult) { }
+NUnit:
+    Assert.That(result, Is.EqualTo("string"));
+    Assert.That(result, Is.Not.EqualTo("string"));
+    Assert.That(result, Is.Not.Empty);
+    Assert.That(result, Is.TypeOf<NotFound>());
+    Assert.That(result, Is.InstanceOf<NotFound>());    // NotFound object or one of its derivatives
+    Assert.That(result, Does.StartWith("<"));
+    Assert.That(result, Does.Contain("<"));
+    Assert.That(result, Does.Contain("<").IngnoreCase);
+
+    Assert.That(result, Is.EquivalentTo(new INumerable<Class>() { etc })
+    Assert.That(result, Is.Sorted);
+    Assert.That(result, Is.Unique);    // no duplicated items
+
+    Assert.That(() => logger.Log(error), Throws.ArgumentNullException);
+    Assert.That(() => logger.Log(error), Throws.Exception.TypeOf<ArgumentNullException>);
+
+Microsoft UT:
+    Assert.IsInstanceOfType(result, typeof(EmptyResult));
+    Assert.IsInstanceOfType(response, typeof(PaymentMethodsViewModels));
+    Assert.IsNotNull(response);
+    Assert.AreEqual(result.ViewName, "/Views/AutomaticPayment/AutomaticPayment.cshtml");
+    Assert.Fail(ex.Message);
+    Assert.AreEqual(_controller.Response.StatusCode, expectedStatusCode);
+
+    ActionResult result = (EmptyResult)_controller.BadRequest();
+    Assert.IsInstanceOfType(result, typeof(EmptyResult));
 
 
+#################################################################################################################################
 
-Assert.IsInstanceOfType(result, typeof(EmptyResult));
-Assert.IsInstanceOfType(response, typeof(PaymentMethodsViewModels));
-Assert.IsNotNull(response);
-Assert.AreEqual(result.ViewName, "/Views/AutomaticPayment/AutomaticPayment.cshtml");
-Assert.Fail(ex.Message);
-Assert.AreEqual(_controller.Response.StatusCode, expectedStatusCode);
+Exceptions
 
-ActionResult result = (EmptyResult)_controller.BadRequest();
-Assert.IsInstanceOfType(result, typeof(EmptyResult));
+NUnit:
+    Assert.That(() => logger.Log(error), Throws.ArgumentNullException);
 
 
+Microsoft UT:
 
-[Test]
-[ExpectedException(typeof(SecurityException))]
-public void Download_WhenNotPermitted_Throws() {...}    avoids assert
+    [Test]
+    [ExpectedException(typeof(SecurityException))]
+    public void Download_WhenNotPermitted_Throws() {...}    avoids assert
+
+
+#################################################################################################################################
+
+Testing methods that return void
+
+NUnit:
+
+    (to test: ErrorLogged.Invoke(this, Guid.NewGuid()); )
+
+    var id = Guid.Empty;
+    logger.ErrorLogged += (sender, args) => { id = args; };       // when method is executed, assign the new Guid to id variable
+    logger.Log("a");
+    Assert.That(id, Is.Not.EqualTo(Guid.Empty));
+
+
 
 
 
