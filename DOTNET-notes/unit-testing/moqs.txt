@@ -1,0 +1,78 @@
+
+
+
+Top 5 Mock Framework.
+    1) NSubstitute:	http://nsubstitute.github.io/
+    2) Rhino Mocks:	http://www.hibernatingrhinos.com/oss/rhino-mocks
+    3) Moq:		https://code.google.com/p/moq/downloads/list
+    4) FakeItEasy:	https://github.com/FakeItEasy/FakeItEasy/
+    5) NMock3:		http://nmock3.codeplex.com/releases/view/108516
+
+
+
+
+Hay tres objetos de reemplazo, que son usados para reemplazar las dependencias de la “unidad (unit)” del componente testeado, esos objetos son:
+    • Fake: La clase que implementa una interfaz pero contiene datos fijos (fixed data) y no posee lógica. Simplemente retorna “buena” o “mala” data, dependiendo de la implementación.
+    • Mock: Una clase que implementa una interfaz y permite dinámicamente setear valores de retorno/lanzar excepciones, desde un método en particular y también tiene la capacidad de chequear si algún método en particular ha sido llamado o no.
+    • Stub: Similar al Mock, exepto que este no tiene la capacidad de verificar que métodos han sido llamado o no.
+
+
+private class TestContext
+{
+    public Mock<IUrlPermissioner> PermissionerMock;
+    public Mock<IUrlRetriever> UrlRetrieverMock;
+    public WebPageDownloader Downloader;
+}
+
+public class SomeClassTests
+{
+    private TestContext CreateContext()
+    {
+        var ctxt = new TestContext()
+        {
+            PermissionerMock = new Mock<IUrlPermissioner>(),
+            UrlRetrieverMock = new Mock<IUrlRetriever>(),
+        };
+
+        ctxt.Downloader = new WebPageDownloader(ctxt.PermissionerMock.Object, ctxt.UrlRetrieverMock.Object);
+
+        return ctxt;
+    }
+
+    [Test]
+    [ExpectedException(typeof(SecurityException))]
+    public void Download_WhenNotPermitted_Throws()
+    {
+        var ctxt = CreateContext();
+
+        var badUrl = "http://www.SomeBadUrl";
+
+        // arrange
+        ctxt.PermissionerMock.Setup(a => a.IsUrlAllowed(badUrl)).Returns(false);
+
+        // act
+        ctxt.Downloader.Download(badUrl);
+
+        // assert we don't need to do since we have ExpectedException attribute
+    }
+
+    [Test]
+    public void Download_WhenAllowed_ShouldReturnWebpageGotViaRetriever()
+    {
+        var ctxt = CreateContext();
+
+        var OkUrl = "http://www.SomeOkUrl";
+        var OkUrlContent = "Some Web Page";
+
+        // arrange
+        ctxt.PermissionerMock.Setup(a => a.IsUrlAllowed(OkUrl)).Returns(true);
+        ctxt.UrlRetrieverMock.Setup(a => a.Retrieve(OkUrl)).Returns(OkUrlContent);
+
+        // act
+        var result = ctxt.Downloader.Download(OkUrl);
+
+        // assert
+        Assert.AreEqual(OkUrlContent, result);
+    }
+}
+
