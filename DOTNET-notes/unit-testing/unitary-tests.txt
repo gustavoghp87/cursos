@@ -9,7 +9,7 @@ Methods names: MethodName + Scenario + ExpectedBehavior
 
 Unit Testing => Integration Testing => System Testing => Acceptance Testing
 
-State-based tests & Interaction-based test (to moq)
+State-based tests & Interaction-based test (interaction with external resources like dbs)
 
 
 #################################################################################################################################
@@ -76,7 +76,7 @@ NUnit:
     Assert.That(result, Is.InstanceOf<NotFound>());    // NotFound object or one of its derivatives
     Assert.That(result, Does.StartWith("<"));
     Assert.That(result, Does.Contain("<"));
-    Assert.That(result, Does.Contain("<").IngnoreCase);
+    Assert.That(result, Does.Contain("some string").IngnoreCase);
 
     Assert.That(result, Is.EquivalentTo(new INumerable<Class>() { etc })
     Assert.That(result, Is.Sorted);

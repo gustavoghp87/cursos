@@ -1,6 +1,4 @@
 
-
-
 Top 5 Mock Framework.
     1) NSubstitute:	http://nsubstitute.github.io/
     2) Rhino Mocks:	http://www.hibernatingrhinos.com/oss/rhino-mocks
@@ -9,13 +7,17 @@ Top 5 Mock Framework.
     5) NMock3:		http://nmock3.codeplex.com/releases/view/108516
 
 
+#################################################################################################################################
+
+Hay tres objetos de reemplazo, que son usados para reemplazar las dependencias de la “unidad (unit)” del componente testeado:
+    • Fake: La clase que implementa una interfaz pero contiene datos fijos (fixed data) y no posee lógica. Simplemente retorna
+      “buena” o “mala” data, dependiendo de la implementación.
+    • Mock: Una clase que implementa una interfaz y permite dinámicamente setear valores de retorno/lanzar excepciones, desde un
+      método en particular y también tiene la capacidad de chequear si algún método en particular ha sido llamado o no.
+    • Stub: Similar al Mock, excepto que este no tiene la capacidad de verificar que métodos han sido llamado o no.
 
 
-Hay tres objetos de reemplazo, que son usados para reemplazar las dependencias de la “unidad (unit)” del componente testeado, esos objetos son:
-    • Fake: La clase que implementa una interfaz pero contiene datos fijos (fixed data) y no posee lógica. Simplemente retorna “buena” o “mala” data, dependiendo de la implementación.
-    • Mock: Una clase que implementa una interfaz y permite dinámicamente setear valores de retorno/lanzar excepciones, desde un método en particular y también tiene la capacidad de chequear si algún método en particular ha sido llamado o no.
-    • Stub: Similar al Mock, exepto que este no tiene la capacidad de verificar que métodos han sido llamado o no.
-
+#################################################################################################################################
 
 private class TestContext
 {
@@ -75,4 +77,90 @@ public class SomeClassTests
         Assert.AreEqual(OkUrlContent, result);
     }
 }
+
+
+#################################################################################################################################
+
+(...)
+    public class OrderService
+    {
+        private readonly IStorage _storage;
+
+        public OrderService(IStorage storage)
+        {
+            _storage = storage;
+        }
+
+        public int PlaceOrder(Order order)
+        {
+            var orderId = _storage.Store(order);
+            
+            // Some other work
+
+            return orderId; 
+        }
+    }
+(...)
+        [Test]
+        public void PlaceOrder_WhenCalled_StoreTheOrder()
+        {
+            var storage = new Mock<IStorage>();
+            var service = new OrderService(storage.Object);
+            var order = new Order();
+
+            service.PlaceOrder(order);
+            
+            storage.Verify(s => s.Store(order));    // verify if Store method was executed
+        }
+
+
+#################################################################################################################################
+
+[Test]
+        public void DownloadInstaller_DownloadFails_ReturnFalse()
+        {
+            _fileDownloader.Setup(fd => 
+                fd.DownloadFile(It.IsAny<string>(), It.IsAny<string>()))
+                .Throws<WebException>();
+
+            var result = _installerHelper.DownloadInstaller("customer", "installer");
+            
+            Assert.That(result, Is.False);
+        }
+
+
+#################################################################################################################################
+
+Verify that a method inside a controller method was called:
+
+        [Test]
+        public void DeleteEmployee_WhenCalled_DeleteTheEmployeeFromDb()
+        {
+            var storage = new Mock<IEmployeeStorage>();
+            var controller = new EmployeeController(storage.Object);
+
+            controller.DeleteEmployee(1);                // controller method
+            
+            storage.Verify(s => s.DeleteEmployee(1));    // storage method
+        }
+
+
+#################################################################################################################################
+
+Mock attributes:
+
+(...)
+        [Test]
+        public void GetPrice_GoldCustomer_Apply30PercentDiscount2()
+        {
+            var customer = new Mock<ICustomer>();
+            customer.Setup(c => c.IsGold).Returns(true);
+            
+            var product = new Product {ListPrice = 100};
+
+            var result = product.GetPrice(customer.Object);
+            
+            Assert.That(result, Is.EqualTo(70));
+        }
+
 
