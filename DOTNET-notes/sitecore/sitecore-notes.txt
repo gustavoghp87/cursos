@@ -1,0 +1,134 @@
+SHARED LAYOUTS
+
+ -Layout/Layouts/Shared/ create MVC Layout "Main Layout", path: /Views/Shared/Main Layout.cshtml
+
+ -create path and file in the project, edit file, publish
+
+ -create "Main Template" template in /sitecore/templates/shared
+
+ -create __Standard Values, Presentation-Details, Shared Layout, Default-Edit, Layout: "Main Layout"
+
+ -create item in /sitecore/Content/Home "main", check out Presentation-Details for Main Layout
+
+ -publish and go to [site]/main
+
+ -add fields to Main Template and its content and use it with @Html.Sitecore().Field("Title")
+
+ -to use other item: @Html.Sitecore().Field("Title", Sitecore.Context.Database.GetItem("/sitecore/content/Home"))
+
+ -@Html.Sitecore().Field("Image", new { h=200, w=400 })
+
+
+#################################################################################################################################
+
+RENDERINGS
+
+Insert cshtml inside other:
+	create and edit Content.cshtml with partial code
+	@Html.Sitecore().ViewRendering("/Views/Shared/Content.cshtml")
+
+, but to avoid hard-coding:
+
+ -create 'View rendering' in /sitecore/Layout/Renderings/Shared "Content", path: /Views/Shared/Content.cshtml
+     , use it:    @Html.sitecore().Rendering("{F5S4GFTR-DF98-8F7D-D5G3E1C5DDF45DF6}")
+
+ -or create "Controller rendering" in /sitecore/Layout/Renderings/Shared "Content", Controller "Content", Contr Action "Index"
+     , create "/Controllers/Shared/ContentController.cs" with Index method that sends a view
+     , create "/Views/Content/Index.cshtml"
+     , use it:    @Html.sitecore().Rendering("{AA584GMFD-FD41-337G-G5G3E1C5DDF445FG}")
+
+url => layout => rendering => controller => view
+
+
+#################################################################################################################################
+
+PLACEHOLDERS
+
+But @Html.sitecore().Rendering("{F5S4GFTR-DF98-8F7D-D5G3E1C5DDF45DF6}") is too coupled and restrictive
+
+ -use @Html.sitecore().Placeholder("mainkey")
+
+ -__Standard Values Presentation-Details, Defaul-Edit, Controls Add Renderings/Shared/Content "mainkey"
+
+To use a placeholder key, you must first create an item for Placeholder Settings and choose which renderings are allowed
+
+
+#################################################################################################################################
+
+DYNAMIC PLACEHOLDER
+
+ -use @Html.sitecore().DynamicPlaceholder("mainkey")
+
+Avoids adding renderings to every placeholder with that key
+
+
+#################################################################################################################################
+
+DATASOURCE
+
+@Html.Sitecore().Field("Title")    =    @Html.Sitecore().Field("Title", RenderingContext.Current.ContextItem)
+
+, but    @Html.Sitecore().Field("Title", RenderingContext.Current.Rendering.Item)
+
+ allows to customize the content item in Data Source field (undefined is ContextItem by default)
+
+To limit which items could be selected,
+ use the 'Datasource Location' field (some folder) in the Controller Rendering (Control Properties)
+To limit which item types could be selected,
+ use the 'Datasource Template' field
+
+
+#################################################################################################################################
+
+PARAMETERS
+
+In the Controller Rendering (Control Properties), insert key-value pairs and use them:
+
+    @RenderingContext.Current.Rendering.Parameters["key1"]
+
+It is possible to use keys droplists througth the 'Parameters Template'
+
+    @HttpUtility.ParseQueryString(RenderingContext.Current.Rendering.Proporties["Parameters"])["key1"]
+
+
+#################################################################################################################################
+
+GET CURRENT URL
+
+item and page relative url = Sitecore.Links.LinkManager.GetItemUrl(RenderingContext.Current.ContextItem)
+ , check <linkManager> in Sitecore.config
+
+
+var options = Sitecore.Links.LinkManager.GetDefaultUrlOptions();
+options.AlwaysIncludeServerUrl = true;
+
+item and page absolute url = Sitecore.Links.LinkManager.GetItemUrl(RenderingContext.Current.ContextItem, options)
+
+
+#################################################################################################################################
+
+var item = RenderingContext.Current.ContextItem;
+var parent = item.Parent;
+var children = item.Children;
+var children = item.GetChildren();
+var ancestors = item.Axes.GetAncestors();
+var descendants = item.Axes.GetDescendants();
+
+CheckboxField cb = item.Fields["MyCheckbox"];
+
+ReferenceField r = item.Fields["MyDropList or MyDropLink"];
+var optionSelected = r.TargetItem.Name;
+
+MultilistField ml = item.Fields["MyMultiList or MyTreeList"];
+foreach (var item in ml.GetItems()) { }
+
+
+#################################################################################################################################
+
+To manage complex fields from Experience Editor:
+    -go to core db (changing url)
+    -sitecore/content/Application/WebEdit/Edit Frame Buttons, insert 'Edit Frame Button Folder', "My Toolbar"
+    -insert 'Field Editor Button', in 'Fields - pipe-separated list...': "MyCheckbox|MyDrpLink|MyTreeList"
+    -@using Sitecore.Mvc.Extensions
+    -add @using (Html.EditFrame.FullPath, "My Toolbar", "My Toolbar Title", "My Toolbar Tooltip", null, null) { }
+
