@@ -1,0 +1,5 @@
+-npm run build
+-change 'build' folder name to 'docs'
+-edit index.html adding . to every /static-file.*
+-push
+-enable page in settings

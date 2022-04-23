@@ -1,0 +1,28 @@
+WEBPACK
+
+npm i webpack webpack-cli        (también   html-webpack-plugin   image-webpack-loader  webpack-dev-server)
+También:   css-loader    style-loader o mini-css-extrac-plugin   sass-loader node-sass     autoprefixer (soporte a navegadores) postcss-loader   file-loader
+npx webpack app.js -o bundle.js      convierte un archivo js que tiene características que el navegador no entiende
+html importa bundle.js, que compila todos los js que estén en una red de importaciones y exportaciones (no soportado por navegadores)
+Exportar a carpeta build/ por convención
+Conviene crear webpack.config.js y colocar un    module.exports = { entry:'./src/app.js', output: { path: __dirname+'/build', filename: 'bundle.js' } };
+ y ahora alcanza con   npx webpack -p     p de producción    -d es desarrollo, hace un bundle legible
+
+npm i html-webpack-plugin
+agregar   const HtmlWebpackPlugin = require('html-webpack-plugin');    al config
+ y    plugins: [ new HtmlWebpcakPlugin({ template: './src/index.html' }) ]
+ y ahora hará una copia de .html en /build    que incorpora la importación de bundle.js automáticamente
+
+npm i webpack-dev-server
+npx webpack-dev-server    emite desde localhost:8080 y compila automáticamente ante cambios y refresca el navegador
+ o se cambia el puerto desde config   devServer: {port: 5000},
+
+Conviene importar los .css a app.js para que los incorpe a la compilación y desentenderse de la carpeta /build
+ pero requiere:   npm i style-loader css-loader
+ y agregar:       module: { rules: [ { test: /\.css$/,  use: [ {loader:'style-loader'}, {loader:'css-loader'} ] }]},
+
+npm i sass-loader node-sass
+Cambiar el /\css por /\scss   y añadir   {loader:'sass-loader'}
+Cambiar la extensión a los .css por .scss y usar sass tranquilamente
+
+Con un plugin se puede exportar el css por separado

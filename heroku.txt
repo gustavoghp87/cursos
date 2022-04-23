@@ -1,12 +1,12 @@
 heroku -h
-heroku login                           loguea desde el navegador
-heroku apps                            lista aplicaciones del usuario
-heroku logs -n 200 -a maslabotlikes    últimas 200 líneas
+heroku login                                login from browser
+heroku apps                                 list of apps for logged in user
+heroku logs -n 200 -a registros-rest-api    last 200 log lines
 heroku logout
 
 
-Cuentas:
-	ghc: todas menos los bots
-	ghp: solo bot7200
-	mas: solo bot likeador     -->    raspberry pi
+Accounts:
+	ghc: everyone except tw bots
+	ghp: only bot7200
+	mas: only liker bot     -->    raspberry pi
 

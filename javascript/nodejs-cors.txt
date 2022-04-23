@@ -1,0 +1,41 @@
+
+// middlewares
+import cors from 'cors'
+app.use(cors())
+const whitelist = ['http://localhost:3000']
+
+export const corsOptions = {
+    'Access-Control-Allow-Credentials': true,
+    origin: function (origin:any, callback:any) {
+        if(whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
+}
+
+
+
+Cookie:
+{
+	name,
+	value,
+	domain,
+	path,
+	expires/max
+	size,
+	httpOnly
+	secure: strict  no envía
+	samaSite
+	priority
+}
+
+res.cookie('token', accessToken, { sameSite: x, secure: x })
+https://expressjs.com/en/api.html#res.cookie
+
+res.set("Set-Cookie", "HttpOnly;Secure;SameSite=Strict")
+
+const cookie = "user=ghp@com; samesite=strict/lax/none; secure"
+res.setHeader("set-cookie", [cookie])
+res.send("ok")

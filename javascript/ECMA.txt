@@ -1,0 +1,39 @@
+
+ES8 recordar:
+
+const unArray = [...]
+
+Object.entries(unArray)                       devuelve un array hecho de arrays [llave, valor]
+Object.keys(unArray)                          devuelve un array con las llaves
+Object.values(unArray)                        devuelve un array con los valores
+Object.getOwnProperty.Descriptors(unObjeto)   descripción detallada de cada uno de los parámetros
+
+
+Tiempo (función autoejecutable):
+(async () =>
+	let prom1 = new Promise( (resolve, reject) => {setTimeOut( () => resolve("Termina en 1 segundo"), 1000); });
+	let prom2 = new Promise( (resolve, reject) => {setTimeOut( () => resolve("Termina en 1 segundo"), 1000); });
+	let prom3 = new Promise( (resolve, reject) => {setTimeOut( () => resolve("Termina en 1 segundo"), 1000); });
+
+	const arrProm = [prom1, prom2, prom3];
+
+	for await (const prom of arrProm) {
+	    console.log(prom);
+	};
+})();
+
+
+Si un objeto tiene muchas llaves, se puede asignar una a una variable y las demás a otra con puntos susp
+const obj = { x: algo, a: algo, b: algo, c: algo, d: algo };
+const { x, ...y } = obj;
+
+
+const array_ = [ [1, 2], 2, 3, [4, 5, 6], 7];
+const array_plano = array_.flat();               lo convierte en  [1, 2, 3, 4, 5, 6, 7]   pero solo un nivel
+const array_plano = array_.flat(2);              hasta dos niveles, etc
+
+El método flatMap sirve para generar un array plano uniendo dos array intercalando los elementos
+
+
+const Arra = [ [1, "uno"], [2, "dos], [3, "tres"] ];
+Object.fromEntries(Arra)      { 1:"uno", 2:"dos", 3:"tres" };

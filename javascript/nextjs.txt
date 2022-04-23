@@ -1,0 +1,29 @@
+
+	NEXT.JS
+
+npx create-next-app
+npm init next-app
+yarn create next-app
+
+npm i next react react-dom
+
+"dev": "next,
+"build": "next build",
+"start": "next start"
+
+No hace falta importar React, y no hace falta enrutar, lo hace solo
+
+import Link from 'next/link'
+usa <Link href="/">
+
+Conviene crear un componente Container y pasarle las páginas como props.children, pasa a ser como un main o template
+En las otras: return <Container> (código) </Container>
+
+import Head from 'next/head'   y agregar <Head> <title> ... <link rel=""> ... </Head>
+
+useEffect:   Index.getInitialProps = async (ctx) => {const resp = await fetch ...}
+
+Parámetro dinámico en la url: crear archivo [id].js   import {useRouter} from 'next/router'   const router = useRouter(); const {id} = router.query   captura
+En el User.getInitialProps se usa   ctx.query.id
+
+npm build + npm start
