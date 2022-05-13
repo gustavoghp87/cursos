@@ -10,3 +10,14 @@ Accounts:
 	ghp: only bot7200
 	mas: only liker bot     -->    raspberry pi
 
+
+
+
+
+GitHub broken issue:
+    heroku git:remote -a veredictos
+    git remote -v
+    git push heroku main
+    git push heroku master
+
+

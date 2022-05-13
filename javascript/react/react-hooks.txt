@@ -38,8 +38,12 @@ console.log(tasks)
 
 || useReducer ||
 
+const initialState = {...};
+const init = () => JSON.parse(window.localStorage.getItem("tasks")) || [];                         // alternative
+
 export const AppComponent = () => {
     const [tasks, dispatch] = useReducer(taskReducer, initialState);
+    const [tasks, dispatch] = useReducer(taskReducer, [], init);                                   // alternative
 
     const handleSubmit = (e) => {
 	e.preventDefault();
@@ -50,5 +54,6 @@ export const AppComponent = () => {
 	dispatch(action);
     }
 
+    useEffect(() => { window.localStorage.setItem("tasks", JSON.stringify(tasks)); }, [tasks]);    // alternative
 
 
