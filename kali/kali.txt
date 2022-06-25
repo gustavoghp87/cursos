@@ -1,6 +1,12 @@
 teclado:    sudo setxkbmap es
 ver exploit-db.com
 
+
+https://any.run/    online sandbox => malware execution in real time
+
+echo [ofuscated code] | base64 --decode
+
+
 nmtui
 sudo iw dev    sudo iwconfig
 lspci         dispositivos conectados a PCI
@@ -10,7 +16,7 @@ route
 
 deviwiki.com    www.acrylicwifi.com
 
-metadatos: metashield, elevenpaths.com
+metadata: metashield, elevenpaths.com
 
 apt-get clean
 apt-get update
