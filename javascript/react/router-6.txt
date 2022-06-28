@@ -1,0 +1,26 @@
+index.js:
+
+<BrowserRouter>    from React Router 6
+    <App />
+</BrowserRouter>
+
+
+App.js:
+
+<Routes>
+    <Route path="/" element={<HomePage />} />              no refresh
+    <Route path="login" element={<LoginPage />} />
+    <Route path="/*" element={<HomePage />} />             fake url remains
+    <Route path="/*" element={<Navigate to="/" />} />      change url
+</Routes>
+
+
+Component.js:
+
+<a href="/login">  Log in </a>            refresh everything
+
+<Link to="/login"> Log in </Link>         refresh only what is necessary
+
+<NavLink to="/login" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+    Log in
+</NavLink>                                like Link but allows specific classes according location

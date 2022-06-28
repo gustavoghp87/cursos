@@ -1,0 +1,62 @@
+|| Reducer ||
+
+Sirve para tener en un único lugar todas las acciones que modifican el state del componente
+
+Es una función, recibe 2 args: initialState + action
+Es una función pura: resuelve sin llamar a otras, no puede ser asíncrona, debe retornar un nuevo estado, no debe llamar a
+ localStorage o sessionStorage (porque pueden fallar), no debe requerir más de una acción
+
+Para asíncronos: redux
+
+
+EJEMPLO
+
+const initialState = [{...}];
+
+const taskReducer = (state = initialState, action) => {         tiene que saber siempre el estado anterior
+    if (action?.type === "addTask") {
+	return [...state, action.payload];
+    }
+    return state;
+}
+
+const tasks = taskReducer();    // initialize
+console.log(tasks)
+
+const addTaskAction = {
+    type: "addTask",
+    payload: {...}
+}
+
+tasks = taskReducer(tasks, addTaskAction);
+
+console.log(tasks)
+
+
+#################################################################################################################################
+
+|| useReducer ||
+
+const [state, dispatch] = useReducer(reducer, initialArg, init);          consume un reducer
+
+
+EJEMPLO
+
+const initialState = {...};
+const init = () => JSON.parse(window.localStorage.getItem("tasks")) || [];                         // alternative
+
+export const AppComponent = () => {
+    const [tasks, dispatch] = useReducer(taskReducer, initialState);
+    const [tasks, dispatch] = useReducer(taskReducer, [], init);                                   // alternative
+
+    const handleSubmit = (e) => {
+	e.preventDefault();
+	const action = {
+	    type: 'addTask',
+	    payload: {...}
+	}
+	dispatch(action);
+    }
+
+    useEffect(() => { window.localStorage.setItem("tasks", JSON.stringify(tasks)); }, [tasks]);    // alternative
+
