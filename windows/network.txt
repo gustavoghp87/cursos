@@ -11,7 +11,7 @@ getmac             [direcciones MAC]
 change MAC address:   reg add HKEY_LOCAL_MACHINESYSTEMCurrentControlSetControlClass{4D36E972-E325-11CE-BFC1-08002BE10318}_0004 /v NetworkAddress /d 001122334455 /f
            [0004 es el index de la interfaz de red y 
 
-
+#################################################################################################################################
 
 Claves wifi almacenadas:
 	netsh wlan show profile name="xxxxxxxx" key=clear

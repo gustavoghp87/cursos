@@ -1,12 +1,6 @@
 GIT
 
-En Windows usar Git Bash
-
-Hay 3 estados:
-	1. working directory: en carpeta, normal (untracked files)
-	2. staging area: versión guardada (stage files --> tracked files)
-	3. git directory, repository: versión guardada comentada y/o etiquetada (--> commit files)
-
+#################################################################################################################################
 
 CONFIGURAR
 	git --version
@@ -20,10 +14,17 @@ CONFIGURAR
 	git config --global core.editor wordpad
 
 
+#################################################################################################################################
+
 CREAR UNA ESTRUCTURA GIT	
 hacer un repositorio:
 crear carpeta y estando adentro...      git init
 o desde afuera...                       git init carpeta_repositorio
+
+Hay 3 estados:
+	1. working directory: en carpeta, normal (untracked files)
+	2. staging area: versión guardada (stage files --> tracked files)
+	3. git directory, repository: versión guardada comentada y/o etiquetada (--> commit files)
 
 (master) significa que estás en una carpeta repositorio
 borrar repositorio: borrar carpeta .git
@@ -57,6 +58,8 @@ Lista de commits:
 	git log -3                  [últimos 3]
 
 
+#################################################################################################################################
+
 ETIQUETAR: etiquetas ligeras, etiquetas anotadas...
 	git tag -a 2.0                             [agrega etiqueta al commit actual]
 	git tag -a 2.0 -m "versión estable"        [hace commit nuevo con etiqueta] [las comillas cuando hay un espacio]
@@ -74,12 +77,16 @@ renombrar:
 	git tag -f -a 0.1 "iniciando el proyecto" [hash]         [no borra...]
 
 
+#################################################################################################################################
+
 COMPARAR
 Ver diferencias entre la versión vigente y otra:
 	git diff [hash otra versión]
 Ver cambios de una versión respecto a otra "posterior":
 	git diff [hash1 +viejo] [hash2 +nuevo]
 
+
+#################################################################################################################################
 
 BORRAR-RESET
 	git reset --soft [hash desde el cual, sin incluir]    [borra solo commits, no los archivos en stage]
@@ -101,22 +108,26 @@ Regresar a la versión más avanzada de una rama:
 , pero va a arrastrar los cambios no commiteados
 	(los commits funcionan como las papas lays en lata)
 
-	
-BRANCHS (ramas)
+
+#################################################################################################################################
+
+BRANCHS
 (Master es la rama principal pero se le puede cambiar el nombre)
 	git branch rama2                      [crear rama]
 	git branch -l                         [listar las ramas]
 	git branch -d responsive              [borrar si no tiene commits]
 	git branch -D responsive              [forzar borrado cuando tiene commits]
 	git branch -m responsive responsive2  [cambiar nombre]
+	git branch -M main                    [cambia nombre master a main para github]
 
 	git checkout rama2                    [lleva a navegar a la rama en su estado más avanzado]
 	git checkout master
 
-	git checkout -b nuevaRama             [nueva rama y comenzar a navegarla (checkout), 2x1]
-Los archivos untracked se van a cambiar de rama con el cambio de rama
+	git checkout -b nuevaRama             [nueva rama y comenzar a navegarla (checkout), 2x1]   Los archivos untracked se van a cambiar de rama con el cambio de rama
 	git checkout -- archivo.html          [elimina los últimos cambios no trackeados]
 
+
+#################################################################################################################################
 
 MERGE
 Mezclar el estado más avanzado de la rama A con el más avanzado de la B, como commit para la A:
@@ -137,12 +148,16 @@ Arreglado, finalizar con add y commit
 Ir viendo los diagramas en git log --oneline --graph
 
 
+#################################################################################################################################
+
 REBASE
 Reescribir el proyecto sin usar ramas (hace merge sin dejar rastros)
 	git rebase rama3         [simplifica pero es riesgoso y desaconsejable para trabajo en equipo]
 Otra opción:
 	git rebase -i archivoA   [abre Atom con instrucciones, cambiar primer palabra del comando, cambiar commit]
 
+
+#################################################################################################################################
 
 STASH	
 Guardado temporal precautorio (de archivos ya en el stage)
@@ -155,6 +170,8 @@ Guardado temporal precautorio (de archivos ya en el stage)
 	git stash apply stash@{2}   [hace definitivo el cambio temporal "2"]
 
 
+#################################################################################################################################
+
 CHERRY-PICK
 Cambiar un commit de rama:
 Ir a la rama donde está para poder copiar el hash, y cambiar a la rama destino. Luego:
@@ -165,10 +182,8 @@ Ir a la rama donde está para poder copiar el hash, y cambiar a la rama destino.
 Borrar de caché cuando carpeta no responde a .gitignore:    git rm -r --cached [file or dir]     r de recursive (subcarpetas)
 
 
-------------------------------------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------------------------------------
-
+#################################################################################################################################
+#################################################################################################################################
 
 GITHUB
 
@@ -192,7 +207,8 @@ ssh-rsa (...)
 
 FORK es crear una copia de un proyecto ajeno en mi Github sin tenerlo sincronizado con los demás
 
------------------------------------------------------------------------------------------------------------------------
+
+#################################################################################################################################
 
 Para trabajar con GitHub se puede:
 
@@ -244,6 +260,8 @@ Para trabajar con GitHub se puede:
  Unificó en desktop, falta llevar unificado a GitHub (add y commit si es necesario)
 
 
+#################################################################################################################################
+
 CLONAR (SINCRONIZAR) EN GITHUB UN REPOSITORIO EN DESKTOP
 
 	git push origin master
@@ -253,12 +271,16 @@ CLONAR (SINCRONIZAR) EN GITHUB UN REPOSITORIO EN DESKTOP
 	git push origin otraRamaLocal
 
 
+#################################################################################################################################
+
 EN SETTING PROTEGER LA RAMA MASTER U OTRAS
 Conviene proteger la rama master para que su modificación se haga en 2 pasos:
  primero se incluyen los cambios en una rama nueva y luego se las unifica (merge),
  preferentemente por otros colaboradores
 Proteger, requerir pull request reviews antes de merging, incluir administradores
 
+
+#################################################################################################################################
 
 EXCLUIR ARCHIVOS DE LA SINCRONIZACIÓN CON GITHUB
 	touch setting.py    [o cualquier otro/otros para incluir información delicada]

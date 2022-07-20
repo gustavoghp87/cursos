@@ -1,0 +1,7 @@
+Saves return value in cache, just for functions
+
+
+useCallback is used it with React.memo()
+
+const increment = useCallback(() => setCounter(c => c + 1), [setCounter]);
+

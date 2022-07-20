@@ -1,0 +1,7 @@
+Saves return value in cache
+
+
+React.memo( component )
+
+const memoProcess = useMemo(() => myFunction(params), [...variables that trigger new execution...]);
+

@@ -4,7 +4,7 @@ netstat -n         [numbers (443), not names(https)] faster because it does not 
 netstat -a         [every port listening for a connection]
 netstat -an
 netstat -ar
-netstat -b         [shows which applications are using the ports] requires elevation
+netstat -b         [binaries, shows which applications are using the ports] requires elevation
 netstat -f         [resolves dns of foreign addresses]
 netstat -bf        [both]
 
