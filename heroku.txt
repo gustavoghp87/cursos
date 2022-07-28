@@ -1,8 +1,10 @@
 heroku -h
 heroku login                                login from browser
+heroku logout
+
 heroku apps                                 list of apps for logged in user
 heroku logs -n 200 -a registros-rest-api    last 200 log lines
-heroku logout
+heroku logs -n 200 -a app --tail            live logs
 
 
 Accounts:

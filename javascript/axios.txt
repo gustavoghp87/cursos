@@ -1,0 +1,11 @@
+export const myApi = axios.create({ baseURL: 'https://domain/api' })
+
+myApi.interceptors.request.use(config => {
+    config.headers = {
+	'x-token': localStorage.getItem('token')
+    }
+    return config
+})
+
+
+myApi.post('/auth', {body})
