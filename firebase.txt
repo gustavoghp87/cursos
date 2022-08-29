@@ -1,3 +1,9 @@
+ghp invie
+ghc firebase.proy.function
+    ConsultaDB
+    Angular-app
+    MisericApp
+
 "Agregar Firebase a tu app web" (rosca)
 Copiar código (Red CDN) y pegarlo en index.html al final de body
 Con Web Server for Chrome ya se puede abrir desde localhost:puerto

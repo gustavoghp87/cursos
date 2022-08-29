@@ -8,4 +8,4 @@ myApi.interceptors.request.use(config => {
 })
 
 
-myApi.post('/auth', {body})
+myApi.post('/auth', { body })
