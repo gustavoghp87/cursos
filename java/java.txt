@@ -861,6 +861,7 @@ Ya hay un MVC Modelo vista controlador: el index.JSP es la vista, el bean es la 
 
 WAR: Se van a guardar los archivos principales en una Web Application ARchive
 No se puede exponer el servlet porque se podría ver el código java
+jar -cvf projectname.war *
 
 Click derecho en el proyecto, export, WAR file, destino: una carpeta en la máquina servidor
 Click derecho en el .war, descomprimir para ver

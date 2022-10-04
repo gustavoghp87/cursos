@@ -5,6 +5,15 @@
 
 #################################################################################################################################
 
+MySQL Shell:
+
+\connect root@localhost:3306;
+\sql;
+source path\file.sql;
+
+
+#################################################################################################################################
+
 MySQL
 
 correr proceso si no está iniciado como servicio, por ejemplo C:\xampp\mysql\bin   (agregar a env paths)
