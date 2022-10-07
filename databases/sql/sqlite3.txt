@@ -1,0 +1,8 @@
+SQLITE3:
+
+
+sudo apt install sqlite3
+sqlite3 .../database.db
+.help
+PRAGMA database_list;              o    .databases
+

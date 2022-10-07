@@ -1,0 +1,6 @@
+\connect root@localhost:3306;
+
+\sql;
+
+\q
+

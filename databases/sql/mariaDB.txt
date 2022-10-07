@@ -1,0 +1,10 @@
+MariaDB:
+
+create database apfalso;
+create user usuario;
+grant all on apfalso.* to 'usuario'@'localhost' identified by 'contraseña1234';
+use apfalso;
+create table wpa_keys(password1 varchar(30), password2 varchar(30));
+alter database apfalso character set 'utf8';
+select * from wpa_keys;
+

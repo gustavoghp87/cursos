@@ -1,0 +1,65 @@
+POSTGRESQL
+
+Diferencias con MySQL:
+-stored procedures: código (multilenguaje) para dar órdenes a la DB pero desde adentro, usar con extensiones
+-PL/pgSQL: lenguaje propio para stored procedures, también PL/Perl, PL/Python, PL/V8 (js), PL/R
+-funciones de agregación: AVG (average), COUNT, personalizadas
+-fracciones, json, hstore (no relacional), PostGIS (geografía)
+-`psql`: herramienta administrativa y de desarrollo
+-`pgAdmin: GUI
+
+
+sudo apt-get install postgresql postgresql-contrib libpq-dev
+service postgresql start
+
+sudo -i -u postgres                          cambiar al usuario root creado por default: postgres
+sudo -u postgres psql
+Usar cliente 'psql':    sudo -u postgres -i   =>   psql
+psql --help
+
+createuser --interactive
+createdb [conviene mismo nombre que usuario]
+\password [nombre usuario]
+psql -U [usuario] -W
+\q    salir
+
+SELECT name, setting FROM pg_settings WHERE category = 'File Locations';        archivos de configuración
+
+
+CREATE ROLE video LOGIN PASSWORD 'password123';                 login es derecho a iniciar sesión
+SELECT * FROM pg_roles;        lista roles
+DROP ROLE video;
+CREATE ROLE video LOGIN ENCRYPTED PASSWORD 'password123';
+CREATE ROLE video LOGIN ENCRYPTED PASSWORD 'password123' VALID UNTIL 'infinity';
+CREATE ROLE video LOGIN ENCRYPTED PASSWORD 'password123' VALID UNTIL '2021-8-1 00:00';
+CREATE ROLE video LOGIN ENCRYPTED PASSWORD 'password123' CREATEDB VALID UNTIL '2021-8-1 00:00';
+
+CREATE ROLE grupo1 INHERIT;
+GRANT video TO grupo1;
+SET TOLE grupo1;
+
+
+Mostrar databases: \l
+
+postgres=# create database mydb;                                        crea de acuerdo a un template
+	DROP DATABASE mydb;
+	CREATE DATABASE mydb TEMPLATE template1;
+	UPDATE pg_database SET datistemplate = true WHERE datname = 'curso_pg';     ahora es un template y ya no una db
+	create user myuser with encrypted password 'mypass';
+	alter user <username> with encrypted password '<password>';
+	grant all privileges on database mydb to myuser;
+	\c mydb      conecta a base de datos
+	CREATE SCHEMA video;
+	GRANT privilege TO role WITH GRANT OPTION
+	GRANT ALL ON ALL TABLES IN SCHEMA video TO grupo1;
+	GRANT SELECT ON ALL TABLES IN SCHEMA video TO grupo1;
+
+serial: entero automático irrepetible
+	CREATE SEQUENCE ejemplo;
+	SELECT nextval('ejemplo');
+	SELECT nextval('ejemplo');
+	SELECT lpad('ab', 3, '0') AS pad, repeat('-', 4) || 'zy' AS dash, trim('   tr   ') AS trim;
+		0ab en la columna 'pad', ----zy en columna dash y tr en la columna trim
+	SELECT split_part('312-4657-2947', '-', 2) AS x;
+		4657 en columna x
+

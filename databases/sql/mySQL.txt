@@ -1,20 +1,8 @@
+install MySQL Server
 
-1. MySQL
-2. PostgreSQL
+Windows env variable: MYSQL_HOME: C:\Program Files\MySQL\MySQL Server 8.0   +   path: %MYSQL_HOME%\bin
 
-
-#################################################################################################################################
-
-MySQL Shell:
-
-\connect root@localhost:3306;
-\sql;
-source path\file.sql;
-
-
-#################################################################################################################################
-
-MySQL
+install MySQL Shell
 
 correr proceso si no está iniciado como servicio, por ejemplo C:\xampp\mysql\bin   (agregar a env paths)
 /usr/local/mysql/bin/mysql -u -root -p
@@ -69,7 +57,7 @@ CREATE TABLE IF NOT EXISTS books (
 );
 
 CREATE TABLE IF NOT EXISTS author (
-	author_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	author_id	 INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(100) NOT NULL,
 	nationality VARCHAR(3)
 );
@@ -598,6 +586,11 @@ En vez de cargar los comandos de a uno, se puede cargar todo en un archivo de te
 	mysql -u root -p < archivo.sql                   [el archivo que crea la base de datos]
 	mysql -u root -p -D basededatos < archivo2.sql
 
+o, desde afuera:
+	source path\file.sql;
+
+
+#################################################################################################################################
 
 
 EXPORTAR RESPALDOS
@@ -624,112 +617,20 @@ mysqldump -u root -p cursoplatzi --column-statistics=0 > esquema.sql            
 mysql_secure_installation para configurar MySQL
 mysql -u root -p      (por default son root y root)   o sudo mysql -u root
 
-CREATE USER 'php_user'@'localhost' IDENTIFY BY 'contraseña';
+CREATE USER 'hcs_cotizador'@'localhost' IDENTIFIED BY 'hcs_cotizador';
 
 GRANT ALL PRIVILEGES ON php_mysql_crud.* TO 'php_user'@'localhost';
+
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('new_password');
 
 
 CAMBIAR HORARIO
 SET GLOBAL time_zone = '-3:00';
 
-#################################################################################################################################
-#################################################################################################################################
-#################################################################################################################################
-
-MariaDB:
-create database apfalso;
-create user usuario;
-grant all on apfalso.* to 'usuario'@'localhost' identified by 'contraseña1234';
-use apfalso;
-create table wpa_keys(password1 varchar(30), password2 varchar(30));
-alter database apfalso character set 'utf8';
-select * from wpa_keys;
-
 
 #################################################################################################################################
-#################################################################################################################################
-#################################################################################################################################
 
-SQLITE3:
+EDIT DATA
 
-sudo apt install sqlite3
-sqlite3 .../database.db
-.help
-PRAGMA database_list;              o    .databases
-
-
-
-#################################################################################################################################
-#################################################################################################################################
-#################################################################################################################################
-
-POSTGRESQL
-
-Diferencias con MySQL:
--stored procedures: código (multilenguaje) para dar órdenes a la DB pero desde adentro, usar con extensiones
--PL/pgSQL: lenguaje propio para stored procedures, también PL/Perl, PL/Python, PL/V8 (js), PL/R
--funciones de agregación: AVG (average), COUNT, personalizadas
--fracciones, json, hstore (no relacional), PostGIS (geografía)
--`psql`: herramienta administrativa y de desarrollo
--`pgAdmin: GUI
-
-
-sudo apt-get install postgresql postgresql-contrib libpq-dev
-service postgresql start
-
-sudo -i -u postgres                          cambiar al usuario root creado por default: postgres
-sudo -u postgres psql
-Usar cliente 'psql':    sudo -u postgres -i   =>   psql
-psql --help
-
-createuser --interactive
-createdb [conviene mismo nombre que usuario]
-\password [nombre usuario]
-psql -U [usuario] -W
-\q    salir
-
-SELECT name, setting FROM pg_settings WHERE category = 'File Locations';        archivos de configuración
-
-
-CREATE ROLE video LOGIN PASSWORD 'password123';                 login es derecho a iniciar sesión
-SELECT * FROM pg_roles;        lista roles
-DROP ROLE video;
-CREATE ROLE video LOGIN ENCRYPTED PASSWORD 'password123';
-CREATE ROLE video LOGIN ENCRYPTED PASSWORD 'password123' VALID UNTIL 'infinity';
-CREATE ROLE video LOGIN ENCRYPTED PASSWORD 'password123' VALID UNTIL '2021-8-1 00:00';
-CREATE ROLE video LOGIN ENCRYPTED PASSWORD 'password123' CREATEDB VALID UNTIL '2021-8-1 00:00';
-
-CREATE ROLE grupo1 INHERIT;
-GRANT video TO grupo1;
-SET TOLE grupo1;
-
-
-Mostrar databases: \l
-
-postgres=# create database mydb;                                        crea de acuerdo a un template
-	DROP DATABASE mydb;
-	CREATE DATABASE mydb TEMPLATE template1;
-	UPDATE pg_database SET datistemplate = true WHERE datname = 'curso_pg';     ahora es un template y ya no una db
-	create user myuser with encrypted password 'mypass';
-	alter user <username> with encrypted password '<password>';
-	grant all privileges on database mydb to myuser;
-	\c mydb      conecta a base de datos
-	CREATE SCHEMA video;
-	GRANT privilege TO role WITH GRANT OPTION
-	GRANT ALL ON ALL TABLES IN SCHEMA video TO grupo1;
-	GRANT SELECT ON ALL TABLES IN SCHEMA video TO grupo1;
-
-serial: entero automático irrepetible
-	CREATE SEQUENCE ejemplo;
-	SELECT nextval('ejemplo');
-	SELECT nextval('ejemplo');
-	SELECT lpad('ab', 3, '0') AS pad, repeat('-', 4) || 'zy' AS dash, trim('   tr   ') AS trim;
-		0ab en la columna 'pad', ----zy en columna dash y tr en la columna trim
-	SELECT split_part('312-4657-2947', '-', 2) AS x;
-		4657 en columna x
-
-
-
-
-
+UPDATE ctz_usuarios SET password='5f4dcc3b5aa765d61d8327deb882cf99' WHERE id=1;
 
