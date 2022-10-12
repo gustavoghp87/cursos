@@ -1,6 +1,13 @@
+Environment variable:
+
+    path local: C:\Program Files\MySQL\MySQL Shell 8.0\bin\
+
+
 \connect root@localhost:3306;
 
 \sql;
 
 \q
+
+ctrl + l
 
