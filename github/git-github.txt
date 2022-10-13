@@ -15,6 +15,7 @@ CONFIGURAR
 
 conf key:
 	git clone git@provider.com:userName/projectName.git --config core.sshCommand="ssh -i ~/location/to/private_ssh_key"
+      git config core.sshCommand "ssh -i ../keys/mykey.pem"
 
 
 #################################################################################################################################
