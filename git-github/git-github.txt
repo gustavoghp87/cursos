@@ -243,6 +243,7 @@ Para trabajar con GitHub se puede:
 		[Esto crea una nueva rama "master/origin" que es idéntica a la del sitio y que se debe mezclar]
 		
 		git remote -v   [tiene que decir fetch y push]
+ 		git remote rm heroku
 
 
  Hasta acá, se trajo la versión del sitio y se generó una conexión inmediata con un repositorio remoto.
