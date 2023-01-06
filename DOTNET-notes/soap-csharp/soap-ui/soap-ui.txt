@@ -1,0 +1,3 @@
+<![CDATA[<?xml version='1.0' encoding='UTF-8'?><documento><deporte>Futbol</deporte><equipos><equipo><nombre>Ajax</nombre><pais>Holanda</pais></equipo><equipo><nombre>Valencia</nombre><pais>España</pais></equipo></equipos></documento>]]>
+
+{"deporte":"Futbol","equipos":[{"nombre":"Manchester","pais":"Inglaterra"},{"nombre":"Valencia","pais":"España"}]}
