@@ -1,0 +1,98 @@
+import paramsApp, { isLocalhost } from "../../appParams"
+
+type methodType = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'UPDATE'
+type requestsParamsType = {
+    headers?: object
+    body?: object
+    queryParams?: object
+    extraUrl?: string[]
+}
+type optionsType = {
+    method: methodType
+    headers: HeadersInit
+    body?: string
+}
+type targetType = {
+    get: (queryParams: requestsParamsType) => Promise<any>
+    post: (requestsParams: requestsParamsType) => Promise<any>
+    delete: (requestsParams: requestsParamsType) => Promise<any>
+    put: (requestsParams: requestsParamsType) => Promise<any>
+    update: (requestsParams: requestsParamsType) => Promise<any>
+}
+
+const getOptions = (method: methodType, requestsParams: requestsParamsType) => {
+    const options: optionsType = {
+        method,
+        headers: (requestsParams.headers ?? {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-Authorization': "x-auth-test",
+            'x-Recaptcha-Token': "x-recaptcha-test"
+        }) as HeadersInit
+    }
+    if (method !== 'GET' && requestsParams.body)
+        options.body = JSON.stringify(requestsParams.body)
+    return options
+}
+
+const createApiProxy = (service: string, acceptedResources: methodType[]) => {
+    const call = async (method: methodType, requestsParams: requestsParamsType) => {
+        if (!acceptedResources.includes(method?.toUpperCase() as methodType)) {
+            console.log("Recurso inexistente:", method);
+            return null;
+        }
+        let url = `${paramsApp.serverUrl}/api/${service}`;
+        if (requestsParams.extraUrl?.length)
+            requestsParams.extraUrl.forEach(x => url += '/' + x);
+        if (requestsParams.queryParams) {
+            url += '?';
+            for (let key in requestsParams.queryParams) {
+                url += key + '=' + (requestsParams.queryParams as any)[key] + '&';
+            }
+            if (url[url.length - 1] === '&') url = url.substring(0, url.length - 1);
+        }
+        const options = getOptions(method, requestsParams);
+        if (esLocalhost)
+            console.log(`Request a ${url}`, { options });
+        try {
+            return (await fetch(url, options)).json();
+        } catch (error) {
+            console.log(error);
+            return null;   // return Promise.reject("Falló");
+        }
+    }
+
+    const target: targetType = {
+        delete: async (requestsParams: requestsParamsType) =>
+            call('DELETE', requestsParams),
+        get: async (requestsParams: requestsParamsType) =>
+            call('GET', requestsParams),
+        post: async (requestsParams: requestsParamsType) =>
+            call('POST', requestsParams),
+        put: async (requestsParams: requestsParamsType) =>
+            call('PUT', requestsParams),
+        update: async (requestsParams: requestsParamsType) =>
+            call('UPDATE', requestsParams)
+    }
+
+    return new Proxy(target, {
+        get: (target: targetType, method: methodType) => {
+            switch (method.toLowerCase()) {
+                case 'delete':
+                    return target.delete;
+                case 'get':
+                    return target.get;
+                case 'put':
+                    return target.put;
+                case 'post':
+                    return target.post;
+                case 'update':
+                    return target.update;
+                default:
+                    return target.get;
+            }
+        }
+    });
+};
+
+export default createApiProxy
